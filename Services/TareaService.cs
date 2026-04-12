@@ -16,7 +16,8 @@ public class TareaService : IRestService<Tarea>
                     Titulo = "Diseñar login",
                     Descripcion = "Pantalla de inicio de sesión",
                     Estado = EstadoTarea.Pendiente,
-                    Prioridad = PrioridadTarea.Alta
+                    Prioridad = PrioridadTarea.Alta,
+                    UsuarioAsignado = new Usuario { Nombre = "Admin" }
                 },
                 new Tarea
                 {
@@ -24,7 +25,8 @@ public class TareaService : IRestService<Tarea>
                     Titulo = "Crear base de datos",
                     Descripcion = "Modelo relacional",
                     Estado = EstadoTarea.EnProgreso,
-                    Prioridad = PrioridadTarea.Media
+                    Prioridad = PrioridadTarea.Media,
+                    UsuarioAsignado = new Usuario { Nombre = "Admin" }
                 },
                 new Tarea
                 {
@@ -32,7 +34,8 @@ public class TareaService : IRestService<Tarea>
                     Titulo = "Pantalla de tareas",
                     Descripcion = "Lista de tareas",
                     Estado = EstadoTarea.Bloqueada,
-                    Prioridad = PrioridadTarea.Alta
+                    Prioridad = PrioridadTarea.Alta,
+                    UsuarioAsignado = new Usuario { Nombre = "Sin asignar" }
                 }
             };
     }

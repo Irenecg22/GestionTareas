@@ -1,34 +1,69 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GestionTareas.ViewModel"
+             xmlns:model="clr-namespace:GestionTareas.Model"
              x:Class="GestionTareas.View.TareaView"
-             Title="TareaView">
 
-    <CollectionView ItemsSource="{Binding Tareas}"
-                    SelectionMode="Single"
-                    SelectedItem="{Binding TareaSeleccionada}">
+             BackgroundColor="#F3F4F6">
 
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <VerticalStackLayout Padding="10" Margin="10" BackgroundColor="#eeeeee">
+    <Grid ColumnDefinitions="220, *">
+        <VerticalStackLayout Grid.Column="0" BackgroundColor="White" Padding="20, 40, 20, 20" Spacing="15">
+            <Button Text="Tareas" BackgroundColor="#F3F4F6" TextColor="#7C3AED" FontAttributes="Bold" HorizontalOptions="Fill" />
+        </VerticalStackLayout>
 
-                    <Label Text="{Binding Titulo}"
-                           FontSize="18"
-                           FontAttributes="Bold"/>
-
-                    <Label Text="{Binding Descripcion}" />
-
-                    <Label Text="{Binding Estado}" />
-
-                    <Label Text="{Binding Prioridad}" />
-
-                    <Button Text="Ver detalle"
-                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.VerDetallesCommand}"
-                            CommandParameter="{Binding .}" />
-
+        <Grid Grid.Column="1" RowDefinitions="Auto, *" Padding="30" RowSpacing="20">
+            <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
+                <VerticalStackLayout>
+                    <Label Text="Tablero de Tareas" FontSize="28" FontAttributes="Bold" TextColor="#111827" />
+                    <Label Text="Organiza tu trabajo diario" TextColor="Gray" />
                 </VerticalStackLayout>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
+                <Button Grid.Column="1" Text="+ Nueva Tarea" BackgroundColor="#7C3AED" CornerRadius="8" HeightRequest="45" Padding="20,0"/>
+            </Grid>
 
-    </CollectionView>
+            <Grid Grid.Row="1" ColumnDefinitions="*, *, *" ColumnSpacing="15">
+                <VerticalStackLayout Grid.Column="0" Spacing="10">
+                    <Border BackgroundColor="#E5E7EB" Padding="10" StrokeShape="RoundRectangle 8">
+                        <Label Text="To Do" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#374151"/>
+                    </Border>
+                    <CollectionView ItemsSource="{Binding Tareas}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Tarea">
+                                <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Margin="0,5" Padding="15">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TareaViewModel}}, Path=VerDetallesCommand}" CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+
+                                    <VerticalStackLayout Spacing="8">
+                                        <Label Text="{Binding Titulo}" FontAttributes="Bold" TextColor="#111827"/>
+                                        <Border BackgroundColor="#FEE2E2" HorizontalOptions="Start" Padding="8,2" StrokeShape="RoundRectangle 5">
+                                            <Label Text="{Binding Prioridad}" FontSize="10" TextColor="#B91C1C" FontAttributes="Bold"/>
+                                        </Border>
+                                        <Grid ColumnDefinitions="Auto, *">
+                                            <Label Text="{Binding UsuarioAsignado.Nombre, TargetNullValue='Sin asignar'}" FontSize="11" TextColor="Gray"/>
+                                            
+                                            <Label Grid.Column="1" Text="Aug 18" HorizontalOptions="End" FontSize="11" TextColor="Gray"/>
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" Spacing="10">
+                    <Border BackgroundColor="#FEF3C7" Padding="10" StrokeShape="RoundRectangle 8">
+                        <Label Text="In Progress" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#92400E"/>
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="2" Spacing="10">
+                    <Border BackgroundColor="#D1FAE5" Padding="10" StrokeShape="RoundRectangle 8">
+                        <Label Text="Done" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#065F46"/>
+                    </Border>
+                </VerticalStackLayout>
+            </Grid>
+
+            
+        </Grid>
+    </Grid>
 </ContentPage>

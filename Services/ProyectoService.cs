@@ -13,13 +13,23 @@ public class ProyectoService : IRestService<Proyecto>
             {
                 Id = 1,
                 Nombre = "App TFG",
-                Descripcion = "Aplicación de gestión de tareas"
+                Descripcion = "Aplicación de gestión de tareas",
+                Tareas = new List<Tarea>
+        {
+            new Tarea { UsuarioAsignado = new Usuario { Nombre = "Juan" } },
+            new Tarea { UsuarioAsignado = new Usuario { Nombre = "Marta" } }
+        }
             },
             new Proyecto
             {
                 Id = 2,
                 Nombre = "Web empresa",
-                Descripcion = "Página corporativa"
+                Descripcion = "Página corporativa",
+                Tareas = new List<Tarea>
+        {
+            new Tarea { UsuarioAsignado = new Usuario { Nombre = "Juan" } },
+            new Tarea { UsuarioAsignado = new Usuario { Nombre = "Marta" } }
+        }
             }
         };
         }

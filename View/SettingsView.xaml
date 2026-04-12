@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GestionTareas.ViewModel"
+             xmlns:m="http://schemas.microsoft.com/dotnet/2021/maui"
+             x:Class="GestionTareas.View.SettingsView"
+             x:DataType="vm:SettingsViewModel"
+             >
+
+    <Grid ColumnDefinitions="220, *">
+        <VerticalStackLayout Grid.Column="0" BackgroundColor="White" Padding="20, 40, 20, 20" Spacing="15">
+            <Button Text="Ajustes" BackgroundColor="#F3F4F6" TextColor="#7C3AED" FontAttributes="Bold" HorizontalOptions="Fill" />
+        </VerticalStackLayout>
+
+        <ScrollView Grid.Column="1" Padding="40">
+            <VerticalStackLayout Spacing="25">
+                <Label Text="Configuración" FontSize="28" FontAttributes="Bold" />
+
+                <Border StrokeShape="RoundRectangle 12" BackgroundColor="White" Padding="25">
+                    <Grid ColumnDefinitions="Auto, *" ColumnSpacing="20">
+                        <Border StrokeShape="RoundRectangle 40" WidthRequest="80" HeightRequest="80" StrokeThickness="0">
+                            <Image Source="profile_placeholder.png" Aspect="AspectFill" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label Text="{Binding UsuarioActual.Nombre, FallbackValue='Cargando...'}" FontSize="18" FontAttributes="Bold" />
+                            <Label Text="{Binding UsuarioActual.Email}" TextColor="Gray" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <Border StrokeShape="RoundRectangle 12" BackgroundColor="White" Padding="25">
+                    <VerticalStackLayout Spacing="20">
+                        <Label Text="Apariencia" FontSize="18" FontAttributes="Bold" />
+                        <HorizontalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Themes}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="m:AppTheme">
+                                    <Border StrokeShape="RoundRectangle 8" Padding="15" BackgroundColor="#F9FAFB" WidthRequest="120">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer 
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SettingsViewModel}}, Path=SaveSettingsCommand}"
+                                                CommandParameter="{Binding .}" />
+                                        </Border.GestureRecognizers>
+                                        <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                                            <Ellipse WidthRequest="30" HeightRequest="30" Fill="#7C3AED"/>
+                                            <Label Text="{Binding .}" HorizontalOptions="Center" FontSize="12" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Button Text="Cerrar Sesión" TextColor="#DC2626" BackgroundColor="Transparent" HorizontalOptions="Start" FontAttributes="Bold" />
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

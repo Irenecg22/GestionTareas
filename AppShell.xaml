@@ -8,14 +8,19 @@
     Title="GestionTareas">
 
     <ShellContent
-        Title="Tareas"
-        ContentTemplate="{DataTemplate v:TareaView}"
-        Route="MainPage" />
+Title="Proyectos"
+ContentTemplate="{DataTemplate v:ProyectoView}"
+Route="proyectosPage" />
 
     <ShellContent
-    Title="Tareas"
-    ContentTemplate="{DataTemplate v:PanelPrincipal}"
-    Route="MainPage" />
+        Title="Tareas"
+        ContentTemplate="{DataTemplate v:TareaView}"
+        Route="tareasPage" />
+
+    <ShellContent
+    Title="Ajustes"
+    ContentTemplate="{DataTemplate v:SettingsView}"
+    Route="settingsPage" />
 
 
 </Shell>

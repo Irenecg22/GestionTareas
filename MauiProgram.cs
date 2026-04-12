@@ -25,17 +25,20 @@ namespace GestionTareas
 #endif
 
             builder.Services.AddTransient<IRestService<Tarea>,TareaService>();
-            //builder.Services.AddTransient<ProyectoService>();
+            builder.Services.AddTransient<IRestService<Proyecto>, ProyectoService>();
+            builder.Services.AddTransient<IRestService<Usuario>, UserService>();
 
             //builder.Services.AddTransient<PanelPrincipalViewModel>();
-            //builder.Services.AddTransient<ProyectoViewModel>();
+            builder.Services.AddTransient<ProyectoViewModel>();
+            builder.Services.AddTransient<SettingsViewModel>();
             //builder.Services.AddTransient<ProyectoDetalleViewModel>();
             builder.Services.AddTransient<TareaViewModel>();
             builder.Services.AddTransient<TareaDetalleViewModel>();
 
             builder.Services.AddTransient<TareaView>();
             builder.Services.AddTransient<TareaDetalleView>();
-            //builder.Services.AddTransient<ProyectoView>();
+            builder.Services.AddTransient<ProyectoView>();
+            builder.Services.AddTransient<SettingsView>();
             //builder.Services.AddTransient<ProyectoDetalleView>();
             //builder.Services.AddTransient<PanelPrincipal>();
 

@@ -1,9 +1,12 @@
+using GestionTareas.ViewModel;
+
 namespace GestionTareas.View;
 
 public partial class ProyectoView : ContentPage
 {
-	public ProyectoView()
+	public ProyectoView(ProyectoViewModel proyectoViewModel)
 	{
-		InitializeComponent();
-	}
+        BindingContext = proyectoViewModel;
+        InitializeComponent();
+    }
 }

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using GestionTareas.Model;
 using GestionTareas.Services;
+using System.Collections.ObjectModel;
 
 namespace GestionTareas.ViewModel;
 
@@ -10,23 +11,44 @@ public partial class TareaViewModel : ObservableObject
     private readonly IRestService<Tarea> _tareaService;
 
     [ObservableProperty]
-    private List<Tarea> tareas;
+    private ObservableCollection<Tarea> tareas;
 
     [ObservableProperty]
-    private Tarea _tareaSeleccionada;
-
+    private Tarea tareaSeleccionada;
+    public IRelayCommand<Tarea> VerDetallesCommand { get; }
+    public IAsyncRelayCommand LoadDataCommand { get; }
 
     public TareaViewModel(IRestService<Tarea> tareaService)
     {
         _tareaService = tareaService;
-        LoadData();
+        VerDetallesCommand = new RelayCommand<Tarea>(VerDetalles);
+        LoadDataCommand = new AsyncRelayCommand(LoadData);
+        Task.Run(async () => await LoadData());
     }
 
-    private async void LoadData() => Tareas = await _tareaService.GetAllAsync();
+    private async Task LoadData()
+    {
+        try
+        {
+            var lista = await _tareaService.GetAllAsync();
 
-    [RelayCommand]
+            if (lista != null)
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    Tareas = new ObservableCollection<Tarea>(lista);
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+        }
+    }
     private async void VerDetalles(Tarea tarea)
     {
+        if (tarea == null) return;
+
         await Shell.Current.GoToAsync(
             "tareaDetalle",
             new ShellNavigationQueryParameters
@@ -34,5 +56,4 @@ public partial class TareaViewModel : ObservableObject
                 { "Tarea", tarea }
             });
     }
-
 }

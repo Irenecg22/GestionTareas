@@ -2,33 +2,43 @@
 using CommunityToolkit.Mvvm.Input;
 using GestionTareas.Model;
 using GestionTareas.Services;
+using System.Collections.ObjectModel;
 
 namespace GestionTareas.ViewModel;
 
 public partial class ProyectoViewModel : ObservableObject
 {
     private readonly IRestService<Proyecto> _proyectoService;
-    private Proyecto _proyectoSeleccionado;
+    
 
     [ObservableProperty]
-    private List<Proyecto> proyectos;
+    private ObservableCollection<Proyecto> proyectos;
+
+    [ObservableProperty]
+    private Proyecto proyectoSeleccionado;
 
     public IRelayCommand<Proyecto> VerDetallesCommand { get; }
+
+    public IAsyncRelayCommand LoadDataCommand { get; }
 
     public ProyectoViewModel(IRestService<Proyecto> proyectoService)
     {
         _proyectoService = proyectoService;
         VerDetallesCommand = new RelayCommand<Proyecto>(VerDetalles);
-        LoadData();
+        LoadDataCommand = new AsyncRelayCommand(LoadData);
+        Task.Run(async () => await LoadData());
     }
 
-    private async void LoadData()
+    private async Task LoadData()
     {
-        Proyectos = await _proyectoService.GetAllAsync();
+        var lista = await _proyectoService.GetAllAsync();
+        Proyectos = new ObservableCollection<Proyecto>(lista);
     }
 
     private async void VerDetalles(Proyecto proyecto)
     {
+        if (proyecto == null) return;
+
         await Shell.Current.GoToAsync(
             "proyectoDetalle",
             new ShellNavigationQueryParameters
@@ -37,13 +47,7 @@ public partial class ProyectoViewModel : ObservableObject
             });
     }
 
-    public Proyecto ProyectoSeleccionado
-    {
-        get => _proyectoSeleccionado;
-        set
-        {
-            _proyectoSeleccionado = value;
-            OnPropertyChanged();
-        }
-    }
+  
+
+
 }

@@ -101,6 +101,16 @@ build_metadata.AdditionalFiles.NoWarn =
 build_metadata.AdditionalFiles.EnableDiagnostics = 
 build_metadata.AdditionalFiles.LineInfo = 
 
+[C:/Users/irene/OneDrive/Desktop/TFG/GestionTareas/GestionTareas/GestionTareas/View/SettingsView.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = GestionTareas.View.SettingsView.xaml
+build_metadata.AdditionalFiles.TargetPath = View\SettingsView.xaml
+build_metadata.AdditionalFiles.RelativePath = View\SettingsView.xaml
+build_metadata.AdditionalFiles.Inflator = SourceGen
+build_metadata.AdditionalFiles.NoWarn = 
+build_metadata.AdditionalFiles.EnableDiagnostics = 
+build_metadata.AdditionalFiles.LineInfo = 
+
 [C:/Users/irene/OneDrive/Desktop/TFG/GestionTareas/GestionTareas/GestionTareas/View/TareaDetalleView.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = GestionTareas.View.TareaDetalleView.xaml
