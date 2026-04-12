@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GestionTareas.View.PanelPrincipal"
+             Title="PanelPrincipal">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Label Text="{Binding NombreUsuario}"
+                   FontSize="24"
+                   FontAttributes="Bold" />
+
+            <VerticalStackLayout Padding="10" BackgroundColor="#eeeeee">
+                <Label Text="Total Proyectos" />
+                <Label Text="{Binding TotalProyectos}" FontSize="20"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Padding="10" BackgroundColor="#eeeeee">
+                <Label Text="Total Tareas" />
+                <Label Text="{Binding TotalTareas}" FontSize="20"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Padding="10" BackgroundColor="#eeeeee">
+                <Label Text="Tareas Pendientes" />
+                <Label Text="{Binding TareasPendientes}" FontSize="20"/>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

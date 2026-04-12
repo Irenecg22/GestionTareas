@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GestionTareas.View.TareaDetalleView"
+             Title="TareaDetalleView">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="{Binding Tarea.Titulo}"
+                   FontSize="22"
+                   FontAttributes="Bold"/>
+
+            <Label Text="{Binding Tarea.Descripcion}" />
+
+            <Label Text="Estado:" FontAttributes="Bold"/>
+            <Label Text="{Binding Tarea.Estado}" />
+
+            <Label Text="Prioridad:" FontAttributes="Bold"/>
+            <Label Text="{Binding Tarea.Prioridad}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
