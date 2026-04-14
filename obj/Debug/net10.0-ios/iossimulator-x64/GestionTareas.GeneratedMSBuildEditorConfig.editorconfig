@@ -1,14 +1,10 @@
 is_global = true
 build_property.EnableAotAnalyzer = 
 build_property.EnableSingleFileAnalyzer = 
-build_property.EnableTrimAnalyzer = false
+build_property.EnableTrimAnalyzer = true
 build_property.IncludeAllContentForSelfExtract = 
 build_property.VerifyReferenceTrimCompatibility = 
 build_property.VerifyReferenceAotCompatibility = 
-build_property.MauiXamlNoWarn = 
-build_property.EnableMauiXamlDiagnostics = true
-build_property.MauiXamlLineInfo = 
-build_property.Configuration = Debug
 build_property.MvvmToolkitEnableINotifyPropertyChangingSupport = true
 build_property._MvvmToolkitIsUsingWindowsRuntimePack = false
 build_property.CsWinRTComponent = 
@@ -25,108 +21,8 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = GestionTareas
-build_property.ProjectDir = C:\Users\irene\OneDrive\Desktop\TFG\GestionTareas\GestionTareas\GestionTareas\
+build_property.ProjectDir = C:\Users\jhoja\source\repos\GestionTareas\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
-
-[C:/Users/irene/OneDrive/Desktop/TFG/GestionTareas/GestionTareas/GestionTareas/App.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = GestionTareas.App.xaml
-build_metadata.AdditionalFiles.TargetPath = App.xaml
-build_metadata.AdditionalFiles.RelativePath = App.xaml
-build_metadata.AdditionalFiles.Inflator = SourceGen
-build_metadata.AdditionalFiles.NoWarn = 
-build_metadata.AdditionalFiles.EnableDiagnostics = 
-build_metadata.AdditionalFiles.LineInfo = 
-
-[C:/Users/irene/OneDrive/Desktop/TFG/GestionTareas/GestionTareas/GestionTareas/AppShell.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = GestionTareas.AppShell.xaml
-build_metadata.AdditionalFiles.TargetPath = AppShell.xaml
-build_metadata.AdditionalFiles.RelativePath = AppShell.xaml
-build_metadata.AdditionalFiles.Inflator = SourceGen
-build_metadata.AdditionalFiles.NoWarn = 
-build_metadata.AdditionalFiles.EnableDiagnostics = 
-build_metadata.AdditionalFiles.LineInfo = 
-
-[C:/Users/irene/OneDrive/Desktop/TFG/GestionTareas/GestionTareas/GestionTareas/Resources/Styles/Colors.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = GestionTareas.Resources.Styles.Colors.xaml
-build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Colors.xaml
-build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Colors.xaml
-build_metadata.AdditionalFiles.Inflator = SourceGen
-build_metadata.AdditionalFiles.NoWarn = 
-build_metadata.AdditionalFiles.EnableDiagnostics = 
-build_metadata.AdditionalFiles.LineInfo = 
-
-[C:/Users/irene/OneDrive/Desktop/TFG/GestionTareas/GestionTareas/GestionTareas/Resources/Styles/Styles.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = GestionTareas.Resources.Styles.Styles.xaml
-build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Styles.xaml
-build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Styles.xaml
-build_metadata.AdditionalFiles.Inflator = SourceGen
-build_metadata.AdditionalFiles.NoWarn = 
-build_metadata.AdditionalFiles.EnableDiagnostics = 
-build_metadata.AdditionalFiles.LineInfo = 
-
-[C:/Users/irene/OneDrive/Desktop/TFG/GestionTareas/GestionTareas/GestionTareas/View/PanelPrincipal.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = GestionTareas.View.PanelPrincipal.xaml
-build_metadata.AdditionalFiles.TargetPath = View\PanelPrincipal.xaml
-build_metadata.AdditionalFiles.RelativePath = View\PanelPrincipal.xaml
-build_metadata.AdditionalFiles.Inflator = SourceGen
-build_metadata.AdditionalFiles.NoWarn = 
-build_metadata.AdditionalFiles.EnableDiagnostics = 
-build_metadata.AdditionalFiles.LineInfo = 
-
-[C:/Users/irene/OneDrive/Desktop/TFG/GestionTareas/GestionTareas/GestionTareas/View/ProyectoDetalleView.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = GestionTareas.View.ProyectoDetalleView.xaml
-build_metadata.AdditionalFiles.TargetPath = View\ProyectoDetalleView.xaml
-build_metadata.AdditionalFiles.RelativePath = View\ProyectoDetalleView.xaml
-build_metadata.AdditionalFiles.Inflator = SourceGen
-build_metadata.AdditionalFiles.NoWarn = 
-build_metadata.AdditionalFiles.EnableDiagnostics = 
-build_metadata.AdditionalFiles.LineInfo = 
-
-[C:/Users/irene/OneDrive/Desktop/TFG/GestionTareas/GestionTareas/GestionTareas/View/ProyectoView.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = GestionTareas.View.ProyectoView.xaml
-build_metadata.AdditionalFiles.TargetPath = View\ProyectoView.xaml
-build_metadata.AdditionalFiles.RelativePath = View\ProyectoView.xaml
-build_metadata.AdditionalFiles.Inflator = SourceGen
-build_metadata.AdditionalFiles.NoWarn = 
-build_metadata.AdditionalFiles.EnableDiagnostics = 
-build_metadata.AdditionalFiles.LineInfo = 
-
-[C:/Users/irene/OneDrive/Desktop/TFG/GestionTareas/GestionTareas/GestionTareas/View/SettingsView.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = GestionTareas.View.SettingsView.xaml
-build_metadata.AdditionalFiles.TargetPath = View\SettingsView.xaml
-build_metadata.AdditionalFiles.RelativePath = View\SettingsView.xaml
-build_metadata.AdditionalFiles.Inflator = SourceGen
-build_metadata.AdditionalFiles.NoWarn = 
-build_metadata.AdditionalFiles.EnableDiagnostics = 
-build_metadata.AdditionalFiles.LineInfo = 
-
-[C:/Users/irene/OneDrive/Desktop/TFG/GestionTareas/GestionTareas/GestionTareas/View/TareaDetalleView.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = GestionTareas.View.TareaDetalleView.xaml
-build_metadata.AdditionalFiles.TargetPath = View\TareaDetalleView.xaml
-build_metadata.AdditionalFiles.RelativePath = View\TareaDetalleView.xaml
-build_metadata.AdditionalFiles.Inflator = SourceGen
-build_metadata.AdditionalFiles.NoWarn = 
-build_metadata.AdditionalFiles.EnableDiagnostics = 
-build_metadata.AdditionalFiles.LineInfo = 
-
-[C:/Users/irene/OneDrive/Desktop/TFG/GestionTareas/GestionTareas/GestionTareas/View/TareaView.xaml]
-build_metadata.AdditionalFiles.GenKind = Xaml
-build_metadata.AdditionalFiles.ManifestResourceName = GestionTareas.View.TareaView.xaml
-build_metadata.AdditionalFiles.TargetPath = View\TareaView.xaml
-build_metadata.AdditionalFiles.RelativePath = View\TareaView.xaml
-build_metadata.AdditionalFiles.Inflator = SourceGen
-build_metadata.AdditionalFiles.NoWarn = 
-build_metadata.AdditionalFiles.EnableDiagnostics = 
-build_metadata.AdditionalFiles.LineInfo = 

@@ -11,14 +11,10 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyMetadataAttribute("Microsoft.Maui.ApplicationModel.AppInfo.PackageName", "com.companyname.gestiontareas")]
-[assembly: System.Reflection.AssemblyMetadataAttribute("Microsoft.Maui.ApplicationModel.AppInfo.PublisherName", "User Name")]
-[assembly: System.Reflection.AssemblyMetadataAttribute("Microsoft.Maui.ApplicationModel.AppInfo.Name", "GestionTareas")]
-[assembly: System.Reflection.AssemblyMetadataAttribute("Microsoft.Maui.ApplicationModel.AppInfo.Version", "1.0.0.1")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("GestionTareas")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+f6cd9edef9d1a2ccc79b658ef1f17a3824f0f98f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2ffb7c0845af9c3cf26d2948c1f8edd9cd1c8264")]
 [assembly: System.Reflection.AssemblyProductAttribute("GestionTareas")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GestionTareas")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
