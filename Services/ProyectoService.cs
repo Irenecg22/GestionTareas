@@ -1,37 +1,37 @@
 ﻿using GestionTareas.Model;
+using System.Diagnostics;
+using System.Text.Json;
 namespace GestionTareas.Services;
 
 public class ProyectoService : IRestService<Proyecto>
 {
-    public async Task<List<Proyecto>> GetAllAsync()
-        {
-            await Task.Delay(500);
+    HttpClient _client = new();
+    JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, };
 
-            return new List<Proyecto>
+    Uri uri = new Uri(string.Format("http://127.0.0.1:8000/proyectos"));
+
+    public async Task<List<Proyecto>> GetAllAsync()
+    {
+        var items = new List<Proyecto>();
+
+        try
         {
-            new Proyecto
+            HttpResponseMessage response = await _client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
             {
-                Id = 1,
-                Nombre = "App TFG",
-                Descripcion = "Aplicación de gestión de tareas",
-                Tareas = new List<Tarea>
-        {
-            new Tarea { UsuarioAsignado = new Usuario { Nombre = "Juan" } },
-            new Tarea { UsuarioAsignado = new Usuario { Nombre = "Marta" } }
-        }
-            },
-            new Proyecto
-            {
-                Id = 2,
-                Nombre = "Web empresa",
-                Descripcion = "Página corporativa",
-                Tareas = new List<Tarea>
-        {
-            new Tarea { UsuarioAsignado = new Usuario { Nombre = "Juan" } },
-            new Tarea { UsuarioAsignado = new Usuario { Nombre = "Marta" } }
-        }
+                string content = await response.Content.ReadAsStringAsync();
+                items = JsonSerializer.Deserialize<List<Proyecto>>(content, _jsonSerializerOptions);
             }
-        };
         }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+
+        return items;
+        //var departments = await _client.GetFromJsonAsync<List<Department>>(uri + "/Deparments/", _jsonSerializerOptions);
+        //var asd = 0;
+        //return departments;
     }
+}
 
