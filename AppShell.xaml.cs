@@ -13,6 +13,7 @@ namespace GestionTareas
         private void RegisterRoutes()
         {
             Routing.RegisterRoute("tareaDetalle", typeof(TareaDetalleView));
+            Routing.RegisterRoute("proyectoDetalle", typeof(ProyectoDetalleView));
         }
     }
 }
