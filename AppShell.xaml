@@ -8,6 +8,11 @@
     Title="GestionTareas">
 
     <ShellContent
+Title="Dashboard"
+ContentTemplate="{DataTemplate v:PanelPrincipal}"
+Route="dashboardPage" />
+    
+    <ShellContent
 Title="Proyectos"
 ContentTemplate="{DataTemplate v:ProyectoView}"
 Route="proyectosPage" />

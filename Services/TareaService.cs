@@ -1,42 +1,34 @@
 ﻿using GestionTareas.Model;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace GestionTareas.Services;
 
 public class TareaService : IRestService<Tarea>
 {
+    HttpClient _client = new();
+    JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, };
+
+    Uri uri = new Uri(string.Format("http://127.0.0.1:8000/tareas"));
+
     public async Task<List<Tarea>> GetAllAsync()
     {
-        await Task.Delay(500); 
+        var items = new List<Tarea>();
 
-        return new List<Tarea>
+        try
+        {
+            HttpResponseMessage response = await _client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
             {
-                new Tarea
-                {
-                    Id = 1,
-                    Titulo = "Diseñar login",
-                    Descripcion = "Pantalla de inicio de sesión",
-                    Estado = EstadoTarea.Pendiente,
-                    Prioridad = PrioridadTarea.Alta,
-                    UsuarioAsignado = new Usuario { Nombre = "Admin" }
-                },
-                new Tarea
-                {
-                    Id = 2,
-                    Titulo = "Crear base de datos",
-                    Descripcion = "Modelo relacional",
-                    Estado = EstadoTarea.EnProgreso,
-                    Prioridad = PrioridadTarea.Media,
-                    UsuarioAsignado = new Usuario { Nombre = "Admin" }
-                },
-                new Tarea
-                {
-                    Id = 3,
-                    Titulo = "Pantalla de tareas",
-                    Descripcion = "Lista de tareas",
-                    Estado = EstadoTarea.Bloqueada,
-                    Prioridad = PrioridadTarea.Alta,
-                    UsuarioAsignado = new Usuario { Nombre = "Sin asignar" }
-                }
-            };
+                string content = await response.Content.ReadAsStringAsync();
+                items = JsonSerializer.Deserialize<List<Tarea>>(content, _jsonSerializerOptions);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+
+        return items;
     }
 }
