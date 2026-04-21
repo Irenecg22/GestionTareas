@@ -96,7 +96,7 @@ GestionTareas
 Clonar el repositorio:
 
 ```bash
-git clone https://github.com/TU_REPO_FRONTEND.git
+git clone https://github.com/Irenecg22/GestionTareas.git
 cd GestionTareas
 ```
 
