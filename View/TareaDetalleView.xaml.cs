@@ -1,9 +1,12 @@
+using GestionTareas.ViewModel;
+
 namespace GestionTareas.View;
 
 public partial class TareaDetalleView : ContentPage
 {
-	public TareaDetalleView()
-	{
-		InitializeComponent();
-	}
+    public TareaDetalleView(TareaDetalleViewModel vm)
+    {
+        InitializeComponent();
+        BindingContext = vm;
+    }
 }

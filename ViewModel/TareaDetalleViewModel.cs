@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using GestionTareas.Model;
 
 namespace GestionTareas.ViewModel
 {
-    internal class TareaDetalleViewModel
+    [QueryProperty(nameof(Tarea), "Tarea")]
+    public partial class TareaDetalleViewModel : ObservableObject
     {
+        [ObservableProperty]
+        private Tarea tarea;
     }
 }
