@@ -8,7 +8,8 @@ public class ProyectoService : IRestService<Proyecto>
     HttpClient _client = new();
     JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, };
 
-    Uri uri = new Uri(string.Format("http://127.0.0.1:8000/proyectos"));
+    Uri uri = new Uri(string.Format($"{ApiConfig.BaseUrl}/proyectos"));
+    
 
     public async Task<List<Proyecto>> GetAllAsync()
     {

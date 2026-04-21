@@ -2,57 +2,190 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GestionTareas.ViewModel"
-             xmlns:m="http://schemas.microsoft.com/dotnet/2021/maui"
              x:Class="GestionTareas.View.SettingsView"
              x:DataType="vm:SettingsViewModel"
-             >
+             x:Name="ThisPage"
+             Title="Ajustes"
+             BackgroundColor="#EEF0F6">
 
-    <Grid ColumnDefinitions="220, *">
-        <VerticalStackLayout Grid.Column="0" BackgroundColor="White" Padding="20, 40, 20, 20" Spacing="15">
-            <Button Text="Ajustes" BackgroundColor="#F3F4F6" TextColor="#7C3AED" FontAttributes="Bold" HorizontalOptions="Fill" />
-        </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="24">
 
-        <ScrollView Grid.Column="1" Padding="40">
-            <VerticalStackLayout Spacing="25">
-                <Label Text="Configuración" FontSize="28" FontAttributes="Bold" />
+            <Border BackgroundColor="#4F46E5"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 0,0,34,34"
+                    Padding="26">
 
-                <Border StrokeShape="RoundRectangle 12" BackgroundColor="White" Padding="25">
-                    <Grid ColumnDefinitions="Auto, *" ColumnSpacing="20">
-                        <Border StrokeShape="RoundRectangle 40" WidthRequest="80" HeightRequest="80" StrokeThickness="0">
-                            <Image Source="profile_placeholder.png" Aspect="AspectFill" />
-                        </Border>
-                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
-                            <Label Text="{Binding UsuarioActual.Nombre, FallbackValue='Cargando...'}" FontSize="18" FontAttributes="Bold" />
-                            <Label Text="{Binding UsuarioActual.Email}" TextColor="Gray" />
-                        </VerticalStackLayout>
-                    </Grid>
-                </Border>
+                <Grid ColumnDefinitions="Auto,*"
+                      ColumnSpacing="18">
 
-                <Border StrokeShape="RoundRectangle 12" BackgroundColor="White" Padding="25">
-                    <VerticalStackLayout Spacing="20">
-                        <Label Text="Apariencia" FontSize="18" FontAttributes="Bold" />
-                        <HorizontalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Themes}">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="m:AppTheme">
-                                    <Border StrokeShape="RoundRectangle 8" Padding="15" BackgroundColor="#F9FAFB" WidthRequest="120">
-                                        <Border.GestureRecognizers>
-                                            <TapGestureRecognizer 
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SettingsViewModel}}, Path=SaveSettingsCommand}"
-                                                CommandParameter="{Binding .}" />
-                                        </Border.GestureRecognizers>
-                                        <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
-                                            <Ellipse WidthRequest="30" HeightRequest="30" Fill="#7C3AED"/>
-                                            <Label Text="{Binding .}" HorizontalOptions="Center" FontSize="12" />
-                                        </VerticalStackLayout>
-                                    </Border>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </HorizontalStackLayout>
+                    <Border WidthRequest="74"
+                            HeightRequest="74"
+                            Stroke="#E9E7FF"
+                            StrokeThickness="2"
+                            StrokeShape="RoundRectangle 37"
+                            BackgroundColor="#635BFF"
+                            VerticalOptions="Center">
+
+                        <Grid>
+                            <Label Text="⚙"
+                                   FontSize="28"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   TextColor="White" />
+                        </Grid>
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1"
+                                         VerticalOptions="Center"
+                                         Spacing="4">
+
+                        <Label Text="Ajustes"
+                               FontSize="30"
+                               FontAttributes="Bold"
+                               TextColor="White" />
+
+                        <Label Text="Configura tu perfil y la apariencia de la aplicación"
+                               FontSize="15"
+                               TextColor="#E9E7FF" />
                     </VerticalStackLayout>
-                </Border>
+                </Grid>
+            </Border>
 
-                <Button Text="Cerrar Sesión" TextColor="#DC2626" BackgroundColor="Transparent" HorizontalOptions="Start" FontAttributes="Bold" />
-            </VerticalStackLayout>
-        </ScrollView>
-    </Grid>
+            <Label Text="Configuración general"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="#6D28D9" />
+
+            <Border BackgroundColor="White"
+                    Stroke="#E5E7EB"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 24"
+                    Padding="24">
+
+                <Grid ColumnDefinitions="Auto,*"
+                      ColumnSpacing="18">
+
+                    <Border WidthRequest="72"
+                            HeightRequest="72"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 36"
+                            BackgroundColor="#DDD6FE"
+                            VerticalOptions="Center">
+
+                        <Image Source="profile_placeholder.png"
+                               Aspect="AspectFill" />
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1"
+                                         VerticalOptions="Center"
+                                         Spacing="6">
+
+                        <Label Text="Perfil"
+                               FontSize="14"
+                               TextColor="#6B7280" />
+
+                        <Label Text="{Binding UsuarioActual.Nombre, FallbackValue='Cargando usuario...'}"
+                               FontSize="22"
+                               FontAttributes="Bold"
+                               TextColor="#1F2937" />
+
+                        <Label Text="{Binding UsuarioActual.Email}"
+                               FontSize="14"
+                               TextColor="#6B7280" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <Border BackgroundColor="White"
+                    Stroke="#E5E7EB"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 24"
+                    Padding="24">
+
+                <VerticalStackLayout Spacing="20">
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Apariencia"
+                               FontSize="22"
+                               FontAttributes="Bold"
+                               TextColor="#1F2937" />
+
+                        <Label Text="Selecciona el tema visual de la aplicación"
+                               FontSize="14"
+                               TextColor="#6B7280" />
+                    </VerticalStackLayout>
+
+                    <HorizontalStackLayout Spacing="16"
+                                           BindableLayout.ItemsSource="{Binding Themes}">
+
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="{x:Null}">
+                                <Border WidthRequest="140"
+                                        Padding="18"
+                                        BackgroundColor="#F8FAFC"
+                                        Stroke="#D1D5DB"
+                                        StrokeThickness="1.2"
+                                        StrokeShape="RoundRectangle 18">
+
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={x:Reference ThisPage}, Path=BindingContext.SaveSettingsCommand}"
+                                            CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+
+                                    <VerticalStackLayout Spacing="12"
+                                                         HorizontalOptions="Center"
+                                                         VerticalOptions="Center">
+
+                                        <Border WidthRequest="44"
+                                                HeightRequest="44"
+                                                BackgroundColor="#7C3AED"
+                                                StrokeThickness="0"
+                                                StrokeShape="RoundRectangle 22"
+                                                HorizontalOptions="Center" />
+
+                                        <Label Text="{Binding .}"
+                                               FontSize="14"
+                                               FontAttributes="Bold"
+                                               HorizontalOptions="Center"
+                                               TextColor="#374151" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border BackgroundColor="White"
+                    Stroke="#FECACA"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 24"
+                    Padding="24">
+
+                <VerticalStackLayout Spacing="14">
+
+                    <Label Text="Sesión"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           TextColor="#1F2937" />
+
+                    <Label Text="Cierra tu sesión actual de forma segura."
+                           FontSize="14"
+                           TextColor="#6B7280" />
+
+                    <Button Text="Cerrar sesión"
+                            BackgroundColor="#DC2626"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            CornerRadius="16"
+                            HeightRequest="50"
+                            WidthRequest="180"
+                            HorizontalOptions="Start" />
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

@@ -9,7 +9,7 @@ public class TareaService : IRestService<Tarea>
     HttpClient _client = new();
     JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, };
 
-    Uri uri = new Uri(string.Format("http://127.0.0.1:8000/tareas"));
+    Uri uri = new Uri(string.Format($"{ApiConfig.BaseUrl}/tareas"));
 
     public async Task<List<Tarea>> GetAllAsync()
     {
