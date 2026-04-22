@@ -31,4 +31,9 @@ public class TareaService : IRestService<Tarea>
 
         return items;
     }
+    public Task<bool> DeleteAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
 }

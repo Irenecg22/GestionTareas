@@ -10,7 +10,7 @@
         <VerticalStackLayout Padding="18"
                              Spacing="18">
 
-            <!-- CABECERA -->
+            
             <Border BackgroundColor="#4F46E5"
                     StrokeThickness="0"
                     StrokeShape="RoundRectangle 0,0,28,28"
@@ -50,6 +50,7 @@
                     </Grid>
 
                     <Button Text="+ Nuevo Proyecto"
+                            Clicked="OnNuevoProyectoClicked"
                             BackgroundColor="#7C3AED"
                             TextColor="White"
                             FontAttributes="Bold"
@@ -58,7 +59,7 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- PANEL RESUMEN -->
+           
             <Label Text="Proyectos"
                    FontSize="20"
                    FontAttributes="Bold"
@@ -127,7 +128,7 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- TÍTULO SECCIÓN -->
+           
             <VerticalStackLayout Spacing="4">
                 <Label Text="Panel de Proyectos"
                        FontSize="20"
@@ -138,7 +139,7 @@
                        TextColor="#6B7280" />
             </VerticalStackLayout>
 
-            <!-- LISTA -->
+           
             <CollectionView ItemsSource="{Binding Proyectos}"
                             SelectionMode="None">
                 <CollectionView.ItemsLayout>
@@ -225,16 +226,31 @@
                                         </BindableLayout.ItemTemplate>
                                     </FlexLayout>
                                 </VerticalStackLayout>
+                                <Grid ColumnDefinitions="*,Auto"
+                                            ColumnSpacing="10">
 
-                                <Button Text="Detalles"
-                                        Command="{Binding BindingContext.VerDetallesCommand, Source={x:Reference ProyectoPage}}"
-                                        CommandParameter="{Binding .}"
-                                        BackgroundColor="#F5F3FF"
-                                        TextColor="#7C3AED"
-                                        FontAttributes="Bold"
-                                        CornerRadius="12"
-                                        HeightRequest="44"
-                                        HorizontalOptions="End" />
+                                    <Button Grid.Column="0"
+                                            Text="Eliminar"
+                                            Command="{Binding BindingContext.EliminarProyectoCommand, Source={x:Reference ProyectoPage}}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="#FEF2F2"
+                                            TextColor="#DC2626"
+                                            FontAttributes="Bold"
+                                            CornerRadius="12"
+                                            HeightRequest="44"
+                                            HorizontalOptions="Start" />
+
+                                    <Button Grid.Column="1"
+                                            Text="Detalles"
+                                            Command="{Binding BindingContext.VerDetallesCommand, Source={x:Reference ProyectoPage}}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="#F5F3FF"
+                                            TextColor="#7C3AED"
+                                            FontAttributes="Bold"
+                                            CornerRadius="12"
+                                            HeightRequest="44" />
+
+                                </Grid>
                             </VerticalStackLayout>
                         </Border>
                     </DataTemplate>

@@ -41,6 +41,8 @@ namespace GestionTareas
             builder.Services.AddTransient<SettingsView>();
             builder.Services.AddTransient<ProyectoDetalleView>();
             builder.Services.AddTransient<PanelPrincipal>();
+            builder.Services.AddTransient<CrearProyectoViewModel>();
+            builder.Services.AddTransient<CrearProyectoView>();
 
             return builder.Build();
         }
