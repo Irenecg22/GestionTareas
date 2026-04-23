@@ -2,23 +2,24 @@
 using CommunityToolkit.Mvvm.Input;
 using GestionTareas.Model;
 using GestionTareas.Services;
-using GestionTareas.View; // Asegúrate de importar las vistas
 using System.Collections.ObjectModel;
 
 namespace GestionTareas.ViewModel;
 
-// Recibe el ProyectoId desde la lista de proyectos
 [QueryProperty(nameof(ProyectoId), "ProyectoId")]
 public partial class TareaViewModel : ObservableObject
 {
     private readonly IRestService<Tarea> _tareaService;
 
-    // Esta es la propiedad que le faltaba a tu código
     [ObservableProperty]
     private int proyectoId;
 
     [ObservableProperty]
     private ObservableCollection<Tarea> tareas;
+
+    public List<Tarea> TareasPendientes => Tareas?.Where(t => t.Estado == "Pendiente").ToList() ?? new();
+    public List<Tarea> TareasEnProgreso => Tareas?.Where(t => t.Estado == "En Progreso" || t.Estado == "Doing").ToList() ?? new();
+    public List<Tarea> TareasCompletadas => Tareas?.Where(t => t.Estado == "Completada" || t.Estado == "Done").ToList() ?? new();
 
     [ObservableProperty]
     private Tarea tareaSeleccionada;
@@ -31,8 +32,6 @@ public partial class TareaViewModel : ObservableObject
         _tareaService = tareaService;
         VerDetallesCommand = new RelayCommand<Tarea>(VerDetalles);
         LoadDataCommand = new AsyncRelayCommand(LoadData);
-
-        // Inicializamos la colección
         Tareas = new ObservableCollection<Tarea>();
     }
 
@@ -40,7 +39,6 @@ public partial class TareaViewModel : ObservableObject
     {
         try
         {
-            // Aquí podrías filtrar por ProyectoId si tu API lo permite
             var lista = await _tareaService.GetAllAsync();
 
             if (lista != null)
@@ -48,6 +46,9 @@ public partial class TareaViewModel : ObservableObject
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
                     Tareas = new ObservableCollection<Tarea>(lista);
+                    OnPropertyChanged(nameof(TareasPendientes));
+                    OnPropertyChanged(nameof(TareasEnProgreso));
+                    OnPropertyChanged(nameof(TareasCompletadas));
                 });
             }
         }
@@ -60,12 +61,6 @@ public partial class TareaViewModel : ObservableObject
     private async void VerDetalles(Tarea tarea)
     {
         if (tarea == null) return;
-
-        await Shell.Current.GoToAsync(
-            "tareaDetalle",
-            new ShellNavigationQueryParameters
-            {
-                { "Tarea", tarea }
-            });
+        await Shell.Current.GoToAsync("tareaDetalle", new Dictionary<string, object> { { "Tarea", tarea } });
     }
 }

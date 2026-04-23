@@ -9,246 +9,87 @@
              Title="Tareas"
              BackgroundColor="#EEF0F6">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="16" Spacing="18">
+    <Grid RowDefinitions="Auto, Auto, *">
 
-            <Border BackgroundColor="#4F46E5"
-                    StrokeThickness="0"
-                    StrokeShape="RoundRectangle 0,0,32,32"
-                    Padding="20">
-
-                <VerticalStackLayout Spacing="18">
-
-                    <HorizontalStackLayout Spacing="14">
-                        <Border WidthRequest="68"
-                                HeightRequest="68"
-                                Stroke="#E9E7FF"
-                                StrokeThickness="2"
-                                StrokeShape="RoundRectangle 34"
-                                BackgroundColor="#635BFF">
-
-                            <Grid>
-                                <Label Text="✓"
-                                       FontSize="30"
-                                       HorizontalOptions="Center"
-                                       VerticalOptions="Center"
-                                       TextColor="White" />
-                            </Grid>
-                        </Border>
-
-                        <VerticalStackLayout VerticalOptions="Center"
-                                             Spacing="4"
-                                             HorizontalOptions="FillAndExpand">
-
-                            <Label Text="Mis Tareas"
-                                   FontSize="26"
-                                   FontAttributes="Bold"
-                                   TextColor="White"
-                                   LineBreakMode="WordWrap" />
-
-                            <Label Text="Organiza tu trabajo diario y revisa el estado de cada tarea"
-                                   FontSize="15"
-                                   TextColor="#E9E7FF"
-                                   LineBreakMode="WordWrap" />
-                        </VerticalStackLayout>
-                    </HorizontalStackLayout>
-
-                    <Button Text="+ Nueva tarea"
-                            BackgroundColor="#9333EA"
-                            Clicked="OnNuevaTareaClicked"
-                            TextColor="White"
-                            FontAttributes="Bold"
-                            CornerRadius="18"
-                            HeightRequest="50"
-                            HorizontalOptions="Fill" />
-                </VerticalStackLayout>
-            </Border>
-
-            <Label Text="Tablero de tareas"
-                   FontSize="20"
-                   FontAttributes="Bold"
-                   TextColor="#6D28D9" />
-
-            <Border BackgroundColor="#F3F0FF"
-                    StrokeThickness="0"
-                    StrokeShape="RoundRectangle 22"
-                    Padding="18">
-
-                <Grid ColumnDefinitions="*,Auto"
-                      RowDefinitions="Auto,Auto"
-                      ColumnSpacing="12"
-                      RowSpacing="6">
-
-                    <Label Text="Vista general"
-                           FontSize="16"
-                           FontAttributes="Bold"
-                           TextColor="#1F2937" />
-
-                    <Label Grid.Column="1"
-                           Grid.RowSpan="2"
-                           Text="{Binding Tareas.Count}"
-                           FontSize="20"
-                           FontAttributes="Bold"
-                           TextColor="#6D28D9"
-                           VerticalOptions="Center"
-                           HorizontalTextAlignment="End" />
-
-                    <Label Grid.Row="1"
-                           Text="Consulta rápidamente el estado de tus tareas"
-                           FontSize="13"
-                           TextColor="#6B7280"
-                           LineBreakMode="WordWrap" />
-                </Grid>
-            </Border>
-
+        <Border Grid.Row="0" 
+                BackgroundColor="#4F46E5"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 0,0,32,32"
+                Padding="20,15">
             <VerticalStackLayout Spacing="10">
+                <HorizontalStackLayout Spacing="14">
+                    <Border WidthRequest="50" HeightRequest="50" StrokeThickness="0" StrokeShape="RoundRectangle 25" BackgroundColor="#635BFF">
+                        <Label Text="✓" FontSize="24" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" />
+                    </Border>
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="Mis Tareas" FontSize="22" FontAttributes="Bold" TextColor="White" />
+                        <Label Text="Organiza tu trabajo diario" FontSize="12" TextColor="#E9E7FF" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+                <Button Text="+ Nueva tarea" BackgroundColor="#9333EA" Clicked="OnNuevaTareaClicked"
+                        TextColor="White" FontAttributes="Bold" CornerRadius="12" HeightRequest="40" />
+            </VerticalStackLayout>
+        </Border>
 
-                <Border BackgroundColor="#E5E7EB"
-                        Padding="12"
-                        Stroke="#D1D5DB"
-                        StrokeThickness="1"
-                        StrokeShape="RoundRectangle 18">
+        <Border Grid.Row="1" Margin="16,10" BackgroundColor="#F3F0FF" StrokeThickness="0" StrokeShape="RoundRectangle 15" Padding="12">
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Text="Tablero General" FontSize="14" FontAttributes="Bold" TextColor="#1F2937" VerticalOptions="Center"/>
+                <Label Grid.Column="1" Text="{Binding Tareas.Count, StringFormat='Total: {0}'}" 
+                       FontAttributes="Bold" TextColor="#6D28D9" VerticalOptions="Center" />
+            </Grid>
+        </Border>
 
-                    <Label Text="To Do"
-                           FontSize="17"
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center"
-                           TextColor="#374151" />
+        <Grid Grid.Row="2" ColumnDefinitions="*,*,*" Padding="10" ColumnSpacing="8">
+
+            <Grid Grid.Column="0" RowDefinitions="Auto, *">
+                <Border Grid.Row="0" BackgroundColor="#E5E7EB" Padding="5" StrokeShape="RoundRectangle 10">
+                    <Label Text="To Do" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#374151" />
                 </Border>
-
-                <CollectionView ItemsSource="{Binding Tareas}"
-                                SelectionMode="None"
-                                ItemsLayout="VerticalList"
-                                Margin="0"
-                                BackgroundColor="Transparent">
-
+                <CollectionView Grid.Row="1" ItemsSource="{Binding TareasPendientes}" Margin="0,5">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Tarea">
-
-                            <Border BackgroundColor="White"
-                                    Stroke="#E5E7EB"
-                                    StrokeThickness="1"
-                                    StrokeShape="RoundRectangle 18"
-                                    Padding="16">
-
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer
-                                        Command="{Binding Source={x:Reference ThisPage}, Path=BindingContext.VerDetallesCommand}"
-                                        CommandParameter="{Binding .}" />
-                                </Border.GestureRecognizers>
-
-                                <VerticalStackLayout Spacing="10">
-
-                                    <Label Text="{Binding Titulo}"
-                                           FontSize="18"
-                                           FontAttributes="Bold"
-                                           TextColor="#1F2937" />
-
-                                    <Border BackgroundColor="#FEE2E2"
-                                            StrokeThickness="0"
-                                            StrokeShape="RoundRectangle 10"
-                                            HorizontalOptions="Start"
-                                            Padding="10,4">
-
-                                        <Label Text="{Binding Prioridad}"
-                                               FontSize="11"
-                                               FontAttributes="Bold"
-                                               TextColor="#B91C1C" />
-                                    </Border>
-
-                                    <Label Text="{Binding Descripcion}"
-                                           FontSize="13"
-                                           TextColor="#6B7280"
-                                           LineBreakMode="TailTruncation"
-                                           MaxLines="2" />
-
-                                    <Grid ColumnDefinitions="*,Auto">
-
-                                        <Label Text="{Binding UsuarioAsignado.Nombre, TargetNullValue='Sin asignar'}"
-                                               FontSize="12"
-                                               TextColor="#6B7280" />
-
-                                        <Label Grid.Column="1"
-                                               Text="Ver detalle"
-                                               FontSize="12"
-                                               FontAttributes="Bold"
-                                               TextColor="#7C3AED" />
-                                    </Grid>
-
+                            <Border Margin="0,0,0,8" Padding="8" BackgroundColor="White" StrokeShape="RoundRectangle 10">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding Titulo}" FontSize="12" FontAttributes="Bold" MaxLines="1" />
+                                    <Label Text="{Binding Descripcion}" FontSize="10" TextColor="Gray" MaxLines="2" />
                                 </VerticalStackLayout>
                             </Border>
-
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-
-                    <CollectionView.EmptyView>
-                        <Label Text="No hay tareas pendientes"
-                               TextColor="#6B7280"
-                               HorizontalOptions="Center" />
-                    </CollectionView.EmptyView>
-
                 </CollectionView>
+            </Grid>
 
-            </VerticalStackLayout>
-
-            <VerticalStackLayout Spacing="10">
-
-                <Border BackgroundColor="#FEF3C7"
-                        Padding="12"
-                        Stroke="#E5C76B"
-                        StrokeThickness="1"
-                        StrokeShape="RoundRectangle 18">
-
-                    <Label Text="In Progress"
-                           FontSize="17"
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center"
-                           TextColor="#92400E" />
+            <Grid Grid.Column="1" RowDefinitions="Auto, *">
+                <Border Grid.Row="0" BackgroundColor="#FEF3C7" Padding="5" StrokeShape="RoundRectangle 10">
+                    <Label Text="Doing" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#92400E" />
                 </Border>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding TareasEnProgreso}" Margin="0,5">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Tarea">
+                            <Border Margin="0,0,0,8" Padding="8" BackgroundColor="White" StrokeShape="RoundRectangle 10">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding Titulo}" FontSize="12" FontAttributes="Bold" MaxLines="1" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
 
-                <Border BackgroundColor="White"
-                        Stroke="#E5E7EB"
-                        StrokeThickness="1"
-                        StrokeShape="RoundRectangle 18"
-                        Padding="18">
-
-                    <Label Text="Sin tareas en curso"
-                           FontSize="14"
-                           FontAttributes="Bold"
-                           TextColor="#374151"
-                           HorizontalTextAlignment="Center" />
+            <Grid Grid.Column="2" RowDefinitions="Auto, *">
+                <Border Grid.Row="0" BackgroundColor="#D1FAE5" Padding="5" StrokeShape="RoundRectangle 10">
+                    <Label Text="Done" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#065F46" />
                 </Border>
-            </VerticalStackLayout>
-
-            <VerticalStackLayout Spacing="10">
-
-                <Border BackgroundColor="#D1FAE5"
-                        Padding="12"
-                        Stroke="#86D3B1"
-                        StrokeThickness="1"
-                        StrokeShape="RoundRectangle 18">
-
-                    <Label Text="Done"
-                           FontSize="17"
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center"
-                           TextColor="#065F46" />
-                </Border>
-
-                <Border BackgroundColor="White"
-                        Stroke="#E5E7EB"
-                        StrokeThickness="1"
-                        StrokeShape="RoundRectangle 18"
-                        Padding="18">
-
-                    <Label Text="Sin tareas finalizadas"
-                           FontSize="14"
-                           FontAttributes="Bold"
-                           TextColor="#374151"
-                           HorizontalTextAlignment="Center" />
-                </Border>
-            </VerticalStackLayout>
-
-        </VerticalStackLayout>
-    </ScrollView>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding TareasCompletadas}" Margin="0,5">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Tarea">
+                            <Border Margin="0,0,0,8" Padding="8" BackgroundColor="White" StrokeShape="RoundRectangle 10" Opacity="0.7">
+                                <Label Text="{Binding Titulo}" FontSize="11" TextDecorations="Strikethrough" />
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Grid>
+    </Grid>
 </ContentPage>
