@@ -12,7 +12,6 @@
     <ScrollView>
         <VerticalStackLayout Padding="16" Spacing="18">
 
-            <!-- CABECERA -->
             <Border BackgroundColor="#4F46E5"
                     StrokeThickness="0"
                     StrokeShape="RoundRectangle 0,0,32,32"
@@ -56,6 +55,7 @@
 
                     <Button Text="+ Nueva tarea"
                             BackgroundColor="#9333EA"
+                            Clicked="OnNuevaTareaClicked"
                             TextColor="White"
                             FontAttributes="Bold"
                             CornerRadius="18"
@@ -64,13 +64,11 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- TITULO -->
             <Label Text="Tablero de tareas"
                    FontSize="20"
                    FontAttributes="Bold"
                    TextColor="#6D28D9" />
 
-            <!-- RESUMEN -->
             <Border BackgroundColor="#F3F0FF"
                     StrokeThickness="0"
                     StrokeShape="RoundRectangle 22"
@@ -103,7 +101,6 @@
                 </Grid>
             </Border>
 
-            <!-- TO DO -->
             <VerticalStackLayout Spacing="10">
 
                 <Border BackgroundColor="#E5E7EB"
@@ -119,7 +116,6 @@
                            TextColor="#374151" />
                 </Border>
 
-                <!-- LISTA DE TAREAS -->
                 <CollectionView ItemsSource="{Binding Tareas}"
                                 SelectionMode="None"
                                 ItemsLayout="VerticalList"
@@ -195,7 +191,6 @@
 
             </VerticalStackLayout>
 
-            <!-- IN PROGRESS -->
             <VerticalStackLayout Spacing="10">
 
                 <Border BackgroundColor="#FEF3C7"
@@ -225,7 +220,6 @@
                 </Border>
             </VerticalStackLayout>
 
-            <!-- DONE -->
             <VerticalStackLayout Spacing="10">
 
                 <Border BackgroundColor="#D1FAE5"

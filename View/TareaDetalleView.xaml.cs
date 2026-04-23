@@ -9,4 +9,6 @@ public partial class TareaDetalleView : ContentPage
         InitializeComponent();
         BindingContext = vm;
     }
+
+    
 }

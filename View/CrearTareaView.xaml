@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GestionTareas.ViewModel"
+             x:Class="GestionTareas.View.CrearTareaView"
+             x:DataType="vm:CrearTareaViewModel"
+             Title="Nueva Tarea"
+             BackgroundColor="#F9FAFB">
+
+    <VerticalStackLayout Padding="24" Spacing="20" VerticalOptions="Center">
+
+        <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+            <Label Text="Añadir Tarea" FontSize="26" FontAttributes="Bold" TextColor="#111827" HorizontalTextAlignment="Center"/>
+            <Label Text="Completa los detalles de la asignación" FontSize="14" TextColor="#6B7280" HorizontalTextAlignment="Center"/>
+        </VerticalStackLayout>
+
+        <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="White" Padding="20">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,2" Radius="10" Opacity="0.05" />
+            </Border.Shadow>
+
+            <VerticalStackLayout Spacing="15">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Título" FontSize="13" FontAttributes="Bold" TextColor="#374151" Margin="4,0"/>
+                    <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 12" BackgroundColor="#F3F4F6" Padding="12,2">
+                        <Entry Text="{Binding Titulo}" Placeholder="Ej: Diseño de UI" PlaceholderColor="#9CA3AF" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <Grid ColumnDefinitions="*, *" ColumnSpacing="12">
+                    <VerticalStackLayout Spacing="5" Grid.Column="0">
+                        <Label Text="ID Proyecto" FontSize="13" FontAttributes="Bold" TextColor="#374151" Margin="4,0"/>
+                        <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 12" BackgroundColor="#F3F4F6" Padding="12,2">
+                            <Entry Text="{Binding ProyectoId}" Keyboard="Numeric" HorizontalTextAlignment="Center" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5" Grid.Column="1">
+                        <Label Text="Estado" FontSize="13" FontAttributes="Bold" TextColor="#374151" Margin="4,0"/>
+                        <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 12" BackgroundColor="#F3F4F6" Padding="12,0">
+                            <Picker SelectedItem="{Binding Estado}" Title="Elegir">
+                                <Picker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>Pendiente</x:String>
+                                        <x:String>En Progreso</x:String>
+                                        <x:String>Completada</x:String>
+                                    </x:Array>
+                                </Picker.ItemsSource>
+                            </Picker>
+                        </Border>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Descripción" FontSize="13" FontAttributes="Bold" TextColor="#374151" Margin="4,0"/>
+                    <Border Stroke="#E5E7EB" StrokeShape="RoundRectangle 12" BackgroundColor="#F3F4F6" Padding="12,2">
+                        <Editor Text="{Binding Descripcion}" Placeholder="Breve resumen..." HeightRequest="70" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <Button Text="Guardar Tarea" 
+                        Command="{Binding CrearTareaCommand}"
+                        BackgroundColor="#7C3AED" 
+                        TextColor="White" 
+                        FontAttributes="Bold"
+                        CornerRadius="12" 
+                        HeightRequest="48" 
+                        Margin="0,10,0,0" />
+            </VerticalStackLayout>
+        </Border>
+    </VerticalStackLayout>
+</ContentPage>
