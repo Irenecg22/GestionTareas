@@ -15,7 +15,6 @@ public partial class TareaView : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        // Esto hace que cada vez que vuelvas de "Crear Tarea", la lista se refresque
         if (BindingContext is TareaViewModel vm)
         {
             await vm.LoadDataCommand.ExecuteAsync(null);
