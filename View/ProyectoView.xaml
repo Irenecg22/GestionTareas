@@ -107,7 +107,7 @@
                                         BackgroundColor="{AppThemeBinding Light=#FFF1F2, Dark=#450A0A}" 
                                         TextColor="{AppThemeBinding Light=#E11D48, Dark=#FCA5A5}" 
                                         FontSize="11" HeightRequest="35" CornerRadius="8" />
-
+                                
                                 <Button Grid.Column="1" Text="Detalles"
                                         Command="{Binding BindingContext.VerDetallesCommand, Source={x:Reference ProyectoPage}}"
                                         CommandParameter="{Binding .}"
