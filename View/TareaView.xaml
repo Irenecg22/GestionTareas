@@ -7,7 +7,7 @@
              x:DataType="vm:TareaViewModel"
              x:Name="ThisPage"
              Title="Tareas"
-             BackgroundColor="#EEF0F6">
+             BackgroundColor="{AppThemeBinding Light=#EEF0F6, Dark=#0F0F12}">
 
     <Grid RowDefinitions="Auto, Auto, *">
 
@@ -31,27 +31,35 @@
             </VerticalStackLayout>
         </Border>
 
-        <Border Grid.Row="1" Margin="16,10" BackgroundColor="#F3F0FF" StrokeThickness="0" StrokeShape="RoundRectangle 15" Padding="12">
+        <Border Grid.Row="1" Margin="16,10" 
+                BackgroundColor="{AppThemeBinding Light=#F3F0FF, Dark=#1E1B4B}" 
+                StrokeThickness="0" StrokeShape="RoundRectangle 15" Padding="12">
             <Grid ColumnDefinitions="*,Auto">
-                <Label Text="Tablero General" FontSize="14" FontAttributes="Bold" TextColor="#1F2937" VerticalOptions="Center"/>
+                <Label Text="Tablero General" FontSize="14" FontAttributes="Bold" 
+                       TextColor="{AppThemeBinding Light=#1F2937, Dark=White}" VerticalOptions="Center"/>
                 <Label Grid.Column="1" Text="{Binding Tareas.Count, StringFormat='Total: {0}'}" 
-                       FontAttributes="Bold" TextColor="#6D28D9" VerticalOptions="Center" />
+                       FontAttributes="Bold" TextColor="{AppThemeBinding Light=#6D28D9, Dark=#A78BFA}" VerticalOptions="Center" />
             </Grid>
         </Border>
 
         <Grid Grid.Row="2" ColumnDefinitions="*,*,*" Padding="10" ColumnSpacing="8">
 
             <Grid Grid.Column="0" RowDefinitions="Auto, *">
-                <Border Grid.Row="0" BackgroundColor="#E5E7EB" Padding="5" StrokeShape="RoundRectangle 10">
-                    <Label Text="To Do" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#374151" />
+                <Border Grid.Row="0" BackgroundColor="{AppThemeBinding Light=#E5E7EB, Dark=#27272A}" Padding="5" StrokeShape="RoundRectangle 10">
+                    <Label Text="To Do" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" 
+                           TextColor="{AppThemeBinding Light=#374151, Dark=#D1D5DB}" />
                 </Border>
                 <CollectionView Grid.Row="1" ItemsSource="{Binding TareasPendientes}" Margin="0,5">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Tarea">
-                            <Border Margin="0,0,0,8" Padding="8" BackgroundColor="White" StrokeShape="RoundRectangle 10">
+                            <Border Margin="0,0,0,8" Padding="10" 
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" 
+                                    StrokeShape="RoundRectangle 10" StrokeThickness="0">
                                 <VerticalStackLayout Spacing="4">
-                                    <Label Text="{Binding Titulo}" FontSize="12" FontAttributes="Bold" MaxLines="1" />
-                                    <Label Text="{Binding Descripcion}" FontSize="10" TextColor="Gray" MaxLines="2" />
+                                    <Label Text="{Binding Titulo}" FontSize="12" FontAttributes="Bold" 
+                                           TextColor="{AppThemeBinding Light=Black, Dark=White}" MaxLines="1" />
+                                    <Label Text="{Binding Descripcion}" FontSize="10" 
+                                           TextColor="{AppThemeBinding Light=Gray, Dark=#9CA3AF}" MaxLines="2" />
                                 </VerticalStackLayout>
                             </Border>
                         </DataTemplate>
@@ -60,15 +68,19 @@
             </Grid>
 
             <Grid Grid.Column="1" RowDefinitions="Auto, *">
-                <Border Grid.Row="0" BackgroundColor="#FEF3C7" Padding="5" StrokeShape="RoundRectangle 10">
-                    <Label Text="Doing" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#92400E" />
+                <Border Grid.Row="0" BackgroundColor="{AppThemeBinding Light=#FEF3C7, Dark=#451A03}" Padding="5" StrokeShape="RoundRectangle 10">
+                    <Label Text="Doing" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" 
+                           TextColor="{AppThemeBinding Light=#92400E, Dark=#FDE68A}" />
                 </Border>
                 <CollectionView Grid.Row="1" ItemsSource="{Binding TareasEnProgreso}" Margin="0,5">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Tarea">
-                            <Border Margin="0,0,0,8" Padding="8" BackgroundColor="White" StrokeShape="RoundRectangle 10">
+                            <Border Margin="0,0,0,8" Padding="10" 
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" 
+                                    StrokeShape="RoundRectangle 10" StrokeThickness="0">
                                 <VerticalStackLayout Spacing="4">
-                                    <Label Text="{Binding Titulo}" FontSize="12" FontAttributes="Bold" MaxLines="1" />
+                                    <Label Text="{Binding Titulo}" FontSize="12" FontAttributes="Bold" 
+                                           TextColor="{AppThemeBinding Light=Black, Dark=White}" MaxLines="1" />
                                 </VerticalStackLayout>
                             </Border>
                         </DataTemplate>
@@ -77,14 +89,19 @@
             </Grid>
 
             <Grid Grid.Column="2" RowDefinitions="Auto, *">
-                <Border Grid.Row="0" BackgroundColor="#D1FAE5" Padding="5" StrokeShape="RoundRectangle 10">
-                    <Label Text="Done" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#065F46" />
+                <Border Grid.Row="0" BackgroundColor="{AppThemeBinding Light=#D1FAE5, Dark=#064E3B}" Padding="5" StrokeShape="RoundRectangle 10">
+                    <Label Text="Done" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" 
+                           TextColor="{AppThemeBinding Light=#065F46, Dark=#A7F3D0}" />
                 </Border>
                 <CollectionView Grid.Row="1" ItemsSource="{Binding TareasCompletadas}" Margin="0,5">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Tarea">
-                            <Border Margin="0,0,0,8" Padding="8" BackgroundColor="White" StrokeShape="RoundRectangle 10" Opacity="0.7">
-                                <Label Text="{Binding Titulo}" FontSize="11" TextDecorations="Strikethrough" />
+                            <Border Margin="0,0,0,8" Padding="10" 
+                                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" 
+                                    StrokeShape="RoundRectangle 10" StrokeThickness="0" Opacity="0.7">
+                                <Label Text="{Binding Titulo}" FontSize="11" 
+                                       TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
+                                       TextDecorations="Strikethrough" />
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

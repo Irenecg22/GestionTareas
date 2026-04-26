@@ -3,217 +3,112 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GestionTareas.View.PanelPrincipal"
              Title="Dashboard"
-             BackgroundColor="#F0F2F8">
+             BackgroundColor="{AppThemeBinding Light=#F0F2F8, Dark=#0F0F12}">
 
-    <ScrollView>
-        <VerticalStackLayout Spacing="18">
+    <Grid RowDefinitions="Auto, Auto, *, Auto" Padding="0">
 
-            <!-- CABECERA -->
-            <Border BackgroundColor="#4834D4"
-                    StrokeThickness="0"
-                    StrokeShape="RoundRectangle 0,0,40,40"
-                    Padding="20">
-
-                <HorizontalStackLayout Spacing="16"
-                                       VerticalOptions="Center">
-
-                    <Frame HeightRequest="70"
-                           WidthRequest="70"
-                           CornerRadius="35"
-                           Padding="2"
-                           BackgroundColor="White"
-                           HasShadow="False">
-
-                        <Frame CornerRadius="33"
-                               Padding="0"
-                               IsClippedToBounds="True"
-                               HasShadow="False"
-                               BorderColor="Transparent">
-
-                            <Image Source="https://ui-avatars.com/api/?name={Binding UsuarioLogueado.Nombre}&amp;background=6C5CE7&amp;color=fff"
-                                   Aspect="AspectFill" />
-                        </Frame>
-                    </Frame>
-
-                    <VerticalStackLayout VerticalOptions="Center"
-                                         Spacing="4">
-                        <Label Text="{Binding UsuarioLogueado.Nombre}"
-                               TextColor="White"
-                               FontSize="24"
-                               FontAttributes="Bold" />
-
-                        <HorizontalStackLayout Spacing="6">
-                            <BoxView Color="#686DE0"
-                                     WidthRequest="12"
-                                     HeightRequest="12"
-                                     CornerRadius="6"
-                                     VerticalOptions="Center" />
-                            <Label Text="{Binding UsuarioLogueado.Rol.Nombre}"
-                                   TextColor="#DFF9FB"
-                                   FontSize="14" />
-                        </HorizontalStackLayout>
-                    </VerticalStackLayout>
-                </HorizontalStackLayout>
-            </Border>
-
-            <!-- ESTADÍSTICAS -->
-            <Frame Margin="18,0"
-                   CornerRadius="24"
-                   HasShadow="True"
-                   BorderColor="Transparent"
-                   BackgroundColor="White">
-
-                <VerticalStackLayout Spacing="22">
-                    <Label Text="Estadísticas Base"
-                           FontSize="18"
-                           FontAttributes="Bold"
-                           TextColor="#2D3436" />
-
-                    <Grid ColumnDefinitions="Auto,*"
-                          ColumnSpacing="14">
-                        <Label Text="{Binding TotalProyectos}"
-                               FontSize="42"
-                               FontAttributes="Bold"
-                               TextColor="#4834D4" />
-
-                        <VerticalStackLayout Grid.Column="1"
-                                             VerticalOptions="Center"
-                                             Spacing="2">
-                            <Label Text="Proyectos"
-                                   FontSize="14"
-                                   FontAttributes="Bold"
-                                   TextColor="#636E72" />
-                            <Label Text="Activos ahora"
-                                   FontSize="12"
-                                   TextColor="#B2BEC3" />
-                        </VerticalStackLayout>
-                    </Grid>
-
-                    <BoxView HeightRequest="1"
-                             BackgroundColor="#F1F2F6" />
-
-                    <VerticalStackLayout Spacing="8">
-                        <Grid ColumnDefinitions="*,Auto">
-                            <Label Text="Finalizadas"
-                                   FontSize="13"
-                                   FontAttributes="Bold"
-                                   TextColor="#2D3436" />
-                            <Label Grid.Column="1"
-                                   Text="{Binding PorcentajeGlobal, StringFormat='{0:P0}'}"
-                                   FontSize="13"
-                                   FontAttributes="Bold"
-                                   TextColor="#218C74" />
-                        </Grid>
-
-                        <ProgressBar Progress="{Binding PorcentajeGlobal}"
-                                     ProgressColor="#26DE81"
-                                     HeightRequest="10"
-                                     ScaleY="1.3" />
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout Spacing="8">
-                        <Grid ColumnDefinitions="*,Auto">
-                            <Label Text="En curso"
-                                   FontSize="13"
-                                   FontAttributes="Bold"
-                                   TextColor="#2D3436" />
-                            <Label Grid.Column="1"
-                                   Text="{Binding PorcentajeEnProgreso, StringFormat='{0:P0}'}"
-                                   FontSize="13"
-                                   FontAttributes="Bold"
-                                   TextColor="#D68910" />
-                        </Grid>
-
-                        <ProgressBar Progress="{Binding PorcentajeEnProgreso}"
-                                     ProgressColor="#FED330"
-                                     HeightRequest="10"
-                                     ScaleY="1.3" />
-                    </VerticalStackLayout>
+        <Border Grid.Row="0" BackgroundColor="#4834D4" StrokeThickness="0" StrokeShape="RoundRectangle 0,0,40,40" Padding="25,30">
+            <Grid ColumnDefinitions="*, Auto">
+                <VerticalStackLayout VerticalOptions="Center" Spacing="4">
+                    <Label Text="{Binding FechaActual}" TextColor="#DFF9FB" FontSize="11" FontAttributes="Bold" TextTransform="Uppercase" Opacity="0.8"/>
+                    <Label Text="{Binding UsuarioLogueado.Nombre, StringFormat='¡Hola, {0}! 👋'}" TextColor="White" FontSize="26" FontAttributes="Bold" />
+                    <Label Text="Panel de control en tiempo real" TextColor="#DFF9FB" FontSize="13" />
                 </VerticalStackLayout>
-            </Frame>
+                <Border Grid.Column="1" StrokeShape="RoundRectangle 25" HeightRequest="50" WidthRequest="50" BackgroundColor="#30FFFFFF" StrokeThickness="0">
+                    <Label Text="🔔" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20"/>
+                </Border>
+            </Grid>
+        </Border>
 
-            <!-- TÍTULO -->
-            <VerticalStackLayout Margin="18,0,18,0"
-                                 Spacing="4">
-                <Label Text="Panel de Proyectos"
-                       FontSize="24"
-                       FontAttributes="Bold"
-                       TextColor="#2D3436" />
-                <Label Text="Consulta, organiza y accede al detalle de cada proyecto"
-                       FontSize="13"
-                       TextColor="#6B7280" />
-            </VerticalStackLayout>
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*" Padding="15,15" ColumnSpacing="6">
+            <Border Grid.Column="0" BackgroundColor="#E0E7FF" StrokeShape="RoundRectangle 12" Padding="8" StrokeThickness="0">
+                <VerticalStackLayout HorizontalOptions="Center">
+                    <Label Text="{Binding TotalProyectos}" FontSize="16" FontAttributes="Bold" TextColor="#3730A3" HorizontalOptions="Center"/>
+                    <Label Text="PROYECTOS" FontSize="8" TextColor="#3730A3" HorizontalOptions="Center" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Border>
+            <Border Grid.Column="3" BackgroundColor="#F3E8FF" StrokeShape="RoundRectangle 12" Padding="8" StrokeThickness="0">
+                <VerticalStackLayout HorizontalOptions="Center">
+                    <Label Text="{Binding TotalTareas}" FontSize="16" FontAttributes="Bold" TextColor="#6B21A8" HorizontalOptions="Center"/>
+                    <Label Text="TAREAS" FontSize="8" TextColor="#6B21A8" HorizontalOptions="Center" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Border>
+            <Border Grid.Column="1" BackgroundColor="#FEE2E2" StrokeShape="RoundRectangle 12" Padding="8" StrokeThickness="0">
+                <VerticalStackLayout HorizontalOptions="Center">
+                    <Label Text="{Binding TareasPendientesCount}" FontSize="16" FontAttributes="Bold" TextColor="#991B1B" HorizontalOptions="Center"/>
+                    <Label Text="TO DO" FontSize="8" TextColor="#991B1B" HorizontalOptions="Center" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Border>
+            <Border Grid.Column="2" BackgroundColor="#FEF3C7" StrokeShape="RoundRectangle 12" Padding="8" StrokeThickness="0">
+                <VerticalStackLayout HorizontalOptions="Center">
+                    <Label Text="{Binding TareasEnProgresoCount}" FontSize="16" FontAttributes="Bold" TextColor="#92400E" HorizontalOptions="Center"/>
+                    <Label Text="DOING" FontSize="8" TextColor="#92400E" HorizontalOptions="Center" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Border>
+            
+            <Border Grid.Column="4" BackgroundColor="#D1FAE5" StrokeShape="RoundRectangle 12" Padding="8" StrokeThickness="0">
+                <VerticalStackLayout HorizontalOptions="Center">
+                    <Label Text="{Binding PorcentajeGlobal, StringFormat='{0:P0}'}" FontSize="16" FontAttributes="Bold" TextColor="#065F46" HorizontalOptions="Center"/>
+                    <Label Text="ÉXITO" FontSize="8" TextColor="#065F46" HorizontalOptions="Center" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
 
-            <!-- LISTA PROYECTOS -->
-            <CollectionView ItemsSource="{Binding Proyectos}"
-                            Margin="18,0,18,20"
-                            SelectionMode="None">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical"
-                                       ItemSpacing="16" />
-                </CollectionView.ItemsLayout>
-
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame CornerRadius="24"
-                               HasShadow="True"
-                               BorderColor="Transparent"
-                               Padding="0"
-                               BackgroundColor="White">
-
-                            <VerticalStackLayout Spacing="0">
-                                <BoxView HeightRequest="6"
-                                         Color="#4834D4" />
-
-                                <VerticalStackLayout Padding="18"
-                                                     Spacing="14">
-
-                                    <Label Text="{Binding Nombre}"
-                                           FontSize="18"
-                                           FontAttributes="Bold"
-                                           TextColor="#2D3436" />
-
-                                    <Label Text="{Binding Descripcion}"
-                                           FontSize="14"
-                                           TextColor="#636E72"
-                                           LineBreakMode="WordWrap"
-                                           MaxLines="3" />
-
-                                    <Grid ColumnDefinitions="*,Auto"
-                                          Margin="0,10,0,0">
-                                        <HorizontalStackLayout Spacing="6">
-                                            <Label Text="{Binding Tareas.Count}"
-                                                   FontAttributes="Bold"
-                                                   FontSize="15"
-                                                   TextColor="#4834D4" />
-                                            <Label Text="Tareas"
-                                                   FontSize="15"
-                                                   TextColor="#636E72" />
-                                        </HorizontalStackLayout>
-
-                                        <Label Grid.Column="1"
-                                               Text="{Binding ProgresoCalculado, StringFormat='{0:P0}'}"
-                                               FontSize="13"
-                                               FontAttributes="Bold"
-                                               TextColor="#4834D4" />
-                                    </Grid>
-
-                                    <ProgressBar Progress="{Binding ProgresoCalculado}"
-                                                 ProgressColor="#4834D4"
-                                                 HeightRequest="8"
-                                                 ScaleY="1.2" />
-
-                                    <Label Text="Actualizado recientemente"
-                                           FontSize="11"
-                                           TextColor="#A4B0BE"
-                                           Margin="0,8,0,0" />
+        <Grid Grid.Row="2" ColumnDefinitions="*, *" ColumnSpacing="15" Padding="20,0,20,15">
+            <Grid RowDefinitions="Auto, *">
+                <Label Text="Proyectos Activos" FontAttributes="Bold" FontSize="15" Margin="5,0,0,10" TextColor="{AppThemeBinding Light=#2D3436, Dark=White}"/>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding Proyectos}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,0,0,12" Padding="15" StrokeShape="RoundRectangle 18" BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" StrokeThickness="0">
+                                <VerticalStackLayout Spacing="6">
+                                    <Label Text="{Binding Nombre}" FontAttributes="Bold" FontSize="14" TextColor="#4834D4"/>
+                                    <Label Text="{Binding Descripcion}" FontSize="10" TextColor="Gray" MaxLines="2" />
+                                    <ProgressBar Progress="{Binding ProgresoCalculado}" ProgressColor="#4834D4" HeightRequest="4"/>
                                 </VerticalStackLayout>
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
 
-        </VerticalStackLayout>
-    </ScrollView>
+            <Grid Grid.Column="1" RowDefinitions="Auto, *">
+                <Label Text="Mis Tareas" FontAttributes="Bold" FontSize="15" Margin="5,0,0,10" TextColor="{AppThemeBinding Light=#2D3436, Dark=White}"/>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding TodasLasTareas}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,0,0,10" Padding="12" StrokeShape="RoundRectangle 15" BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" StrokeThickness="0">
+                                <Grid ColumnDefinitions="4, *">
+                                    <BoxView BackgroundColor="#4834D4" CornerRadius="2"/>
+                                    <VerticalStackLayout Grid.Column="1" Margin="10,0,0,0">
+                                        <Label Text="{Binding Titulo}" FontSize="12" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#2D3436, Dark=White}"/>
+                                        <Label Text="{Binding Estado}" FontSize="9" FontAttributes="Bold" TextColor="#9333EA" TextTransform="Uppercase"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Grid>
+
+        <Border Grid.Row="3" Margin="20,0,20,20" Padding="15" BackgroundColor="#1E1E24" StrokeShape="RoundRectangle 20">
+            <Grid ColumnDefinitions="*, Auto">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="ESTADÍSTICAS DEL SISTEMA" TextColor="#A29BFE" FontSize="9" FontAttributes="Bold" CharacterSpacing="1"/>
+                    <Label Text="{Binding TareasFinalizadasCount, StringFormat='Tareas finalizadas acumuladas: {0}'}" 
+                       TextColor="White" FontSize="13" FontAttributes="Bold"/>
+                    <Label Text="Pulsa el botón para ver el desglose detallado por proyecto." TextColor="#B2BEC3" FontSize="11"/>
+                </VerticalStackLayout>
+                <Button Grid.Column="1" 
+                    Text="Ver Reporte" 
+                    Command="{Binding VerReporteCommand}"
+                    FontSize="10" 
+                    BackgroundColor="#4834D4" 
+                    HeightRequest="35" 
+                    CornerRadius="10"/>
+            </Grid>
+        </Border>
+
+    </Grid>
 </ContentPage>

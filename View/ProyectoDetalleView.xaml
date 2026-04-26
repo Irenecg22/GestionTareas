@@ -1,17 +1,96 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GestionTareas.ViewModel"
+             xmlns:model="clr-namespace:GestionTareas.Model"
              x:Class="GestionTareas.View.ProyectoDetalleView"
-             Title="ProyectoDetalleView">
+             x:Name="thisPage"
+             Title="Detalles del Proyecto"
+             BackgroundColor="{AppThemeBinding Light=#F8FAFC, Dark=#0F0F12}">
 
-    <VerticalStackLayout Padding="20" Spacing="15">
+    <Grid RowDefinitions="Auto, *">
 
-            <Label Text="{Binding Proyecto.Nombre}"
-               FontSize="22"
-               FontAttributes="Bold"/>
+        <Border Grid.Row="0" StrokeThickness="0" StrokeShape="RoundRectangle 0,0,30,30" HeightRequest="180">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#4F46E5" Offset="0.1" />
+                    <GradientStop Color="#7C3AED" Offset="1.0" />
+                </LinearGradientBrush>
+            </Border.Background>
 
-            <Label Text="{Binding Proyecto.Descripcion}"
-               FontSize="16"/>
+            <VerticalStackLayout Padding="25" VerticalOptions="Center" Spacing="5">
+                <Label Text="{Binding Proyecto.Nombre}" 
+                       FontSize="26" FontAttributes="Bold" TextColor="White" />
 
-        </VerticalStackLayout>
-    </ContentPage>
+                <HorizontalStackLayout Spacing="10">
+                    <Border BackgroundColor="White" Opacity="0.2" Padding="8,2" StrokeShape="RoundRectangle 6">
+                        <Label Text="{Binding Proyecto.Id, StringFormat='ID: {0}'}" TextColor="White" FontSize="11" FontAttributes="Bold"/>
+                    </Border>
+                    <Label Text="{Binding Proyecto.FechaCreacion, StringFormat='Creado el {0}'}" 
+                           TextColor="#E0E7FF" FontSize="12" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+
+        <ScrollView Grid.Row="1" Padding="20">
+            <VerticalStackLayout Spacing="20">
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="DESCRIPCIÓN" FontSize="12" FontAttributes="Bold" TextColor="#94A3B8" CharacterSpacing="1"/>
+                    <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" 
+                            Padding="15" StrokeShape="RoundRectangle 12" StrokeThickness="0">
+                        <Label Text="{Binding Proyecto.Descripcion}" 
+                               TextColor="{AppThemeBinding Light=#334155, Dark=#CBD5E1}" FontSize="15" LineHeight="1.4"/>
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="12">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Label Text="TAREAS DEL PROYECTO" FontSize="12" FontAttributes="Bold" TextColor="#94A3B8" CharacterSpacing="1"/>
+                        <Label Grid.Column="1" Text="{Binding Proyecto.Tareas.Count, StringFormat='{0} total'}" 
+                               FontSize="11" TextColor="#7C3AED" FontAttributes="Bold"/>
+                    </Grid>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Proyecto.Tareas}" Spacing="10">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="model:Tarea">
+                                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" 
+                                        StrokeShape="RoundRectangle 15" StrokeThickness="0" Padding="15">
+                                    <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="15">
+
+                                        <BoxView WidthRequest="4" CornerRadius="2" VerticalOptions="Fill">
+                                            <BoxView.Triggers>
+                                                <DataTrigger TargetType="BoxView" Binding="{Binding Estado}" Value="Completada">
+                                                    <Setter Property="Color" Value="#10B981"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="BoxView" Binding="{Binding Estado}" Value="Progreso">
+                                                    <Setter Property="Color" Value="#F59E0B"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="BoxView" Binding="{Binding Estado}" Value="Pendiente">
+                                                    <Setter Property="Color" Value="#64748B"/>
+                                                </DataTrigger>
+                                            </BoxView.Triggers>
+                                        </BoxView>
+
+                                        <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                            <Label Text="{Binding Titulo}" FontAttributes="Bold" 
+                                                   TextColor="{AppThemeBinding Light=#1E293B, Dark=White}" FontSize="14"/>
+                                            <Label Text="{Binding Descripcion}" TextColor="#94A3B8" FontSize="12" MaxLines="1"/>
+                                        </VerticalStackLayout>
+
+                                        <Border Grid.Column="2" Padding="8,4" StrokeShape="RoundRectangle 8" StrokeThickness="0" VerticalOptions="Center"
+                                                BackgroundColor="{AppThemeBinding Light=#F1F5F9, Dark=#2D2D35}">
+                                            <Label Text="{Binding Estado}" FontSize="10" FontAttributes="Bold"
+                                                   TextColor="{AppThemeBinding Light=#475569, Dark=#94A3B8}"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
