@@ -3,19 +3,18 @@
     x:Class="GestionTareas.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:GestionTareas"
     xmlns:v="clr-namespace:GestionTareas.View"
     Title="GestionTareas">
 
-    <ShellContent
-Title="Dashboard"
-ContentTemplate="{DataTemplate v:PanelPrincipal}"
-Route="dashboardPage" />
-    
-    <ShellContent
-Title="Proyectos"
-ContentTemplate="{DataTemplate v:ProyectoView}"
-Route="proyectosPage" />
+    <ShellContent 
+        Title="Dashboard" 
+        ContentTemplate="{DataTemplate v:PanelPrincipal}" 
+        Route="dashboardPage" />
+
+    <ShellContent 
+        Title="Proyectos" 
+        ContentTemplate="{DataTemplate v:ProyectoView}" 
+        Route="proyectosPage" />
 
     <ShellContent
         Title="Tareas"
@@ -23,9 +22,12 @@ Route="proyectosPage" />
         Route="tareasPage" />
 
     <ShellContent
-    Title="Ajustes"
-    ContentTemplate="{DataTemplate v:SettingsView}"
-    Route="settingsPage" />
+        Title="Ajustes"
+        ContentTemplate="{DataTemplate v:SettingsView}"
+        Route="settingsPage" />
 
-
+    <ShellContent 
+        Title="Registro" 
+        ContentTemplate="{DataTemplate v:SignUpView}" 
+        Route="SignUpPage" />
 </Shell>

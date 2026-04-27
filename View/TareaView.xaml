@@ -49,29 +49,72 @@
                     <Label Text="To Do" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" 
                    TextColor="{AppThemeBinding Light=#374151, Dark=#D1D5DB}" />
                 </Border>
-                <CollectionView Grid.Row="1" ItemsSource="{Binding TareasPendientes}" Margin="0,5">
+                <CollectionView Grid.Row="1" ItemsSource="{Binding TareasPendientes}" Margin="15,10">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Tarea">
-                            <Border Margin="0,0,0,8" Padding="10" 
-                            BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" 
-                            StrokeShape="RoundRectangle 10" StrokeThickness="0">
-                                <VerticalStackLayout Spacing="6">
-                                    <Label Text="{Binding Titulo}" FontSize="12" FontAttributes="Bold" 
-                                   TextColor="{AppThemeBinding Light=Black, Dark=White}" MaxLines="1" />
-                                    <Label Text="{Binding Descripcion}" FontSize="10" 
-                                   TextColor="{AppThemeBinding Light=Gray, Dark=#9CA3AF}" MaxLines="2" />
+                            <Border Margin="0,0,0,15" 
+                    Padding="0" 
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 15" 
+                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E26}">
+                                <Border.Shadow>
+                                    <Shadow Brush="#6A5ACD" Offset="0,4" Radius="8" Opacity="0.15" />
+                                </Border.Shadow>
 
-                                    <HorizontalStackLayout Spacing="10" HorizontalOptions="End">
-                                        <Button Text="✏️" FontSize="10" WidthRequest="30" HeightRequest="30" Padding="0"
-                                        BackgroundColor="Transparent"
-                                        Command="{Binding BindingContext.EditarTareaCommand, Source={x:Reference ThisPage}}"
-                                        CommandParameter="{Binding .}" />
-                                        <Button Text="🗑️" FontSize="10" WidthRequest="30" HeightRequest="30" Padding="0"
-                                        BackgroundColor="Transparent"
-                                        Command="{Binding BindingContext.EliminarTareaCommand, Source={x:Reference ThisPage}}"
-                                        CommandParameter="{Binding .}" />
-                                    </HorizontalStackLayout>
-                                </VerticalStackLayout>
+                                <Grid ColumnDefinitions="8, *, Auto">
+                                    <BoxView Grid.Column="0" 
+                             BackgroundColor="#8A2BE2" 
+                             VerticalOptions="Fill" />
+
+                                    <VerticalStackLayout Grid.Column="1" Padding="15" Spacing="4">
+                                        <Label Text="{Binding Titulo}" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light=#4B0082, Dark=#D8BFD8}" />
+
+                                        <Label Text="{Binding Descripcion}" 
+                               FontSize="13" 
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#A9A9B3}" 
+                               MaxLines="2" />
+
+                                        <HorizontalStackLayout Spacing="6" Margin="0,8,0,0">
+                                            <Border BackgroundColor="#F3E5F5" 
+                                    StrokeShape="RoundRectangle 10" 
+                                    Padding="8,2">
+                                                <Label FontSize="11" TextColor="#7B1FA2">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="Proyecto: " FontAttributes="None" />
+                                                            <Span Text="{Binding ProyectoId}" FontAttributes="Bold" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </Border>
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+
+                                    <StackLayout Grid.Column="2" 
+                                 BackgroundColor="{AppThemeBinding Light=#F9F5FF, Dark=#252530}" 
+                                 Padding="10" 
+                                 VerticalOptions="Fill"
+                                 Spacing="10">
+                                        <Button Text="✏️" 
+                                WidthRequest="36" HeightRequest="36"
+                                CornerRadius="18"
+                                BackgroundColor="Transparent"
+                                TextColor="#8A2BE2"
+                                Command="{Binding BindingContext.EditarTareaCommand, Source={x:Reference ThisPage}}"
+                                CommandParameter="{Binding .}" />
+
+                                        <Button Text="🗑️" 
+                                WidthRequest="36" HeightRequest="36"
+                                CornerRadius="18"
+                                BackgroundColor="Transparent"
+                                TextColor="#FF4B4B"
+                                Command="{Binding BindingContext.EliminarTareaCommand, Source={x:Reference ThisPage}}"
+                                CommandParameter="{Binding .}" />
+                                    </StackLayout>
+                                </Grid>
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -86,24 +129,69 @@
                 <CollectionView Grid.Row="1" ItemsSource="{Binding TareasEnProgreso}" Margin="0,5">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Tarea">
-                            <Border Margin="0,0,0,8" Padding="10" 
-                            BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" 
-                            StrokeShape="RoundRectangle 10" StrokeThickness="0">
-                                <VerticalStackLayout Spacing="6">
-                                    <Label Text="{Binding Titulo}" FontSize="12" FontAttributes="Bold" 
-                                   TextColor="{AppThemeBinding Light=Black, Dark=White}" MaxLines="1" />
+                            <Border Margin="0,0,0,15" 
+ Padding="0" 
+ StrokeThickness="2"
+ StrokeShape="RoundRectangle 15" 
+ BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E26}">
+                                <Border.Shadow>
+                                    <Shadow Brush="#6A5ACD" Offset="0,4" Radius="8" Opacity="0.15" />
+                                </Border.Shadow>
 
-                                    <HorizontalStackLayout Spacing="10" HorizontalOptions="End">
-                                        <Button Text="✏️" FontSize="10" WidthRequest="30" HeightRequest="30" Padding="0"
-                                        BackgroundColor="Transparent"
-                                        Command="{Binding BindingContext.EditarTareaCommand, Source={x:Reference ThisPage}}"
-                                        CommandParameter="{Binding .}" />
-                                        <Button Text="🗑️" FontSize="10" WidthRequest="30" HeightRequest="30" Padding="0"
-                                        BackgroundColor="Transparent"
-                                        Command="{Binding BindingContext.EliminarTareaCommand, Source={x:Reference ThisPage}}"
-                                        CommandParameter="{Binding .}" />
-                                    </HorizontalStackLayout>
-                                </VerticalStackLayout>
+                                <Grid ColumnDefinitions="8, *, Auto">
+                                    <BoxView Grid.Column="0" 
+          BackgroundColor="#8A2BE2" 
+          VerticalOptions="Fill" />
+
+                                    <VerticalStackLayout Grid.Column="1" Padding="15" Spacing="4">
+                                        <Label Text="{Binding Titulo}" 
+            FontSize="16" 
+            FontAttributes="Bold" 
+            TextColor="{AppThemeBinding Light=#4B0082, Dark=#D8BFD8}" />
+
+                                        <Label Text="{Binding Descripcion}" 
+            FontSize="13" 
+            TextColor="{AppThemeBinding Light=#666666, Dark=#A9A9B3}" 
+            MaxLines="2" />
+
+                                        <HorizontalStackLayout Spacing="6" Margin="0,8,0,0">
+                                            <Border BackgroundColor="#F3E5F5" 
+                 StrokeShape="RoundRectangle 10" 
+                 Padding="8,2">
+                                                <Label FontSize="11" TextColor="#7B1FA2">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="Proyecto: " FontAttributes="None" />
+                                                            <Span Text="{Binding ProyectoId}" FontAttributes="Bold" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </Border>
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+
+                                    <StackLayout Grid.Column="2" 
+              BackgroundColor="{AppThemeBinding Light=#F9F5FF, Dark=#252530}" 
+              Padding="10" 
+              VerticalOptions="Fill"
+              Spacing="10">
+                                        <Button Text="✏️" 
+             WidthRequest="36" HeightRequest="36"
+             CornerRadius="18"
+             BackgroundColor="Transparent"
+             TextColor="#8A2BE2"
+             Command="{Binding BindingContext.EditarTareaCommand, Source={x:Reference ThisPage}}"
+             CommandParameter="{Binding .}" />
+
+                                        <Button Text="🗑️" 
+             WidthRequest="36" HeightRequest="36"
+             CornerRadius="18"
+             BackgroundColor="Transparent"
+             TextColor="#FF4B4B"
+             Command="{Binding BindingContext.EliminarTareaCommand, Source={x:Reference ThisPage}}"
+             CommandParameter="{Binding .}" />
+                                    </StackLayout>
+                                </Grid>
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -118,21 +206,69 @@
                 <CollectionView Grid.Row="1" ItemsSource="{Binding TareasCompletadas}" Margin="0,5">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Tarea">
-                            <Border Margin="0,0,0,8" Padding="10" 
-                            BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" 
-                            StrokeShape="RoundRectangle 10" StrokeThickness="0" Opacity="0.8">
-                                <VerticalStackLayout Spacing="6">
-                                    <Label Text="{Binding Titulo}" FontSize="11" 
-                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}"
-                                   TextDecorations="Strikethrough" />
+                            <Border Margin="0,0,0,15" 
+ Padding="0" 
+ StrokeThickness="2"
+ StrokeShape="RoundRectangle 15" 
+ BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E26}">
+                                <Border.Shadow>
+                                    <Shadow Brush="#6A5ACD" Offset="0,4" Radius="8" Opacity="0.15" />
+                                </Border.Shadow>
 
-                                    <HorizontalStackLayout Spacing="10" HorizontalOptions="End">
-                                        <Button Text="🗑️" FontSize="10" WidthRequest="30" HeightRequest="30" Padding="0"
-                                        BackgroundColor="Transparent"
-                                        Command="{Binding BindingContext.EliminarTareaCommand, Source={x:Reference ThisPage}}"
-                                        CommandParameter="{Binding .}" />
-                                    </HorizontalStackLayout>
-                                </VerticalStackLayout>
+                                <Grid ColumnDefinitions="8, *, Auto">
+                                    <BoxView Grid.Column="0" 
+          BackgroundColor="#8A2BE2" 
+          VerticalOptions="Fill" />
+
+                                    <VerticalStackLayout Grid.Column="1" Padding="15" Spacing="4">
+                                        <Label Text="{Binding Titulo}" 
+            FontSize="16" 
+            FontAttributes="Bold" 
+            TextColor="{AppThemeBinding Light=#4B0082, Dark=#D8BFD8}" />
+
+                                        <Label Text="{Binding Descripcion}" 
+            FontSize="13" 
+            TextColor="{AppThemeBinding Light=#666666, Dark=#A9A9B3}" 
+            MaxLines="2" />
+
+                                        <HorizontalStackLayout Spacing="6" Margin="0,8,0,0">
+                                            <Border BackgroundColor="#F3E5F5" 
+                 StrokeShape="RoundRectangle 10" 
+                 Padding="8,2">
+                                                <Label FontSize="11" TextColor="#7B1FA2">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="Proyecto: " FontAttributes="None" />
+                                                            <Span Text="{Binding ProyectoId}" FontAttributes="Bold" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </Border>
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+
+                                    <StackLayout Grid.Column="2" 
+              BackgroundColor="{AppThemeBinding Light=#F9F5FF, Dark=#252530}" 
+              Padding="10" 
+              VerticalOptions="Fill"
+              Spacing="10">
+                                        <Button Text="✏️" 
+             WidthRequest="36" HeightRequest="36"
+             CornerRadius="18"
+             BackgroundColor="Transparent"
+             TextColor="#8A2BE2"
+             Command="{Binding BindingContext.EditarTareaCommand, Source={x:Reference ThisPage}}"
+             CommandParameter="{Binding .}" />
+
+                                        <Button Text="🗑️" 
+             WidthRequest="36" HeightRequest="36"
+             CornerRadius="18"
+             BackgroundColor="Transparent"
+             TextColor="#FF4B4B"
+             Command="{Binding BindingContext.EliminarTareaCommand, Source={x:Reference ThisPage}}"
+             CommandParameter="{Binding .}" />
+                                    </StackLayout>
+                                </Grid>
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

@@ -26,7 +26,8 @@ namespace GestionTareas
 
             builder.Services.AddTransient<IRestService<Tarea>,TareaService>();
             builder.Services.AddTransient<IRestService<Proyecto>, ProyectoService>();
-            builder.Services.AddTransient<IRestService<Usuario>, UserService>();
+            builder.Services.AddSingleton<UserService>();
+            builder.Services.AddSingleton<IRestService<Usuario>>(s => s.GetRequiredService<UserService>());
 
             builder.Services.AddTransient<PanelPrincipalViewModel>();
             builder.Services.AddTransient<ProyectoViewModel>();
@@ -45,6 +46,9 @@ namespace GestionTareas
             builder.Services.AddTransient<CrearProyectoView>();
             builder.Services.AddTransient<CrearTareaView>();
             builder.Services.AddTransient<CrearTareaViewModel>();
+
+            builder.Services.AddTransient<SignUpViewModel>();
+            builder.Services.AddTransient<SignUpView>();
 
             return builder.Build();
         }
