@@ -9,7 +9,7 @@ namespace GestionTareas.ViewModel;
 public partial class PanelPrincipalViewModel : ObservableObject
 {
     private readonly IRestService<Proyecto> _proyectoService;
-    private readonly IRestService<Usuario> _usuarioService;
+    private readonly UserService _userService;
     private readonly IRestService<Tarea> _tareaService; 
 
     [ObservableProperty] private ObservableCollection<Proyecto> proyectos;
@@ -25,11 +25,11 @@ public partial class PanelPrincipalViewModel : ObservableObject
 
     public PanelPrincipalViewModel(
         IRestService<Proyecto> proyectoService,
-        IRestService<Usuario> usuarioService,
+        UserService userService,
         IRestService<Tarea> tareaService) 
     {
         _proyectoService = proyectoService;
-        _usuarioService = usuarioService;
+        _userService = userService;
         _tareaService = tareaService;
 
         Proyectos = new ObservableCollection<Proyecto>();
@@ -42,11 +42,23 @@ public partial class PanelPrincipalViewModel : ObservableObject
     {
         try
         {
-            var listaProyectos = await _proyectoService.GetAllAsync() ?? new List<Proyecto>();
-            var listaUsuarios = await _usuarioService.GetAllAsync() ?? new List<Usuario>();
-            var listaTareasTotal = await _tareaService.GetAllAsync() ?? new List<Tarea>(); 
+            Debug.WriteLine("📊 PanelPrincipalViewModel: Cargando datos del dashboard...");
 
-            var user = listaUsuarios.FirstOrDefault();
+            var listaProyectos = await _proyectoService.GetAllAsync() ?? new List<Proyecto>();
+            var listaTareasTotal = await _tareaService.GetAllAsync() ?? new List<Tarea>();
+
+            Debug.WriteLine("👤 Obteniendo usuario autenticado actual...");
+            var user = await _userService.GetCurrentUserAsync();
+
+            if (user != null)
+            {
+                Debug.WriteLine($"✅ Usuario cargado en Dashboard: {user.Nombre} ({user.Email})");
+            }
+            else
+            {
+                Debug.WriteLine("⚠️ No se pudo obtener el usuario actual para el Dashboard");
+            }
+
             var fecha = DateTime.Now.ToString("dddd, dd 'de' MMMM");
 
             int totalT = listaTareasTotal.Count;
@@ -71,7 +83,7 @@ public partial class PanelPrincipalViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error: {ex.Message}");
+            Debug.WriteLine($"❌ Error en PanelPrincipalViewModel.LoadData: {ex.Message}");
         }
     }
 }

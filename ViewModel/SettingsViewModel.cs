@@ -7,7 +7,7 @@ namespace GestionTareas.ViewModel;
 
 public partial class SettingsViewModel : ObservableObject
 {
-    private readonly IRestService<Usuario> _userService;
+    private readonly UserService _userService;
 
     [ObservableProperty]
     private Usuario usuarioActual;
@@ -23,9 +23,9 @@ public partial class SettingsViewModel : ObservableObject
     [ObservableProperty]
     private AppTheme selectedTheme;
 
-    public SettingsViewModel(IRestService<Usuario> usuarioService)
+    public SettingsViewModel(UserService userService)
     {
-        _userService = usuarioService;
+        _userService = userService;
         selectedTheme = Application.Current?.UserAppTheme ?? AppTheme.Unspecified;
         _ = LoadUserData();
     }
@@ -40,14 +40,24 @@ public partial class SettingsViewModel : ObservableObject
     {
         try
         {
-            var usuarios = await _userService.GetAllAsync();
-            var usuario = usuarios?.FirstOrDefault();
+            System.Diagnostics.Debug.WriteLine("🔍 SettingsViewModel: Cargando datos del usuario actual...");
+
+            var usuario = await _userService.GetCurrentUserAsync();
+
             if (usuario != null)
             {
+                System.Diagnostics.Debug.WriteLine($"✅ Usuario cargado: {usuario.Nombre} ({usuario.Email})");
                 MainThread.BeginInvokeOnMainThread(() => UsuarioActual = usuario);
             }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("⚠️ No se pudo obtener el usuario actual");
+            }
         }
-        catch (Exception ex) { System.Diagnostics.Debug.WriteLine(ex.Message); }
+        catch (Exception ex) 
+        { 
+            System.Diagnostics.Debug.WriteLine($"❌ Error en LoadUserData: {ex.Message}"); 
+        }
     }
 
     partial void OnSelectedThemeChanged(AppTheme value)

@@ -26,8 +26,4 @@
         ContentTemplate="{DataTemplate v:SettingsView}"
         Route="settingsPage" />
 
-    <ShellContent 
-        Title="Registro" 
-        ContentTemplate="{DataTemplate v:SignUpView}" 
-        Route="SignUpPage" />
 </Shell>

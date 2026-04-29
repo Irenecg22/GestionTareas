@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="GestionTareas.View.SignUpView"
-             Title="Registro">
+             x:Class="GestionTareas.View.LoginView"
+             Title="Login">
 
     <ScrollView>
         <VerticalStackLayout Padding="30"
-                             Spacing="20"
+                             Spacing="22"
                              VerticalOptions="Center">
 
-            <Label Text="Crear cuenta"
-                   FontSize="32"
+            <Label Text="Bienvenido"
+                   FontSize="34"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
                    TextColor="#111827" />
 
-            <Label Text="Regístrate para empezar a gestionar tus proyectos"
+            <Label Text="Inicia sesión para acceder a tus proyectos"
+                   FontSize="15"
                    HorizontalTextAlignment="Center"
                    TextColor="#6B7280" />
-
-            <Entry Placeholder="Nombre completo"
-                   Text="{Binding Nombre}" />
 
             <Entry Placeholder="Email"
                    Text="{Binding Email}"
@@ -30,25 +28,21 @@
                    Text="{Binding Password}"
                    IsPassword="True" />
 
-            <Entry Placeholder="Confirmar contraseña"
-                   Text="{Binding ConfirmPassword}"
-                   IsPassword="True" />
-
-            <Button Text="Crear cuenta"
-                    Command="{Binding RegisterCommand}"
+            <Button Text="Iniciar sesión"
+                    Command="{Binding LoginCommand}"
                     BackgroundColor="#4F46E5"
                     TextColor="White"
                     CornerRadius="14"
                     HeightRequest="52" />
 
+            <Button Text="Crear cuenta"
+                    Command="{Binding GoToRegisterCommand}"
+                    BackgroundColor="Transparent"
+                    TextColor="#4F46E5" />
+
             <ActivityIndicator IsRunning="{Binding IsLoading}"
                                IsVisible="{Binding IsLoading}"
                                Color="#4F46E5" />
-
-            <Button Text="¿Ya tienes cuenta? Iniciar sesión"
-                    Command="{Binding GoToLoginCommand}"
-                    BackgroundColor="Transparent"
-                    TextColor="#4F46E5" />
 
         </VerticalStackLayout>
     </ScrollView>
