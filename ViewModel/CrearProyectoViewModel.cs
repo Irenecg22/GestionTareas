@@ -45,9 +45,9 @@ public class CrearProyectoViewModel : INotifyPropertyChanged
 
     public ICommand CrearProyectoCommand { get; }
 
-    public CrearProyectoViewModel()
+    public CrearProyectoViewModel(ProyectoService proyectoService)
     {
-        _proyectoService = new ProyectoService();
+        _proyectoService = proyectoService;
         CrearProyectoCommand = new Command(async () => await CrearProyectoAsync());
     }
 

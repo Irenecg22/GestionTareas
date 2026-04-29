@@ -17,9 +17,9 @@ public partial class ProyectoDetalleViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<Tarea> tareasFiltradas;
 
-    public ProyectoDetalleViewModel()
+    public ProyectoDetalleViewModel(TareaService tareaService)
     {
-        _tareaService = new TareaService();
+        _tareaService = tareaService;
         TareasFiltradas = new ObservableCollection<Tarea>();
     }
 

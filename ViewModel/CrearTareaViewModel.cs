@@ -24,9 +24,9 @@ public class CrearTareaViewModel : INotifyPropertyChanged
 
     public ICommand CrearTareaCommand { get; }
 
-    public CrearTareaViewModel()
+    public CrearTareaViewModel(TareaService tareaService)
     {
-        _tareaService = new TareaService();
+        _tareaService = tareaService;
         CrearTareaCommand = new Command(async () => await CrearTareaAsync());
     }
 
