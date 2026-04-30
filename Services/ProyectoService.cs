@@ -26,21 +26,12 @@ public class ProyectoService : IRestService<Proyecto>
     private async Task AddAuthHeaderAsync()
     {
         var token = await _userService.GetTokenAsync();
-
-        Debug.WriteLine($"🔐 ProyectoService - AddAuthHeaderAsync");
-        Debug.WriteLine($"   Token obtenido: {(string.IsNullOrWhiteSpace(token) ? "❌ VACÍO O NULO" : $"✅ {token.Substring(0, Math.Min(20, token.Length))}...")}");
-
         _client.DefaultRequestHeaders.Authorization = null;
 
         if (!string.IsNullOrWhiteSpace(token))
         {
             _client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", token);
-            Debug.WriteLine($"   ✅ Authorization header configurado correctamente");
-        }
-        else
-        {
-            Debug.WriteLine($"   ⚠️ No hay token disponible - petición SIN autenticación");
         }
     }
 
@@ -50,43 +41,51 @@ public class ProyectoService : IRestService<Proyecto>
 
         try
         {
-            Debug.WriteLine($"📋 ProyectoService.GetAllAsync - Iniciando...");
-            Debug.WriteLine($"   URL: {uri}");
-
             await AddAuthHeaderAsync();
-
-            Debug.WriteLine($"   🚀 Enviando petición GET...");
             var response = await _client.GetAsync(uri);
 
-            Debug.WriteLine($"   📬 Status Code: {response.StatusCode} ({(int)response.StatusCode})");
+            Debug.WriteLine($"📋 ProyectoService.GetAllAsync - Status: {response.StatusCode}");
 
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine($"   ✅ Respuesta exitosa. Longitud: {content.Length} caracteres");
-                Debug.WriteLine($"   Contenido: {content.Substring(0, Math.Min(200, content.Length))}...");
-
                 items = JsonSerializer.Deserialize<List<Proyecto>>(content, _jsonOptions) ?? new();
-                Debug.WriteLine($"   ✅ Proyectos deserializados: {items.Count}");
             }
             else
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine($"   ❌ Error del servidor:");
-                Debug.WriteLine($"      Status: {response.StatusCode}");
-                Debug.WriteLine($"      Contenido: {errorContent}");
+                Debug.WriteLine($"❌ Error GetAllAsync: {response.StatusCode} - {errorContent}");
             }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ ERROR GetAllAsync Proyectos:");
-            Debug.WriteLine($"   Tipo: {ex.GetType().Name}");
-            Debug.WriteLine($"   Mensaje: {ex.Message}");
-            Debug.WriteLine($"   StackTrace: {ex.StackTrace}");
+            Debug.WriteLine($"❌ ERROR GetAllAsync Proyectos: {ex.Message}");
         }
 
-        Debug.WriteLine($"📋 ProyectoService.GetAllAsync - Retornando {items.Count} proyectos");
         return items;
+    }
+
+    public async Task<Proyecto?> GetByIdAsync(int id)
+    {
+        try
+        {
+            await AddAuthHeaderAsync();
+            var response = await _client.GetAsync(new Uri($"{ApiConfig.BaseUrl}/proyectos/{id}"));
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<Proyecto>(content, _jsonOptions);
+            }
+
+            Debug.WriteLine($"❌ GetByIdAsync: {response.StatusCode}");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"❌ ERROR GetByIdAsync: {ex.Message}");
+        }
+
+        return null;
     }
 
     public async Task<bool> CreateAsync(Proyecto proyecto)
@@ -95,35 +94,206 @@ public class ProyectoService : IRestService<Proyecto>
         {
             await AddAuthHeaderAsync();
 
-            var json = JsonSerializer.Serialize(proyecto);
+            // Solo enviar nombre, descripcion, fecha_creacion (NO creado_por_id)
+            var payload = new
+            {
+                nombre = proyecto.Nombre,
+                descripcion = proyecto.Descripcion,
+                fecha_creacion = proyecto.FechaCreacion
+            };
+
+            var json = JsonSerializer.Serialize(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await _client.PostAsync(uri, content);
 
+            Debug.WriteLine($"📋 CreateAsync Proyecto - Status: {response.StatusCode}");
             return response.IsSuccessStatusCode;
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"ERROR CreateAsync Proyecto: {ex.Message}");
+            Debug.WriteLine($"❌ ERROR CreateAsync Proyecto: {ex.Message}");
             return false;
         }
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task<(bool Success, int StatusCode)> UpdateAsync(int id, Proyecto proyecto)
     {
         try
         {
             await AddAuthHeaderAsync();
 
-            var deleteUri = new Uri($"{ApiConfig.BaseUrl}/proyectos/{id}");
-            var response = await _client.DeleteAsync(deleteUri);
+            var payload = new
+            {
+                nombre = proyecto.Nombre,
+                descripcion = proyecto.Descripcion,
+                fecha_creacion = proyecto.FechaCreacion
+            };
 
-            return response.IsSuccessStatusCode;
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var request = new HttpRequestMessage(HttpMethod.Patch, new Uri($"{ApiConfig.BaseUrl}/proyectos/{id}"))
+            {
+                Content = content
+            };
+
+            var response = await _client.SendAsync(request);
+            Debug.WriteLine($"📋 UpdateAsync Proyecto - Status: {response.StatusCode}");
+            return (response.IsSuccessStatusCode, (int)response.StatusCode);
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"ERROR DeleteAsync Proyecto: {ex.Message}");
-            return false;
+            Debug.WriteLine($"❌ ERROR UpdateAsync Proyecto: {ex.Message}");
+            return (false, 0);
+        }
+    }
+
+    public async Task<(bool Success, int StatusCode)> DeleteWithStatusAsync(int id)
+    {
+        try
+        {
+            await AddAuthHeaderAsync();
+            var response = await _client.DeleteAsync(new Uri($"{ApiConfig.BaseUrl}/proyectos/{id}"));
+            Debug.WriteLine($"📋 DeleteAsync Proyecto - Status: {response.StatusCode}");
+            return (response.IsSuccessStatusCode, (int)response.StatusCode);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"❌ ERROR DeleteAsync Proyecto: {ex.Message}");
+            return (false, 0);
+        }
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var (success, _) = await DeleteWithStatusAsync(id);
+        return success;
+    }
+
+    // --- Métodos de miembros ---
+
+    public async Task<List<ProyectoUsuario>> GetMiembrosAsync(int proyectoId)
+    {
+        try
+        {
+            await AddAuthHeaderAsync();
+            var response = await _client.GetAsync(new Uri($"{ApiConfig.BaseUrl}/proyectos/{proyectoId}/miembros"));
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<ProyectoUsuario>>(content, _jsonOptions) ?? new();
+            }
+
+            Debug.WriteLine($"❌ GetMiembrosAsync: {response.StatusCode}");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"❌ ERROR GetMiembrosAsync: {ex.Message}");
+        }
+
+        return new();
+    }
+
+    public async Task<(bool Success, int StatusCode)> AddMiembroAsync(int proyectoId, int usuarioId, string rolProyecto)
+    {
+        try
+        {
+            await AddAuthHeaderAsync();
+
+            var payload = new ProyectoUsuarioCreateRequest
+            {
+                IdUsuario = usuarioId,
+                RolProyecto = rolProyecto
+            };
+
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync(
+                new Uri($"{ApiConfig.BaseUrl}/proyectos/{proyectoId}/miembros"), content);
+
+            Debug.WriteLine($"📋 AddMiembroAsync - Status: {response.StatusCode}");
+            return (response.IsSuccessStatusCode, (int)response.StatusCode);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"❌ ERROR AddMiembroAsync: {ex.Message}");
+            return (false, 0);
+        }
+    }
+
+    public async Task<(bool Success, int StatusCode)> UpdateMiembroRolAsync(int proyectoId, int usuarioId, string rolProyecto)
+    {
+        try
+        {
+            await AddAuthHeaderAsync();
+
+            var payload = new ProyectoUsuarioUpdateRequest { RolProyecto = rolProyecto };
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var request = new HttpRequestMessage(HttpMethod.Patch,
+                new Uri($"{ApiConfig.BaseUrl}/proyectos/{proyectoId}/miembros/{usuarioId}"))
+            {
+                Content = content
+            };
+
+            var response = await _client.SendAsync(request);
+            Debug.WriteLine($"📋 UpdateMiembroRolAsync - Status: {response.StatusCode}");
+            return (response.IsSuccessStatusCode, (int)response.StatusCode);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"❌ ERROR UpdateMiembroRolAsync: {ex.Message}");
+            return (false, 0);
+        }
+    }
+
+    public async Task<(bool Success, int StatusCode)> RemoveMiembroAsync(int proyectoId, int usuarioId)
+    {
+        try
+        {
+            await AddAuthHeaderAsync();
+            var response = await _client.DeleteAsync(
+                new Uri($"{ApiConfig.BaseUrl}/proyectos/{proyectoId}/miembros/{usuarioId}"));
+
+            Debug.WriteLine($"📋 RemoveMiembroAsync - Status: {response.StatusCode}");
+            return (response.IsSuccessStatusCode, (int)response.StatusCode);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"❌ ERROR RemoveMiembroAsync: {ex.Message}");
+            return (false, 0);
+        }
+    }
+
+    public async Task<(bool Success, int StatusCode)> AddMiembroPorEmailAsync(int proyectoId, string email, string rolProyecto)
+    {
+        try
+        {
+            await AddAuthHeaderAsync();
+
+            var payload = new ProyectoUsuarioEmailCreateRequest
+            {
+                Email = email,
+                RolProyecto = rolProyecto
+            };
+
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync(
+                new Uri($"{ApiConfig.BaseUrl}/proyectos/{proyectoId}/miembros/email"), content);
+
+            Debug.WriteLine($"📋 AddMiembroPorEmailAsync - Status: {response.StatusCode}");
+            return (response.IsSuccessStatusCode, (int)response.StatusCode);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"❌ ERROR AddMiembroPorEmailAsync: {ex.Message}");
+            return (false, 0);
         }
     }
 }

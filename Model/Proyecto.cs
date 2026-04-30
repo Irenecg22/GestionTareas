@@ -11,10 +11,14 @@ public class Proyecto
     public string Nombre { get; set; }
 
     [JsonPropertyName("descripcion")]
-    public string Descripcion { get; set; }
+    public string? Descripcion { get; set; }
 
     [JsonPropertyName("fecha_creacion")]
-    public string FechaCreacion { get; set; }
+    public string? FechaCreacion { get; set; }
 
-    public List<Tarea> Tareas { get; set; }
+    [JsonPropertyName("creado_por_id")]
+    public int CreadoPorId { get; set; }
+
+    [JsonIgnore]
+    public List<Tarea> Tareas { get; set; } = new();
 }

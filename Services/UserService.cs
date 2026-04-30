@@ -300,6 +300,76 @@ public class UserService : IRestService<Usuario>
         }
     }
 
+    public async Task<(bool Success, int StatusCode, string? Message)> UpdateUserAsync(int userId, UsuarioUpdateRequest request)
+    {
+        try
+        {
+            var token = await GetTokenAsync();
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                Debug.WriteLine($"⚠️ UpdateUserAsync: No hay token disponible");
+                return (false, 401, "No autenticado");
+            }
+
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var updateUrl = $"{ApiConfig.BaseUrl}/usuarios/{userId}";
+            Debug.WriteLine($"✏️ Actualizando usuario en: {updateUrl}");
+            Debug.WriteLine($"   Nombre: {request.Nombre}");
+            Debug.WriteLine($"   Email: {request.Email}");
+            Debug.WriteLine($"   Contraseña: {(string.IsNullOrEmpty(request.Password) ? "No cambiar" : "Actualizar")}");
+
+            // Serializar solo los campos no nulos
+            var options = new JsonSerializerOptions
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                PropertyNameCaseInsensitive = true
+            };
+
+            var json = JsonSerializer.Serialize(request, options);
+            Debug.WriteLine($"📤 JSON Request: {json}");
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PatchAsync(updateUrl, content);
+
+            Debug.WriteLine($"📬 Status Code: {response.StatusCode}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine($"✅ Usuario actualizado correctamente: {responseContent}");
+                return (true, (int)response.StatusCode, null);
+            }
+
+            var errorContent = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine($"❌ Error actualizando usuario: {errorContent}");
+
+            // Intentar extraer mensaje de error del backend
+            string? errorMessage = null;
+            try
+            {
+                using var document = JsonDocument.Parse(errorContent);
+                if (document.RootElement.TryGetProperty("detail", out var detailElement))
+                {
+                    errorMessage = detailElement.GetString();
+                }
+            }
+            catch
+            {
+                errorMessage = errorContent;
+            }
+
+            return (false, (int)response.StatusCode, errorMessage);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"❌ ERROR UpdateUserAsync: {ex.Message}");
+            return (false, 0, ex.Message);
+        }
+    }
+
     private class TokenResponse
     {
         [JsonPropertyName("access_token")]

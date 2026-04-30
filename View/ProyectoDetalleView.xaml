@@ -96,6 +96,68 @@
                     </VerticalStackLayout>
                 </VerticalStackLayout>
 
+                <!-- SECCIÓN MIEMBROS -->
+                <VerticalStackLayout Spacing="12">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Label Text="MIEMBROS" FontSize="12" FontAttributes="Bold" TextColor="#94A3B8" CharacterSpacing="1"/>
+                        <Label Grid.Column="1" Text="{Binding Miembros.Count, StringFormat='{0} miembros'}" 
+                               FontSize="11" TextColor="#7C3AED" FontAttributes="Bold"/>
+                    </Grid>
+
+                    <!-- Lista de miembros -->
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Miembros}" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="model:ProyectoUsuario">
+                                <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" 
+                                        StrokeShape="RoundRectangle 12" StrokeThickness="0" Padding="12">
+                                    <Grid ColumnDefinitions="*, Auto, Auto" ColumnSpacing="10">
+                                        <VerticalStackLayout VerticalOptions="Center">
+                                            <Label Text="{Binding IdUsuario, StringFormat='Usuario #{0}'}" 
+                                                   FontAttributes="Bold" FontSize="14"
+                                                   TextColor="{AppThemeBinding Light=#1E293B, Dark=White}"/>
+                                            <Label Text="{Binding RolProyectoDisplay}" FontSize="12" 
+                                                   TextColor="#7C3AED" FontAttributes="Bold"/>
+                                        </VerticalStackLayout>
+
+                                        <Button Grid.Column="1" Text="✏️" 
+                                                WidthRequest="36" HeightRequest="36" CornerRadius="18"
+                                                BackgroundColor="Transparent"
+                                                Command="{Binding BindingContext.UpdateRolMiembroCommand, Source={x:Reference thisPage}}"
+                                                CommandParameter="{Binding .}"/>
+
+                                        <Button Grid.Column="2" Text="🗑️" 
+                                                WidthRequest="36" HeightRequest="36" CornerRadius="18"
+                                                BackgroundColor="Transparent"
+                                                Command="{Binding BindingContext.RemoveMiembroCommand, Source={x:Reference thisPage}}"
+                                                CommandParameter="{Binding .}"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+
+                    <!-- Formulario añadir miembro -->
+                    <Border BackgroundColor="{AppThemeBinding Light=#F5F3FF, Dark=#1E1B4B}" 
+                            StrokeShape="RoundRectangle 15" StrokeThickness="0" Padding="15">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Añadir miembro" FontSize="13" FontAttributes="Bold" 
+                                   TextColor="{AppThemeBinding Light=#4C1D95, Dark=#A78BFA}"/>
+                            <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                                <Entry Placeholder="Email del usuario" Keyboard="Email"
+                                       Text="{Binding InputEmail}"/>
+                                <Picker Grid.Column="1" 
+                                        ItemsSource="{Binding RolesProyectoDisplay}" 
+                                        SelectedItem="{Binding InputRolDisplay}"
+                                        Title="Rol"/>
+                            </Grid>
+                            <Button Text="+ Añadir miembro" 
+                                    Command="{Binding AddMiembroCommand}"
+                                    BackgroundColor="#7C3AED" TextColor="White" 
+                                    FontAttributes="Bold" CornerRadius="10" HeightRequest="40"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

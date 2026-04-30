@@ -19,6 +19,17 @@
                    HorizontalTextAlignment="Center"
                    TextColor="#6B7280" />
 
+            <Frame IsVisible="{Binding HasError}"
+                   BackgroundColor="#FEE2E2"
+                   BorderColor="#EF4444"
+                   CornerRadius="8"
+                   Padding="12"
+                   Margin="0,0,0,10">
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="#DC2626"
+                       FontSize="14" />
+            </Frame>
+
             <Entry Placeholder="Nombre completo"
                    Text="{Binding Nombre}" />
 
