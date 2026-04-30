@@ -8,9 +8,9 @@ namespace GestionTareas.ViewModel;
 
 public partial class PanelPrincipalViewModel : ObservableObject
 {
-    private readonly IRestService<Proyecto> _proyectoService;
+    private readonly ProyectoService _proyectoService;
     private readonly UserService _userService;
-    private readonly IRestService<Tarea> _tareaService; 
+    private readonly TareaService _tareaService;
 
     [ObservableProperty] private ObservableCollection<Proyecto> proyectos;
     [ObservableProperty] private ObservableCollection<Tarea> todasLasTareas;
@@ -24,9 +24,9 @@ public partial class PanelPrincipalViewModel : ObservableObject
     [ObservableProperty] private string fechaActual;
 
     public PanelPrincipalViewModel(
-        IRestService<Proyecto> proyectoService,
+        ProyectoService proyectoService,
         UserService userService,
-        IRestService<Tarea> tareaService) 
+        TareaService tareaService)
     {
         _proyectoService = proyectoService;
         _userService = userService;

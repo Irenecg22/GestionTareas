@@ -9,7 +9,7 @@ namespace GestionTareas.ViewModel;
 [QueryProperty(nameof(ProyectoId), "ProyectoId")]
 public partial class TareaViewModel : ObservableObject
 {
-    private readonly IRestService<Tarea> _tareaService;
+    private readonly TareaService _tareaService;
 
     [ObservableProperty]
     private int proyectoId;
@@ -25,7 +25,7 @@ public partial class TareaViewModel : ObservableObject
     [ObservableProperty]
     private Tarea tareaSeleccionada;
 
-    public TareaViewModel(IRestService<Tarea> tareaService)
+    public TareaViewModel(TareaService tareaService)
     {
         _tareaService = tareaService;
         Tareas = new ObservableCollection<Tarea>();
@@ -72,11 +72,21 @@ public partial class TareaViewModel : ObservableObject
 
         if (answer)
         {
-            var success = await _tareaService.DeleteAsync(tarea.Id);
+            var (success, statusCode) = await _tareaService.DeleteWithStatusAsync(tarea.Id);
             if (success)
             {
                 Tareas.Remove(tarea);
                 RefreshColumns();
+            }
+            else if (statusCode == 403)
+            {
+                await Shell.Current.DisplayAlert("Sin permisos",
+                    "No tienes permisos para eliminar tareas en este proyecto.", "OK");
+            }
+            else if (statusCode == 401)
+            {
+                await Shell.Current.DisplayAlert("Sesión expirada",
+                    "Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.", "OK");
             }
             else
             {

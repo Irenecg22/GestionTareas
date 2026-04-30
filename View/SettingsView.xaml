@@ -2,68 +2,133 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GestionTareas.ViewModel"
-             xmlns:m="clr-namespace:Microsoft.Maui;assembly=Microsoft.Maui"
              x:Class="GestionTareas.View.SettingsView"
              x:DataType="vm:SettingsViewModel"
              x:Name="thisPage"
              Title="Ajustes"
              BackgroundColor="{AppThemeBinding Light=#F8F7FF, Dark=#0F0F12}">
 
-    <Grid RowDefinitions="Auto, *, Auto" Padding="25" RowSpacing="15">
+    <ScrollView>
+        <VerticalStackLayout Padding="25" Spacing="25">
 
-        <VerticalStackLayout Grid.Row="0" Spacing="4">
-            <Label Text="Configuración" 
-                   FontSize="28" 
-                   FontAttributes="Bold" 
-                   TextColor="{AppThemeBinding Light=#4C1D95, Dark=White}" />
-            <Label Text="Personaliza tu cuenta y la interfaz" 
-                   FontSize="14" 
-                   TextColor="{AppThemeBinding Light=#7C3AED, Dark=#A78BFA}" 
-                   Opacity="0.7"/>
-        </VerticalStackLayout>
+            <!-- Encabezado -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Configuración" 
+                       FontSize="28" 
+                       FontAttributes="Bold" 
+                       TextColor="{AppThemeBinding Light=#4C1D95, Dark=White}" />
+                <Label Text="Personaliza tu cuenta y la interfaz" 
+                       FontSize="14" 
+                       TextColor="{AppThemeBinding Light=#7C3AED, Dark=#A78BFA}" 
+                       Opacity="0.7"/>
+            </VerticalStackLayout>
 
-        <VerticalStackLayout Grid.Row="1" Spacing="20" VerticalOptions="Start">
-
-            <Border StrokeShape="RoundRectangle 20" 
-                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" 
-                    StrokeThickness="0" 
-                    Padding="20">
-                <Border.Shadow>
-                    <Shadow Brush="#7C3AED" Offset="0,8" Radius="15" Opacity="0.1" />
-                </Border.Shadow>
-
-                <Grid ColumnDefinitions="Auto, *" ColumnSpacing="20">
-                    <Border StrokeShape="RoundRectangle 35" 
-                            WidthRequest="70" 
-                            HeightRequest="70" 
-                            Stroke="{AppThemeBinding Light=#DDD6FE, Dark=#4C1D95}" 
-                            StrokeThickness="2">
-                        <Image Source="profile_placeholder.png" Aspect="AspectFill" />
-                    </Border>
-
-                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
-                        <Label Text="{Binding UsuarioActual.Nombre, FallbackValue='Usuario'}" 
-                               FontSize="18" FontAttributes="Bold" 
-                               TextColor="{AppThemeBinding Light=#2E1065, Dark=White}" />
-                        <Label Text="{Binding UsuarioActual.Email}" 
-                               FontSize="13" TextColor="{AppThemeBinding Light=#6D28D9, Dark=#A78BFA}" />
-                    </VerticalStackLayout>
-                </Grid>
-            </Border>
-
+            <!-- Sección: Perfil -->
             <VerticalStackLayout Spacing="10">
-                <Label Text="ESTILO VISUAL" 
+                <Label Text="PERFIL" 
                        FontSize="12" 
                        FontAttributes="Bold" 
                        TextColor="#A78BFA" 
                        CharacterSpacing="1" 
                        Margin="5,0"/>
 
-                <FlexLayout BindableLayout.ItemsSource="{Binding Themes}" 
+                <Border StrokeShape="RoundRectangle 20" 
+                        BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" 
+                        StrokeThickness="0" 
+                        Padding="20">
+                    <Border.Shadow>
+                        <Shadow Brush="#7C3AED" Offset="0,8" Radius="15" Opacity="0.1" />
+                    </Border.Shadow>
+
+                    <Grid ColumnDefinitions="Auto, *, Auto" 
+                          RowDefinitions="Auto, Auto, Auto"
+                          ColumnSpacing="20" 
+                          RowSpacing="8">
+                        <!-- Avatar con iniciales -->
+                        <Border Grid.Row="0"
+                                Grid.RowSpan="3"
+                                Grid.Column="0"
+                                StrokeShape="RoundRectangle 35" 
+                                WidthRequest="70" 
+                                HeightRequest="70" 
+                                BackgroundColor="{AppThemeBinding Light=#7C3AED, Dark=#5B21B6}"
+                                StrokeThickness="0"
+                                VerticalOptions="Start">
+                            <Label Text="{Binding InicialesUsuario, FallbackValue='??'}"
+                                   FontSize="24"
+                                   FontAttributes="Bold"
+                                   TextColor="White"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                        </Border>
+
+                        <!-- Información del usuario -->
+                        <VerticalStackLayout Grid.Column="1" Grid.Row="0" Spacing="2">
+                            <Label Text="{Binding NombreUsuario, FallbackValue='Usuario'}" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold" 
+                                   TextColor="{AppThemeBinding Light=#2E1065, Dark=White}" 
+                                   LineBreakMode="TailTruncation"/>
+                            <Label Text="{Binding EmailUsuario, FallbackValue='email@ejemplo.com'}" 
+                                   FontSize="13" 
+                                   TextColor="{AppThemeBinding Light=#6D28D9, Dark=#A78BFA}" 
+                                   LineBreakMode="TailTruncation"/>
+                        </VerticalStackLayout>
+
+                        <!-- ID de usuario -->
+                        <HorizontalStackLayout Grid.Column="1" Grid.Row="1" Spacing="6">
+                            <Label Text="🆔" FontSize="12" VerticalOptions="Center"/>
+                            <Label Text="{Binding IdUsuario, FallbackValue='ID: N/A'}" 
+                                   FontSize="12" 
+                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}" 
+                                   VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Rol global -->
+                        <HorizontalStackLayout Grid.Column="1" Grid.Row="2" Spacing="6">
+                            <Label Text="👤" FontSize="12" VerticalOptions="Center"/>
+                            <Label Text="{Binding RolGlobal, FallbackValue='No disponible'}" 
+                                   FontSize="12" 
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#7C3AED, Dark=#A78BFA}" 
+                                   VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Botón Editar -->
+                        <Border Grid.Column="2" 
+                                Grid.Row="0"
+                                Grid.RowSpan="3"
+                                StrokeShape="RoundRectangle 12"
+                                BackgroundColor="{AppThemeBinding Light=#EDE9FE, Dark=#2E1065}"
+                                StrokeThickness="0"
+                                Padding="12"
+                                VerticalOptions="Center">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding EditarPerfilCommand}" />
+                            </Border.GestureRecognizers>
+                            <Label Text="✏️" 
+                                   FontSize="20"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                        </Border>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Sección: Preferencias Visuales -->
+            <VerticalStackLayout Spacing="10">
+                <Label Text="PREFERENCIAS VISUALES" 
+                       FontSize="12" 
+                       FontAttributes="Bold" 
+                       TextColor="#A78BFA" 
+                       CharacterSpacing="1" 
+                       Margin="5,0"/>
+
+                <FlexLayout BindableLayout.ItemsSource="{Binding TemasDisplay}" 
                             Wrap="Wrap" 
                             JustifyContent="Start">
                     <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="m:AppTheme">
+                        <DataTemplate x:DataType="x:String">
                             <Border Margin="0,5,15,5" 
                                     WidthRequest="105" 
                                     HeightRequest="100"
@@ -75,7 +140,7 @@
                                 <Border.Triggers>
                                     <DataTrigger TargetType="Border" 
                                                  Binding="{Binding .}" 
-                                                 Value="{Binding BindingContext.SelectedTheme, Source={x:Reference thisPage}}">
+                                                 Value="{Binding BindingContext.TemaSeleccionado, Source={x:Reference thisPage}}">
                                         <Setter Property="Stroke" Value="#7C3AED" />
                                         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F5F3FF, Dark=#2E1065}" />
                                     </DataTrigger>
@@ -95,13 +160,13 @@
                                             StrokeThickness="0">
                                         <Label FontSize="18" HorizontalOptions="Center" VerticalOptions="Center">
                                             <Label.Triggers>
-                                                <DataTrigger TargetType="Label" Binding="{Binding .}" Value="Unspecified">
+                                                <DataTrigger TargetType="Label" Binding="{Binding .}" Value="Sistema">
                                                     <Setter Property="Text" Value="⚙️" />
                                                 </DataTrigger>
-                                                <DataTrigger TargetType="Label" Binding="{Binding .}" Value="Light">
+                                                <DataTrigger TargetType="Label" Binding="{Binding .}" Value="Claro">
                                                     <Setter Property="Text" Value="☀️" />
                                                 </DataTrigger>
-                                                <DataTrigger TargetType="Label" Binding="{Binding .}" Value="Dark">
+                                                <DataTrigger TargetType="Label" Binding="{Binding .}" Value="Oscuro">
                                                     <Setter Property="Text" Value="🌙" />
                                                 </DataTrigger>
                                             </Label.Triggers>
@@ -119,28 +184,45 @@
                     </BindableLayout.ItemTemplate>
                 </FlexLayout>
             </VerticalStackLayout>
+
+            <!-- Sección: Sesión -->
+            <VerticalStackLayout Spacing="10">
+                <Label Text="SESIÓN" 
+                       FontSize="12" 
+                       FontAttributes="Bold" 
+                       TextColor="#A78BFA" 
+                       CharacterSpacing="1" 
+                       Margin="5,0"/>
+
+                <Border StrokeShape="RoundRectangle 18" 
+                        BackgroundColor="{AppThemeBinding Light=#FFF1F2, Dark=#450A0A}" 
+                        StrokeThickness="0" 
+                        Padding="15">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <VerticalStackLayout VerticalOptions="Center" Spacing="2">
+                            <Label Text="Cerrar sesión" 
+                                   FontAttributes="Bold" 
+                                   TextColor="{AppThemeBinding Light=#991B1B, Dark=#FCA5A5}" 
+                                   FontSize="14" />
+                            <Label Text="Volver a la pantalla de inicio de sesión" 
+                                   TextColor="{AppThemeBinding Light=#DC2626, Dark=#FCA5A5}" 
+                                   FontSize="11"
+                                   Opacity="0.7"/>
+                        </VerticalStackLayout>
+
+                        <Button Grid.Column="1" 
+                                Text="Salir" 
+                                Command="{Binding LogoutCommand}"
+                                TextColor="White" 
+                                BackgroundColor="#DC2626" 
+                                FontAttributes="Bold" 
+                                CornerRadius="10" 
+                                HeightRequest="40" 
+                                Padding="20,0"/>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+
         </VerticalStackLayout>
-
-        <Border Grid.Row="2" 
-                StrokeShape="RoundRectangle 18" 
-                BackgroundColor="{AppThemeBinding Light=#FFF1F2, Dark=#450A0A}" 
-                StrokeThickness="0" 
-                Padding="15">
-            <Grid ColumnDefinitions="*, Auto">
-                <VerticalStackLayout VerticalOptions="Center">
-                    <Label Text="Finalizar Sesión" FontAttributes="Bold" 
-                           TextColor="{AppThemeBinding Light=#991B1B, Dark=#FCA5A5}" FontSize="14" />
-                </VerticalStackLayout>
-
-                <Button Grid.Column="1" 
-                        Text="Salir" 
-                        TextColor="White" 
-                        BackgroundColor="#DC2626" 
-                        FontAttributes="Bold" 
-                        CornerRadius="10" 
-                        HeightRequest="40" 
-                        Padding="20,0"/>
-            </Grid>
-        </Border>
-    </Grid>
+    </ScrollView>
 </ContentPage>

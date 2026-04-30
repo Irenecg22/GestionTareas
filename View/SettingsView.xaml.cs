@@ -4,9 +4,18 @@ namespace GestionTareas.View;
 
 public partial class SettingsView : ContentPage
 {
-	public SettingsView(SettingsViewModel settingsViewModel )
+	private readonly SettingsViewModel _viewModel;
+
+	public SettingsView(SettingsViewModel settingsViewModel)
 	{
-        BindingContext = settingsViewModel;
-        InitializeComponent();
+		InitializeComponent();
+		_viewModel = settingsViewModel;
+		BindingContext = _viewModel;
+	}
+
+	protected override async void OnAppearing()
+	{
+		base.OnAppearing();
+		await _viewModel.RefreshUserData();
 	}
 }

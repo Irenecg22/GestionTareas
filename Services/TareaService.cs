@@ -26,21 +26,12 @@ public class TareaService : IRestService<Tarea>
     private async Task AddAuthHeaderAsync()
     {
         var token = await _userService.GetTokenAsync();
-
-        Debug.WriteLine($"🔐 TareaService - AddAuthHeaderAsync");
-        Debug.WriteLine($"   Token obtenido: {(string.IsNullOrWhiteSpace(token) ? "❌ VACÍO O NULO" : $"✅ {token.Substring(0, Math.Min(20, token.Length))}...")}");
-
         _client.DefaultRequestHeaders.Authorization = null;
 
         if (!string.IsNullOrWhiteSpace(token))
         {
             _client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", token);
-            Debug.WriteLine($"   ✅ Authorization header configurado correctamente");
-        }
-        else
-        {
-            Debug.WriteLine($"   ⚠️ No hay token disponible - petición SIN autenticación");
         }
     }
 
@@ -50,45 +41,31 @@ public class TareaService : IRestService<Tarea>
 
         try
         {
-            Debug.WriteLine($"📝 TareaService.GetAllAsync - Iniciando...");
-            Debug.WriteLine($"   URL: {uri}");
-
             await AddAuthHeaderAsync();
-
-            Debug.WriteLine($"   🚀 Enviando petición GET...");
             var response = await _client.GetAsync(uri);
 
-            Debug.WriteLine($"   📬 Status Code: {response.StatusCode} ({(int)response.StatusCode})");
+            Debug.WriteLine($"📝 TareaService.GetAllAsync - Status: {response.StatusCode}");
 
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine($"   ✅ Respuesta exitosa. Longitud: {content.Length} caracteres");
-
                 items = JsonSerializer.Deserialize<List<Tarea>>(content, _options) ?? new();
-                Debug.WriteLine($"   ✅ Tareas deserializadas: {items.Count}");
             }
             else
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine($"   ❌ Error del servidor:");
-                Debug.WriteLine($"      Status: {response.StatusCode}");
-                Debug.WriteLine($"      Contenido: {errorContent}");
+                Debug.WriteLine($"❌ Error GetAllAsync Tareas: {response.StatusCode} - {errorContent}");
             }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ ERROR GetAllAsync Tareas:");
-            Debug.WriteLine($"   Tipo: {ex.GetType().Name}");
-            Debug.WriteLine($"   Mensaje: {ex.Message}");
-            Debug.WriteLine($"   StackTrace: {ex.StackTrace}");
+            Debug.WriteLine($"❌ ERROR GetAllAsync Tareas: {ex.Message}");
         }
 
-        Debug.WriteLine($"📝 TareaService.GetAllAsync - Retornando {items.Count} tareas");
         return items;
     }
 
-    public async Task<bool> CreateAsync(Tarea tarea)
+    public async Task<(bool Success, int StatusCode)> CreateWithStatusAsync(Tarea tarea)
     {
         try
         {
@@ -99,30 +76,63 @@ public class TareaService : IRestService<Tarea>
 
             var response = await _client.PostAsync(uri, content);
 
-            return response.IsSuccessStatusCode;
+            Debug.WriteLine($"📝 CreateAsync Tarea - Status: {response.StatusCode}");
+            return (response.IsSuccessStatusCode, (int)response.StatusCode);
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"ERROR CreateAsync Tarea: {ex.Message}");
-            return false;
+            Debug.WriteLine($"❌ ERROR CreateAsync Tarea: {ex.Message}");
+            return (false, 0);
+        }
+    }
+
+    public async Task<bool> CreateAsync(Tarea tarea)
+    {
+        var (success, _) = await CreateWithStatusAsync(tarea);
+        return success;
+    }
+
+    public async Task<(bool Success, int StatusCode)> DeleteWithStatusAsync(int id)
+    {
+        try
+        {
+            await AddAuthHeaderAsync();
+            var response = await _client.DeleteAsync(new Uri($"{ApiConfig.BaseUrl}/tareas/{id}"));
+
+            Debug.WriteLine($"📝 DeleteAsync Tarea - Status: {response.StatusCode}");
+            return (response.IsSuccessStatusCode, (int)response.StatusCode);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"❌ ERROR DeleteAsync Tarea: {ex.Message}");
+            return (false, 0);
         }
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
+        var (success, _) = await DeleteWithStatusAsync(id);
+        return success;
+    }
+
+    public async Task<(bool Success, int StatusCode)> UpdateAsync(int id, Tarea tarea)
+    {
         try
         {
             await AddAuthHeaderAsync();
 
-            var deleteUri = new Uri($"{ApiConfig.BaseUrl}/tareas/{id}");
-            var response = await _client.DeleteAsync(deleteUri);
+            var json = JsonSerializer.Serialize(tarea);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            return response.IsSuccessStatusCode;
+            var response = await _client.PatchAsync(new Uri($"{ApiConfig.BaseUrl}/tareas/{id}"), content);
+
+            Debug.WriteLine($"📝 UpdateAsync Tarea - Status: {response.StatusCode}");
+            return (response.IsSuccessStatusCode, (int)response.StatusCode);
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"ERROR DeleteAsync Tarea: {ex.Message}");
-            return false;
+            Debug.WriteLine($"❌ ERROR UpdateAsync Tarea: {ex.Message}");
+            return (false, 0);
         }
     }
 }
