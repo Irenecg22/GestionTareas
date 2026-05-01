@@ -20,6 +20,11 @@
         Title="Tareas"
         ContentTemplate="{DataTemplate v:TareaView}"
         Route="tareasPage" />
+    
+    <ShellContent
+        Title="Reportes"
+        ContentTemplate="{DataTemplate v:ReportesView}"
+        Route="reportesPage" />
 
     <ShellContent
         Title="Ajustes"

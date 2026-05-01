@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+             xmlns:vm="clr-namespace:GestionTareas.ViewModel"
+             x:Class="GestionTareas.View.ReportesView"
+             x:DataType="vm:ReportesViewModel"
+             Title="Analytics"
+             BackgroundColor="{AppThemeBinding Light=#F0F2F8, Dark=#0F0F12}">
+
+    <Grid RowDefinitions="Auto, 100, *, *" ColumnDefinitions="*, *" Padding="25" RowSpacing="15" ColumnSpacing="15">
+
+        <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="2" Spacing="4">
+            <Label Text="ANÁLISIS DE RENDIMIENTO" TextColor="#4834D4" FontSize="10" FontAttributes="Bold" CharacterSpacing="2"/>
+            <Label Text="Reporte Ejecutivo" FontSize="28" FontAttributes="Bold" 
+                   TextColor="{AppThemeBinding Light=#2D3436, Dark=White}"/>
+            <Label Text="Métricas de equipo y carga de trabajo actualizadas cada 7 días." 
+                   FontSize="12" TextColor="Gray"/>
+        </VerticalStackLayout>
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2" ColumnDefinitions="*,*,*,*" ColumnSpacing="12">
+            <Border Grid.Column="0" BackgroundColor="#4834D4" StrokeThickness="0" StrokeShape="RoundRectangle 15">
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="{Binding KpiUsuarios}" FontSize="24" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                    <Label Text="TOTAL" FontSize="8" FontAttributes="Bold" TextColor="#DFF9FB" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Border>
+            <Border Grid.Column="1" BackgroundColor="#5F27CD" StrokeThickness="0" StrokeShape="RoundRectangle 15">
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="{Binding KpiNuevos7Dias}" FontSize="24" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                    <Label Text="NUEVOS PROYECTOS (7 DÍAS)" FontSize="8" FontAttributes="Bold" TextColor="#DFF9FB" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Border>
+            <Border Grid.Column="2" BackgroundColor="#341F97" StrokeThickness="0" StrokeShape="RoundRectangle 15">
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="{Binding KpiUsuariosActivos}" FontSize="24" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                    <Label Text="USUARIOS ACTIVOS" FontSize="8" FontAttributes="Bold" TextColor="#DFF9FB" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Border>
+            <Border Grid.Column="3" BackgroundColor="#222F3E" StrokeThickness="0" StrokeShape="RoundRectangle 15">
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="{Binding KpiTareas}" FontSize="24" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                    <Label Text="TAREAS" FontSize="8" FontAttributes="Bold" TextColor="#DFF9FB" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2" Grid.Column="0" BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" StrokeShape="RoundRectangle 20" Padding="20" StrokeThickness="0">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Salud de Proyectos" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#2D3436, Dark=White}"/>
+                <micro:ChartView Chart="{Binding ChartProyectos}" HeightRequest="150" />
+            </VerticalStackLayout>
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="1" BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" StrokeShape="RoundRectangle 20" Padding="20" StrokeThickness="0">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Carga Tareas por Proyecto" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#2D3436, Dark=White}"/>
+                <micro:ChartView Chart="{Binding ChartTareasPorProyecto}" HeightRequest="150" />
+            </VerticalStackLayout>
+        </Border>
+
+        <Border Grid.Row="3" Grid.ColumnSpan="2" BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" StrokeShape="RoundRectangle 20" Padding="25" StrokeThickness="0">
+            <Grid ColumnDefinitions="*, 280">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Distribución Global de Tareas" FontAttributes="Bold" FontSize="16" TextColor="{AppThemeBinding Light=#2D3436, Dark=White}"/>
+                    <micro:ChartView Chart="{Binding ChartTareasEstado}" HeightRequest="180" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" Padding="25,0,0,0" VerticalOptions="Center" Spacing="12">
+                    <Label Text="SITUACIÓN TAREAS" FontAttributes="Bold" TextColor="#4834D4" FontSize="11" CharacterSpacing="1"/>
+                    <Label Text="Se observa el crecimiento que van teniendo las tareas en cómputo global." 
+                           FontSize="11" TextColor="Gray" LineHeight="1.4"/>
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

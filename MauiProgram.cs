@@ -3,6 +3,7 @@ using GestionTareas.Services;
 using GestionTareas.View;
 using GestionTareas.ViewModel;
 using Microsoft.Extensions.Logging;
+using Microcharts.Maui;
 
 namespace GestionTareas
 {
@@ -14,6 +15,7 @@ namespace GestionTareas
 
             builder
                 .UseMauiApp<App>()
+                .UseMicrocharts()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -27,11 +29,9 @@ namespace GestionTareas
             builder.Services.AddSingleton<UserService>();
             builder.Services.AddSingleton<IRestService<Usuario>>(s => s.GetRequiredService<UserService>());
 
-            // Registrar clases concretas para inyección directa
             builder.Services.AddTransient<TareaService>();
             builder.Services.AddTransient<ProyectoService>();
 
-            // Registrar interfaces delegando a las clases concretas
             builder.Services.AddTransient<IRestService<Tarea>>(sp => sp.GetRequiredService<TareaService>());
             builder.Services.AddTransient<IRestService<Proyecto>>(sp => sp.GetRequiredService<ProyectoService>());
 
@@ -48,6 +48,7 @@ namespace GestionTareas
             builder.Services.AddTransient<CrearTareaViewModel>();
             builder.Services.AddTransient<SignUpViewModel>();
             builder.Services.AddTransient<EditarPerfilViewModel>();
+            builder.Services.AddTransient<ReportesViewModel>();
 
             builder.Services.AddTransient<PanelPrincipal>();
             builder.Services.AddTransient<ProyectoView>();
@@ -59,6 +60,7 @@ namespace GestionTareas
             builder.Services.AddTransient<CrearTareaView>();
             builder.Services.AddTransient<SignUpView>();
             builder.Services.AddTransient<EditarPerfilView>();
+            builder.Services.AddTransient<ReportesView>();
 
             return builder.Build();
         }

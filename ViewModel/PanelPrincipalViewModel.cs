@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using GestionTareas.Model;
 using GestionTareas.Services;
+using GestionTareas.View;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -42,23 +44,9 @@ public partial class PanelPrincipalViewModel : ObservableObject
     {
         try
         {
-            Debug.WriteLine("📊 PanelPrincipalViewModel: Cargando datos del dashboard...");
-
             var listaProyectos = await _proyectoService.GetAllAsync() ?? new List<Proyecto>();
             var listaTareasTotal = await _tareaService.GetAllAsync() ?? new List<Tarea>();
-
-            Debug.WriteLine("👤 Obteniendo usuario autenticado actual...");
             var user = await _userService.GetCurrentUserAsync();
-
-            if (user != null)
-            {
-                Debug.WriteLine($"✅ Usuario cargado en Dashboard: {user.Nombre} ({user.Email})");
-            }
-            else
-            {
-                Debug.WriteLine("⚠️ No se pudo obtener el usuario actual para el Dashboard");
-            }
-
             var fecha = DateTime.Now.ToString("dddd, dd 'de' MMMM");
 
             int totalT = listaTareasTotal.Count;
@@ -83,7 +71,13 @@ public partial class PanelPrincipalViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ Error en PanelPrincipalViewModel.LoadData: {ex.Message}");
+            Debug.WriteLine($"Error en PanelPrincipalViewModel.LoadData: {ex.Message}");
         }
+    }
+
+    [RelayCommand]
+    private async Task VerReporte()
+    {
+        await Shell.Current.GoToAsync(nameof(ReportesView));
     }
 }
