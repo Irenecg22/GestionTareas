@@ -137,13 +137,13 @@ namespace GestionTareas.ViewModel
                     Nombre = Nombre,
                     Email = Email,
                     Password = Password,
-                    RolId = 1
+                    RolId = RolesConstantes.USUARIO  
                 };
 
                 Debug.WriteLine($"📤 Llamando a UserService.CreateAsync...");
                 Debug.WriteLine($"   Usuario: {nuevoUsuario.Nombre}");
                 Debug.WriteLine($"   Email: {nuevoUsuario.Email}");
-                Debug.WriteLine($"   RolId: {nuevoUsuario.RolId}");
+                Debug.WriteLine($"   RolId: {nuevoUsuario.RolId} ({RolesConstantes.ObtenerNombreRol(nuevoUsuario.RolId)})");
 
                 bool exito = await _userService.CreateAsync(nuevoUsuario);
 

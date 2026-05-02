@@ -46,6 +46,7 @@ namespace GestionTareas
             builder.Services.AddTransient<TareaDetalleViewModel>();
             builder.Services.AddTransient<CrearProyectoViewModel>();
             builder.Services.AddTransient<CrearTareaViewModel>();
+            builder.Services.AddTransient<EditarTareaViewModel>();
             builder.Services.AddTransient<SignUpViewModel>();
             builder.Services.AddTransient<EditarPerfilViewModel>();
             builder.Services.AddTransient<ReportesViewModel>();
@@ -58,6 +59,7 @@ namespace GestionTareas
             builder.Services.AddTransient<TareaDetalleView>();
             builder.Services.AddTransient<CrearProyectoView>();
             builder.Services.AddTransient<CrearTareaView>();
+            builder.Services.AddTransient<EditarTareaView>();
             builder.Services.AddTransient<SignUpView>();
             builder.Services.AddTransient<EditarPerfilView>();
             builder.Services.AddTransient<ReportesView>();

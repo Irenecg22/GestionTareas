@@ -19,6 +19,23 @@ public class Tarea
     [JsonPropertyName("id_proyecto")]
     public int ProyectoId { get; set; }
 
+    [JsonPropertyName("nombre_proyecto")]
+    public string? NombreProyecto { get; set; }
+
     [JsonPropertyName("id_usuario_asignado")]
-    public int? UsuarioId { get; set; }
+    public int? UsuarioAsignadoId { get; set; }
+
+    [JsonPropertyName("nombre_usuario_asignado")]
+    public string? NombreUsuarioAsignado { get; set; }
+
+    // Propiedades auxiliares para UI
+    [JsonIgnore]
+    public string ProyectoDisplay => !string.IsNullOrWhiteSpace(NombreProyecto) 
+        ? $"Proyecto: {NombreProyecto}" 
+        : $"Proyecto: {ProyectoId}";
+
+    [JsonIgnore]
+    public string AsignadoDisplay => string.IsNullOrWhiteSpace(NombreUsuarioAsignado) 
+        ? "Sin asignar" 
+        : NombreUsuarioAsignado;
 }

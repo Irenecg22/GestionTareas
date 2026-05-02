@@ -81,11 +81,20 @@
                                             <Border BackgroundColor="#F3E5F5" 
                                     StrokeShape="RoundRectangle 10" 
                                     Padding="8,2">
-                                                <Label FontSize="11" TextColor="#7B1FA2">
+                                                <Label Text="{Binding ProyectoDisplay}" 
+                                                       FontSize="11" 
+                                                       TextColor="#7B1FA2" 
+                                                       FontAttributes="Bold"/>
+                                            </Border>
+
+                                            <Border BackgroundColor="#E8F4FD" 
+                                    StrokeShape="RoundRectangle 10" 
+                                    Padding="8,2">
+                                                <Label FontSize="11" TextColor="#1976D2">
                                                     <Label.FormattedText>
                                                         <FormattedString>
-                                                            <Span Text="Proyecto: " FontAttributes="None" />
-                                                            <Span Text="{Binding ProyectoId}" FontAttributes="Bold" />
+                                                            <Span Text="Asignado: " FontAttributes="None" />
+                                                            <Span Text="{Binding AsignadoDisplay}" FontAttributes="Bold" />
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
@@ -158,11 +167,20 @@
                                             <Border BackgroundColor="#F3E5F5" 
                  StrokeShape="RoundRectangle 10" 
                  Padding="8,2">
-                                                <Label FontSize="11" TextColor="#7B1FA2">
+                                                <Label Text="{Binding ProyectoDisplay}" 
+                                                       FontSize="11" 
+                                                       TextColor="#7B1FA2" 
+                                                       FontAttributes="Bold"/>
+                                            </Border>
+
+                                            <Border BackgroundColor="#E8F4FD" 
+                 StrokeShape="RoundRectangle 10" 
+                 Padding="8,2">
+                                                <Label FontSize="11" TextColor="#1976D2">
                                                     <Label.FormattedText>
                                                         <FormattedString>
-                                                            <Span Text="Proyecto: " FontAttributes="None" />
-                                                            <Span Text="{Binding ProyectoId}" FontAttributes="Bold" />
+                                                            <Span Text="Asignado: " FontAttributes="None" />
+                                                            <Span Text="{Binding AsignadoDisplay}" FontAttributes="Bold" />
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
@@ -235,11 +253,20 @@
                                             <Border BackgroundColor="#F3E5F5" 
                  StrokeShape="RoundRectangle 10" 
                  Padding="8,2">
-                                                <Label FontSize="11" TextColor="#7B1FA2">
+                                                <Label Text="{Binding ProyectoDisplay}" 
+                                                       FontSize="11" 
+                                                       TextColor="#7B1FA2" 
+                                                       FontAttributes="Bold"/>
+                                            </Border>
+
+                                            <Border BackgroundColor="#E8F4FD" 
+                 StrokeShape="RoundRectangle 10" 
+                 Padding="8,2">
+                                                <Label FontSize="11" TextColor="#1976D2">
                                                     <Label.FormattedText>
                                                         <FormattedString>
-                                                            <Span Text="Proyecto: " FontAttributes="None" />
-                                                            <Span Text="{Binding ProyectoId}" FontAttributes="Bold" />
+                                                            <Span Text="Asignado: " FontAttributes="None" />
+                                                            <Span Text="{Binding AsignadoDisplay}" FontAttributes="Bold" />
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
@@ -274,6 +301,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </Grid>
+
         </Grid>
     </Grid>
 </ContentPage>
