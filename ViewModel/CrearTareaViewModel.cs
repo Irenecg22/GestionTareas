@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
@@ -7,30 +7,13 @@ using GestionTareas.Services;
 
 namespace GestionTareas.ViewModel;
 
-[QueryProperty(nameof(TareaEditar), "TareaParaEditar")]
+/// <summary>
+/// ViewModel para CREAR nuevas tareas (no editar)
+/// </summary>
 public class CrearTareaViewModel : INotifyPropertyChanged
 {
     private readonly TareaService _tareaService;
     private readonly ProyectoService _proyectoService;
-
-    private Tarea _tareaEditar;
-    public Tarea TareaEditar
-    {
-        get => _tareaEditar;
-        set
-        {
-            _tareaEditar = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(EsEdicion));
-            OnPropertyChanged(nameof(TituloPantalla));
-            OnPropertyChanged(nameof(TextoBoton));
-            CargarTareaParaEditar(value);
-        }
-    }
-
-    public bool EsEdicion => TareaEditar != null;
-    public string TituloPantalla => EsEdicion ? "Editar Tarea" : "Nueva Tarea";
-    public string TextoBoton => EsEdicion ? "Guardar Cambios" : "Guardar Tarea";
 
     private string _titulo;
     public string Titulo { get => _titulo; set { _titulo = value; OnPropertyChanged(); } }
@@ -38,6 +21,7 @@ public class CrearTareaViewModel : INotifyPropertyChanged
     private string _descripcion;
     public string Descripcion { get => _descripcion; set { _descripcion = value; OnPropertyChanged(); } }
 
+    // Estado siempre es "Pendiente" por defecto
     private string _estado = "Pendiente";
     public string Estado { get => _estado; set { _estado = value; OnPropertyChanged(); } }
 
@@ -59,10 +43,8 @@ public class CrearTareaViewModel : INotifyPropertyChanged
     public string MensajeError
     {
         get => _mensajeError;
-        set { _mensajeError = value; OnPropertyChanged(); OnPropertyChanged(nameof(TieneMensaje)); }
+        set { _mensajeError = value; OnPropertyChanged(); }
     }
-
-    public bool TieneMensaje => !string.IsNullOrEmpty(MensajeError);
 
     public ICommand CrearTareaCommand { get; }
 
@@ -92,19 +74,6 @@ public class CrearTareaViewModel : INotifyPropertyChanged
         }
     }
 
-    private void CargarTareaParaEditar(Tarea tarea)
-    {
-        if (tarea != null)
-        {
-            Titulo = tarea.Titulo;
-            Descripcion = tarea.Descripcion;
-            Estado = tarea.Estado;
-
-            // Seleccionar el proyecto correspondiente en el picker
-            ProyectoSeleccionado = ProyectosDisponibles.FirstOrDefault(p => p.Id == tarea.ProyectoId);
-        }
-    }
-
     private async Task CrearTareaAsync()
     {
         MensajeError = null;
@@ -125,36 +94,22 @@ public class CrearTareaViewModel : INotifyPropertyChanged
         {
             Titulo = Titulo,
             Descripcion = Descripcion,
-            Estado = Estado,
-            ProyectoId = ProyectoSeleccionado.Id
+            Estado = "Pendiente", // Siempre Pendiente al crear
+            ProyectoId = ProyectoSeleccionado.Id,
+            UsuarioAsignadoId = null // Sin asignar inicialmente
         };
 
-        bool success;
-        int statusCode;
-
-        if (EsEdicion)
-        {
-            // Actualizar tarea existente
-            (success, statusCode) = await _tareaService.UpdateAsync(TareaEditar.Id, tarea);
-        }
-        else
-        {
-            // Crear nueva tarea
-            (success, statusCode) = await _tareaService.CreateWithStatusAsync(tarea);
-        }
+        var (success, statusCode) = await _tareaService.CreateWithStatusAsync(tarea);
 
         if (success)
         {
-            string mensaje = EsEdicion ? "Tarea actualizada" : "Tarea creada";
-            await Application.Current.MainPage.DisplayAlert("Éxito", mensaje, "OK");
+            await Application.Current.MainPage.DisplayAlert("Éxito", "Tarea creada correctamente", "OK");
             await Shell.Current.GoToAsync("..");
         }
         else if (statusCode == 403)
         {
-            string mensaje = EsEdicion 
-                ? "No tienes permisos para editar esta tarea." 
-                : "No tienes permisos para crear tareas en este proyecto.";
-            await Application.Current.MainPage.DisplayAlert("Sin permisos", mensaje, "OK");
+            await Application.Current.MainPage.DisplayAlert("Sin permisos",
+                "No tienes permisos para crear tareas en este proyecto.", "OK");
         }
         else if (statusCode == 401)
         {
@@ -163,8 +118,7 @@ public class CrearTareaViewModel : INotifyPropertyChanged
         }
         else
         {
-            string mensaje = EsEdicion ? "No se pudo actualizar la tarea." : "No se pudo crear la tarea.";
-            await Application.Current.MainPage.DisplayAlert("Error", mensaje, "OK");
+            await Application.Current.MainPage.DisplayAlert("Error", "No se pudo crear la tarea.", "OK");
         }
     }
 

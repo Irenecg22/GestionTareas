@@ -16,6 +16,39 @@ public class ProyectoUsuario
     [JsonPropertyName("rol_proyecto")]
     public string RolProyecto { get; set; } = "viewer";
 
+    /// <summary>
+    /// Nombre del usuario (viene directamente del backend)
+    /// </summary>
+    [JsonPropertyName("nombre_usuario")]
+    public string? NombreUsuario { get; set; }
+
+    /// <summary>
+    /// Email del usuario (viene directamente del backend)
+    /// </summary>
+    [JsonPropertyName("email_usuario")]
+    public string? EmailUsuario { get; set; }
+
+    /// <summary>
+    /// Nombre a mostrar en UI con fallback a "Usuario #id"
+    /// </summary>
+    [JsonIgnore]
+    public string NombreMostrar =>
+        !string.IsNullOrWhiteSpace(NombreUsuario)
+            ? NombreUsuario
+            : $"Usuario #{IdUsuario}";
+
+    /// <summary>
+    /// Email a mostrar en UI, vacío si no está disponible
+    /// </summary>
+    [JsonIgnore]
+    public string EmailMostrar => EmailUsuario ?? "";
+
+    /// <summary>
+    /// Indica si hay email disponible para mostrar
+    /// </summary>
+    [JsonIgnore]
+    public bool TieneEmail => !string.IsNullOrWhiteSpace(EmailUsuario);
+
     [JsonIgnore]
     public string RolProyectoDisplay => RolHelper.ToSpanish(RolProyecto);
 }

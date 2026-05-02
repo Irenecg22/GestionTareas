@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GestionTareas.Model;
 using GestionTareas.Services;
+using Microsoft.Extensions.DependencyInjection;
 using System.Text.RegularExpressions;
 
 namespace GestionTareas.ViewModel;
@@ -124,20 +125,57 @@ public partial class EditarPerfilViewModel : ObservableObject
         {
             IsLoading = true;
 
+            // Detectar si se está cambiando el email o la contraseña
+            bool emailCambiado = Email != UsuarioActual.Email;
+            bool passwordCambiado = !string.IsNullOrWhiteSpace(NuevaPassword);
+
             var request = new UsuarioUpdateRequest
             {
                 Nombre = Nombre,
                 Email = Email,
-                Password = string.IsNullOrWhiteSpace(NuevaPassword) ? null : NuevaPassword
+                Password = passwordCambiado ? NuevaPassword : null
             };
 
             var (success, statusCode, errorMessage) = await _userService.UpdateUserAsync(UsuarioActual.Id, request);
 
             if (success)
             {
-                await Application.Current.MainPage.DisplayAlert("Éxito", 
-                    "Perfil actualizado correctamente.", "OK");
-                await Shell.Current.GoToAsync("..");
+                // Si cambió el email o la contraseña, hay que hacer logout y pedir re-login
+                if (emailCambiado || passwordCambiado)
+                {
+                    string mensaje = "Perfil actualizado correctamente.\n\n";
+
+                    if (emailCambiado && passwordCambiado)
+                    {
+                        mensaje += "Has cambiado tu email y contraseña. Por seguridad, debes iniciar sesión nuevamente con tus nuevas credenciales.";
+                    }
+                    else if (emailCambiado)
+                    {
+                        mensaje += "Has cambiado tu email. Por seguridad, debes iniciar sesión nuevamente con tu nuevo email.";
+                    }
+                    else
+                    {
+                        mensaje += "Has cambiado tu contraseña. Por seguridad, debes iniciar sesión nuevamente.";
+                    }
+
+                    await Application.Current.MainPage.DisplayAlert("Actualización exitosa", mensaje, "OK");
+
+                    // Hacer logout y volver al login
+                    _userService.Logout();
+
+                    if (Application.Current != null)
+                    {
+                        Application.Current.Windows[0].Page = new NavigationPage(
+                            Application.Current.Handler.MauiContext.Services.GetRequiredService<GestionTareas.View.LoginView>());
+                    }
+                }
+                else
+                {
+                    // Solo cambió el nombre, no requiere re-login
+                    await Application.Current.MainPage.DisplayAlert("Éxito", 
+                        "Perfil actualizado correctamente.", "OK");
+                    await Shell.Current.GoToAsync("..");
+                }
             }
             else if (statusCode == 401)
             {

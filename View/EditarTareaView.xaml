@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GestionTareas.ViewModel"
+             x:Class="GestionTareas.View.EditarTareaView"
+             x:DataType="vm:EditarTareaViewModel"
+             Title="Editar Tarea"
+             BackgroundColor="{AppThemeBinding Light=#F9FAFB, Dark=#0F0F12}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20">
+
+            <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                <Label Text="Editar Tarea" FontSize="26" FontAttributes="Bold" 
+                       TextColor="{AppThemeBinding Light=#111827, Dark=White}" HorizontalTextAlignment="Center"/>
+                <Label Text="Modifica los detalles de la tarea" FontSize="14" 
+                       TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}" HorizontalTextAlignment="Center"/>
+            </VerticalStackLayout>
+
+            <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" 
+                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" Padding="20">
+                <Border.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light=Black, Dark=Transparent}" Offset="0,2" Radius="10" Opacity="0.05" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="15">
+                    <!-- Título -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Título" FontSize="13" FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light=#374151, Dark=#D1D5DB}" Margin="4,0"/>
+                        <Border Stroke="{AppThemeBinding Light=#E5E7EB, Dark=#3F3F46}" StrokeShape="RoundRectangle 12" 
+                                BackgroundColor="{AppThemeBinding Light=#F3F4F6, Dark=#27272A}" Padding="12,2">
+                            <Entry Text="{Binding Titulo}" Placeholder="Título de la tarea" PlaceholderColor="#9CA3AF" 
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Proyecto (solo lectura) -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Proyecto" FontSize="13" FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light=#374151, Dark=#D1D5DB}" Margin="4,0"/>
+                        <Border Stroke="{AppThemeBinding Light=#E5E7EB, Dark=#3F3F46}" StrokeShape="RoundRectangle 12" 
+                                BackgroundColor="{AppThemeBinding Light=#F9FAFB, Dark=#18181B}" Padding="12">
+                            <Label Text="{Binding NombreProyecto}" 
+                                   TextColor="{AppThemeBinding Light=#6B7280, Dark=#9CA3AF}" 
+                                   FontSize="14"/>
+                        </Border>
+                        <Label Text="El proyecto no puede cambiarse una vez creada la tarea" 
+                               FontSize="11" TextColor="#9CA3AF" Margin="4,0"/>
+                    </VerticalStackLayout>
+
+                    <!-- Estado -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Estado" FontSize="13" FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light=#374151, Dark=#D1D5DB}" Margin="4,0"/>
+                        <Border Stroke="{AppThemeBinding Light=#E5E7EB, Dark=#3F3F46}" StrokeShape="RoundRectangle 12" 
+                                BackgroundColor="{AppThemeBinding Light=#F3F4F6, Dark=#27272A}" Padding="12,0">
+                            <Picker ItemsSource="{Binding EstadosDisponibles}"
+                                    SelectedItem="{Binding Estado}"
+                                    TextColor="{AppThemeBinding Light=#111827, Dark=White}"
+                                    TitleColor="{AppThemeBinding Light=#9CA3AF, Dark=#6B7280}"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Asignar a -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Asignar a" FontSize="13" FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light=#374151, Dark=#D1D5DB}" Margin="4,0"/>
+                        <Border Stroke="{AppThemeBinding Light=#E5E7EB, Dark=#3F3F46}" StrokeShape="RoundRectangle 12" 
+                                BackgroundColor="{AppThemeBinding Light=#F3F4F6, Dark=#27272A}" Padding="12,0">
+                            <Picker ItemsSource="{Binding MiembrosDisponibles}"
+                                    SelectedItem="{Binding MiembroSeleccionado}"
+                                    ItemDisplayBinding="{Binding DisplayText}"
+                                    Title="Seleccionar miembro"
+                                    TextColor="{AppThemeBinding Light=#111827, Dark=White}"
+                                    TitleColor="{AppThemeBinding Light=#9CA3AF, Dark=#6B7280}"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Descripción -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Descripción" FontSize="13" FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light=#374151, Dark=#D1D5DB}" Margin="4,0"/>
+                        <Border Stroke="{AppThemeBinding Light=#E5E7EB, Dark=#3F3F46}" StrokeShape="RoundRectangle 12" 
+                                BackgroundColor="{AppThemeBinding Light=#F3F4F6, Dark=#27272A}" Padding="12,2">
+                            <Editor Text="{Binding Descripcion}" Placeholder="Descripción de la tarea..." HeightRequest="100" 
+                                    TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Botones -->
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="12" Margin="0,10,0,0">
+                        <Button Grid.Column="0" Text="Cancelar" 
+                                Command="{Binding CancelarCommand}"
+                                BackgroundColor="{AppThemeBinding Light=#E5E7EB, Dark=#3F3F46}" 
+                                TextColor="{AppThemeBinding Light=#374151, Dark=White}" 
+                                FontAttributes="Bold"
+                                CornerRadius="12" 
+                                HeightRequest="48"/>
+
+                        <Button Grid.Column="1" Text="Guardar Cambios" 
+                                Command="{Binding GuardarCambiosCommand}"
+                                BackgroundColor="#7C3AED" 
+                                TextColor="White" 
+                                FontAttributes="Bold"
+                                CornerRadius="12" 
+                                HeightRequest="48"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Indicador de carga -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}" 
+                               IsVisible="{Binding IsLoading}"
+                               Color="#7C3AED"
+                               HeightRequest="40"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

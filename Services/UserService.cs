@@ -217,40 +217,35 @@ public class UserService : IRestService<Usuario>
             _client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", token);
 
-            // Intentar primero /auth/me
-            Debug.WriteLine($"👤 Intentando obtener usuario actual desde: {ApiConfig.BaseUrl}/auth/me");
+            // Usar /auth/me como fuente principal de verdad
+            Debug.WriteLine($"👤 Obteniendo usuario actual desde: {ApiConfig.BaseUrl}/auth/me");
 
             var response = await _client.GetAsync($"{ApiConfig.BaseUrl}/auth/me");
 
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine($"✅ Usuario actual obtenido desde /auth/me: {content}");
+                Debug.WriteLine($"✅ Usuario actual obtenido desde /auth/me");
 
                 var usuario = JsonSerializer.Deserialize<Usuario>(content, _jsonOptions);
+
+                if (usuario != null)
+                {
+                    Debug.WriteLine($"   ID: {usuario.Id}");
+                    Debug.WriteLine($"   Nombre: {usuario.Nombre}");
+                    Debug.WriteLine($"   Email: {usuario.Email}");
+                }
+
                 return usuario;
             }
 
-            Debug.WriteLine($"⚠️ /auth/me no disponible ({response.StatusCode}), intentando método alternativo...");
+            Debug.WriteLine($"❌ /auth/me falló con código: {response.StatusCode}");
 
-            // Método alternativo: decodificar el email del token JWT y buscar por email
-            var userEmail = GetEmailFromToken(token);
-            if (!string.IsNullOrWhiteSpace(userEmail))
+            // Si el token es inválido o expiró, limpiar el token guardado
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                Debug.WriteLine($"📧 Email extraído del token: {userEmail}");
-                Debug.WriteLine($"🔍 Buscando usuario por email en: {ApiConfig.BaseUrl}/usuarios");
-
-                var usuarios = await GetAllAsync();
-                var usuarioActual = usuarios?.FirstOrDefault(u => 
-                    u.Email.Equals(userEmail, StringComparison.OrdinalIgnoreCase));
-
-                if (usuarioActual != null)
-                {
-                    Debug.WriteLine($"✅ Usuario encontrado: {usuarioActual.Nombre} ({usuarioActual.Email})");
-                    return usuarioActual;
-                }
-
-                Debug.WriteLine($"❌ No se encontró usuario con email: {userEmail}");
+                Debug.WriteLine($"⚠️ Token expirado o inválido, limpiando token de SecureStorage");
+                Logout();
             }
 
             return null;
@@ -258,44 +253,6 @@ public class UserService : IRestService<Usuario>
         catch (Exception ex)
         {
             Debug.WriteLine($"❌ ERROR GetCurrentUserAsync: {ex.Message}");
-            return null;
-        }
-    }
-
-    private string? GetEmailFromToken(string token)
-    {
-        try
-        {
-            // JWT token tiene formato: header.payload.signature
-            var parts = token.Split('.');
-            if (parts.Length != 3)
-                return null;
-
-            // Decodificar el payload (segunda parte)
-            var payload = parts[1];
-
-            // Ajustar padding para Base64
-            var base64 = payload.Replace('-', '+').Replace('_', '/');
-            while (base64.Length % 4 != 0)
-                base64 += "=";
-
-            var jsonBytes = Convert.FromBase64String(base64);
-            var json = Encoding.UTF8.GetString(jsonBytes);
-
-            Debug.WriteLine($"🔓 Token payload decodificado: {json}");
-
-            // Parsear JSON para obtener el "sub" (subject) que generalmente contiene el email
-            using var document = JsonDocument.Parse(json);
-            if (document.RootElement.TryGetProperty("sub", out var subElement))
-            {
-                return subElement.GetString();
-            }
-
-            return null;
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"⚠️ Error decodificando token: {ex.Message}");
             return null;
         }
     }
@@ -315,10 +272,12 @@ public class UserService : IRestService<Usuario>
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var updateUrl = $"{ApiConfig.BaseUrl}/usuarios/{userId}";
-            Debug.WriteLine($"✏️ Actualizando usuario en: {updateUrl}");
-            Debug.WriteLine($"   Nombre: {request.Nombre}");
-            Debug.WriteLine($"   Email: {request.Email}");
-            Debug.WriteLine($"   Contraseña: {(string.IsNullOrEmpty(request.Password) ? "No cambiar" : "Actualizar")}");
+            Debug.WriteLine($"✏️ ===== ACTUALIZANDO USUARIO =====");
+            Debug.WriteLine($"   URL: {updateUrl}");
+            Debug.WriteLine($"   User ID: {userId}");
+            Debug.WriteLine($"   Nombre: {request.Nombre ?? "(no cambiar)"}");
+            Debug.WriteLine($"   Email: {request.Email ?? "(no cambiar)"}");
+            Debug.WriteLine($"   Password: {(string.IsNullOrEmpty(request.Password) ? "(no cambiar)" : "***********")}");
 
             // Serializar solo los campos no nulos
             var options = new JsonSerializerOptions
@@ -332,19 +291,24 @@ public class UserService : IRestService<Usuario>
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
+            Debug.WriteLine($"⏳ Enviando PATCH request...");
             var response = await _client.PatchAsync(updateUrl, content);
 
-            Debug.WriteLine($"📬 Status Code: {response.StatusCode}");
+            Debug.WriteLine($"📬 Status Code: {response.StatusCode} ({(int)response.StatusCode})");
 
             if (response.IsSuccessStatusCode)
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine($"✅ Usuario actualizado correctamente: {responseContent}");
+                Debug.WriteLine($"✅ Usuario actualizado correctamente");
+                Debug.WriteLine($"   Response: {responseContent}");
+                Debug.WriteLine($"✏️ ===== FIN ACTUALIZACIÓN =====");
                 return (true, (int)response.StatusCode, null);
             }
 
             var errorContent = await response.Content.ReadAsStringAsync();
-            Debug.WriteLine($"❌ Error actualizando usuario: {errorContent}");
+            Debug.WriteLine($"❌ Error actualizando usuario");
+            Debug.WriteLine($"   Status: {response.StatusCode}");
+            Debug.WriteLine($"   Content: {errorContent}");
 
             // Intentar extraer mensaje de error del backend
             string? errorMessage = null;
@@ -354,6 +318,7 @@ public class UserService : IRestService<Usuario>
                 if (document.RootElement.TryGetProperty("detail", out var detailElement))
                 {
                     errorMessage = detailElement.GetString();
+                    Debug.WriteLine($"   Detail: {errorMessage}");
                 }
             }
             catch
@@ -361,11 +326,22 @@ public class UserService : IRestService<Usuario>
                 errorMessage = errorContent;
             }
 
+            Debug.WriteLine($"✏️ ===== FIN ACTUALIZACIÓN (ERROR) =====");
             return (false, (int)response.StatusCode, errorMessage);
+        }
+        catch (HttpRequestException httpEx)
+        {
+            Debug.WriteLine($"❌ ERROR HTTP en UpdateUserAsync:");
+            Debug.WriteLine($"   Mensaje: {httpEx.Message}");
+            Debug.WriteLine($"   ¿Backend corriendo? Verifica {ApiConfig.BaseUrl}");
+            return (false, 0, $"Error de conexión: {httpEx.Message}");
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ ERROR UpdateUserAsync: {ex.Message}");
+            Debug.WriteLine($"❌ ERROR UpdateUserAsync:");
+            Debug.WriteLine($"   Tipo: {ex.GetType().Name}");
+            Debug.WriteLine($"   Mensaje: {ex.Message}");
+            Debug.WriteLine($"   StackTrace: {ex.StackTrace}");
             return (false, 0, ex.Message);
         }
     }

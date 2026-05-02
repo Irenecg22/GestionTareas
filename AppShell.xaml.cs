@@ -16,6 +16,7 @@ namespace GestionTareas
             Routing.RegisterRoute("proyectoDetalle", typeof(ProyectoDetalleView));
             Routing.RegisterRoute(nameof(CrearProyectoView), typeof(CrearProyectoView));
             Routing.RegisterRoute(nameof(CrearTareaView), typeof(CrearTareaView));
+            Routing.RegisterRoute("EditarTareaView", typeof(EditarTareaView));
             Routing.RegisterRoute("EditarPerfilView", typeof(EditarPerfilView));
             Routing.RegisterRoute(nameof(ReportesView), typeof(ReportesView));
         }

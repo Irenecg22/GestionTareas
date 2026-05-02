@@ -100,9 +100,9 @@ public partial class TareaViewModel : ObservableObject
     {
         if (tarea == null) return;
 
-        await Shell.Current.GoToAsync("CrearTareaView", new Dictionary<string, object>
+        await Shell.Current.GoToAsync("EditarTareaView", new Dictionary<string, object>
         {
-            { "TareaParaEditar", tarea }
+            { "TareaId", tarea.Id }
         });
     }
 

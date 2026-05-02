@@ -111,12 +111,23 @@
                                 <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" 
                                         StrokeShape="RoundRectangle 12" StrokeThickness="0" Padding="12">
                                     <Grid ColumnDefinitions="*, Auto, Auto" ColumnSpacing="10">
-                                        <VerticalStackLayout VerticalOptions="Center">
-                                            <Label Text="{Binding IdUsuario, StringFormat='Usuario #{0}'}" 
+                                        <VerticalStackLayout VerticalOptions="Center" Spacing="3">
+                                            <!-- Nombre del usuario -->
+                                            <Label Text="{Binding NombreMostrar}" 
                                                    FontAttributes="Bold" FontSize="14"
                                                    TextColor="{AppThemeBinding Light=#1E293B, Dark=White}"/>
-                                            <Label Text="{Binding RolProyectoDisplay}" FontSize="12" 
-                                                   TextColor="#7C3AED" FontAttributes="Bold"/>
+
+                                            <!-- Email del usuario (opcional) -->
+                                            <Label Text="{Binding EmailMostrar}" 
+                                                   FontSize="11" 
+                                                   TextColor="{AppThemeBinding Light=#64748B, Dark=#94A3B8}"
+                                                   IsVisible="{Binding TieneEmail}"/>
+
+                                            <!-- Rol del proyecto -->
+                                            <Label Text="{Binding RolProyectoDisplay}" 
+                                                   FontSize="12" 
+                                                   TextColor="#7C3AED" 
+                                                   FontAttributes="Bold"/>
                                         </VerticalStackLayout>
 
                                         <Button Grid.Column="1" Text="✏️" 
