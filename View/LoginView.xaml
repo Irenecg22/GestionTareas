@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GestionTareas.View.LoginView"
-             Title="Login"
+             Title=""
              BackgroundColor="#F8F7FF">
 
     <Grid VerticalOptions="Center" HorizontalOptions="Fill" Padding="30">
