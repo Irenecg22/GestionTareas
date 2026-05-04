@@ -92,7 +92,9 @@ public partial class ReportesViewModel : ObservableObject
                 Entries = entriesTareasProy,
                 LabelTextSize = 24,
                 LabelColor = textColor,
-                BackgroundColor = SKColors.Transparent
+                BackgroundColor = SKColors.Transparent,
+                LabelOrientation = Orientation.Horizontal,
+                ValueLabelOrientation = Orientation.Horizontal
             };
 
             int done = tareas.Count(t => t.Estado == "Completada" || t.Estado == "Done");
@@ -108,7 +110,9 @@ public partial class ReportesViewModel : ObservableObject
             },
                 LabelTextSize = 24,
                 LabelColor = textColor,
-                BackgroundColor = SKColors.Transparent
+                BackgroundColor = SKColors.Transparent,
+                LabelOrientation = Orientation.Horizontal,
+                ValueLabelOrientation = Orientation.Horizontal
             };
         }
         catch (Exception ex)
