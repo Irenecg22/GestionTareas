@@ -48,14 +48,14 @@
         <Border Grid.Row="2" Grid.Column="0" BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" StrokeShape="RoundRectangle 20" Padding="20" StrokeThickness="0">
             <VerticalStackLayout Spacing="10">
                 <Label Text="Tareas por Usuario" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#2D3436, Dark=White}"/>
-                <micro:ChartView Chart="{Binding ChartProyectos}" HeightRequest="150" />
+                <micro:ChartView Chart="{Binding ChartProyectos}" HeightRequest="160" />
             </VerticalStackLayout>
         </Border>
 
         <Border Grid.Row="2" Grid.Column="1" BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" StrokeShape="RoundRectangle 20" Padding="20" StrokeThickness="0">
             <VerticalStackLayout Spacing="10">
                 <Label Text="Carga Tareas por Proyecto" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#2D3436, Dark=White}"/>
-                <micro:ChartView Chart="{Binding ChartTareasPorProyecto}" HeightRequest="150" />
+                <micro:ChartView Chart="{Binding ChartTareasPorProyecto}" HeightRequest="160" />
             </VerticalStackLayout>
         </Border>
 
@@ -63,7 +63,7 @@
             <Grid ColumnDefinitions="*, 280">
                 <VerticalStackLayout Spacing="10">
                     <Label Text="Distribución Global de Tareas" FontAttributes="Bold" FontSize="16" TextColor="{AppThemeBinding Light=#2D3436, Dark=White}"/>
-                    <micro:ChartView Chart="{Binding ChartTareasEstado}" HeightRequest="180" />
+                    <micro:ChartView Chart="{Binding ChartTareasEstado}" HeightRequest="200" />
                 </VerticalStackLayout>
 
                 <VerticalStackLayout Grid.Column="1" Padding="25,0,0,0" VerticalOptions="Center" Spacing="12">

@@ -38,7 +38,7 @@ public partial class ReportesViewModel : ObservableObject
             var tareas = await _tareaService.GetAllAsync() ?? new();
             var usuarios = await _userService.GetAllAsync() ?? new();
 
-            // 1. KPI: Cambiado a Total Proyectos según tu petición
+            
             KpiUsuarios = proyectos.Count.ToString();
             KpiUsuariosActivos = usuarios.Count.ToString();
             KpiTareas = tareas.Count.ToString();
@@ -54,21 +54,18 @@ public partial class ReportesViewModel : ObservableObject
             bool isDark = App.Current.RequestedTheme == AppTheme.Dark;
             var textColor = isDark ? SKColors.White : SKColor.Parse("#2D3436");
 
-            // Paleta de colores para los usuarios
             string[] coloresHex = { "#4834D4", "#6B21A8", "#A29BFE", "#00CEC9", "#FAB1A0", "#FD79A8" };
 
-            // 2. Gráfico circular: Cantidad de tareas por cada usuario
             var entriesUsuarios = usuarios.Select((u, index) => {
-                // Usamos UsuarioAsignadoId que es como se llama en tu modelo Tarea
                 var cantTareas = tareas.Count(t => t.UsuarioAsignadoId == u.Id);
 
                 return new ChartEntry(cantTareas)
                 {
-                    Label = u.Nombre, // Usamos la propiedad Nombre de tu clase Usuario
+                    Label = u.Nombre, 
                     ValueLabel = cantTareas.ToString(),
                     Color = SKColor.Parse(coloresHex[index % coloresHex.Length])
                 };
-            }).Where(e => e.Value > 0).ToArray(); // Solo mostramos usuarios que tengan al menos una tarea
+            }).Where(e => e.Value > 0).ToArray(); 
 
             ChartProyectos = new DonutChart
             {
@@ -79,7 +76,6 @@ public partial class ReportesViewModel : ObservableObject
                 HoleRadius = 0.5f
             };
 
-            // --- El resto de gráficos se mantienen igual ---
 
             var entriesTareasProy = proyectos.Select(p => {
                 var count = tareas.Count(t => t.ProyectoId == p.Id);
