@@ -22,7 +22,7 @@
             <Border Grid.Column="0" BackgroundColor="#4834D4" StrokeThickness="0" StrokeShape="RoundRectangle 15">
                 <VerticalStackLayout VerticalOptions="Center">
                     <Label Text="{Binding KpiUsuarios}" FontSize="24" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
-                    <Label Text="TOTAL" FontSize="8" FontAttributes="Bold" TextColor="#DFF9FB" HorizontalOptions="Center"/>
+                    <Label Text="TOTAL PROYECTOS" FontSize="8" FontAttributes="Bold" TextColor="#DFF9FB" HorizontalOptions="Center"/>
                 </VerticalStackLayout>
             </Border>
             <Border Grid.Column="1" BackgroundColor="#5F27CD" StrokeThickness="0" StrokeShape="RoundRectangle 15">
@@ -47,7 +47,7 @@
 
         <Border Grid.Row="2" Grid.Column="0" BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E24}" StrokeShape="RoundRectangle 20" Padding="20" StrokeThickness="0">
             <VerticalStackLayout Spacing="10">
-                <Label Text="Salud de Proyectos" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#2D3436, Dark=White}"/>
+                <Label Text="Tareas por Usuario" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#2D3436, Dark=White}"/>
                 <micro:ChartView Chart="{Binding ChartProyectos}" HeightRequest="150" />
             </VerticalStackLayout>
         </Border>

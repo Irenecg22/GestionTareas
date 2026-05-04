@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GestionTareas.View.SignUpView"
              Title="Registro"
-             BackgroundColor="#F8F7FF">
+             BackgroundColor="Lavender">
 
     <Grid VerticalOptions="Center" HorizontalOptions="Fill" Padding="30">
         <VerticalStackLayout Spacing="0" 

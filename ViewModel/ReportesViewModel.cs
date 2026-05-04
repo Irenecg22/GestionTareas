@@ -12,7 +12,6 @@ public partial class ReportesViewModel : ObservableObject
     private readonly ProyectoService _proyectoService;
     private readonly TareaService _tareaService;
     private readonly UserService _userService;
-    
 
     [ObservableProperty] private Microcharts.Chart _chartProyectos;
     [ObservableProperty] private Microcharts.Chart _chartTareasPorProyecto;
@@ -39,12 +38,11 @@ public partial class ReportesViewModel : ObservableObject
             var tareas = await _tareaService.GetAllAsync() ?? new();
             var usuarios = await _userService.GetAllAsync() ?? new();
 
-            
-            KpiUsuarios = usuarios.Count.ToString();
+            // 1. KPI: Cambiado a Total Proyectos según tu petición
+            KpiUsuarios = proyectos.Count.ToString();
             KpiUsuariosActivos = usuarios.Count.ToString();
             KpiTareas = tareas.Count.ToString();
 
-           
             var fechaLimite = DateTime.Now.AddDays(-7);
             KpiNuevos7Dias = proyectos.Count(p =>
             {
@@ -53,29 +51,35 @@ public partial class ReportesViewModel : ObservableObject
                 return false;
             }).ToString();
 
-           
             bool isDark = App.Current.RequestedTheme == AppTheme.Dark;
             var textColor = isDark ? SKColors.White : SKColor.Parse("#2D3436");
 
-            var moradoFuerte = SKColor.Parse("#4834D4");
-            var moradoMedio = SKColor.Parse("#6B21A8");
-            var moradoClaro = SKColor.Parse("#A29BFE");
+            // Paleta de colores para los usuarios
+            string[] coloresHex = { "#4834D4", "#6B21A8", "#A29BFE", "#00CEC9", "#FAB1A0", "#FD79A8" };
 
-           
-            int terminados = proyectos.Count(p => p.Nombre.ToLower().Contains("finalizado"));
-            int activos = proyectos.Count - terminados;
+            // 2. Gráfico circular: Cantidad de tareas por cada usuario
+            var entriesUsuarios = usuarios.Select((u, index) => {
+                // Usamos UsuarioAsignadoId que es como se llama en tu modelo Tarea
+                var cantTareas = tareas.Count(t => t.UsuarioAsignadoId == u.Id);
+
+                return new ChartEntry(cantTareas)
+                {
+                    Label = u.Nombre, // Usamos la propiedad Nombre de tu clase Usuario
+                    ValueLabel = cantTareas.ToString(),
+                    Color = SKColor.Parse(coloresHex[index % coloresHex.Length])
+                };
+            }).Where(e => e.Value > 0).ToArray(); // Solo mostramos usuarios que tengan al menos una tarea
 
             ChartProyectos = new DonutChart
             {
-                Entries = new[] {
-                    new ChartEntry(activos) { Label = "Activos", ValueLabel = activos.ToString(), Color = moradoFuerte },
-                    new ChartEntry(terminados) { Label = "Cerrados", ValueLabel = terminados.ToString(), Color = moradoClaro }
-                },
+                Entries = entriesUsuarios,
                 LabelTextSize = 24,
                 LabelColor = textColor,
                 BackgroundColor = SKColors.Transparent,
-                HoleRadius = 0.6f
+                HoleRadius = 0.5f
             };
+
+            // --- El resto de gráficos se mantienen igual ---
 
             var entriesTareasProy = proyectos.Select(p => {
                 var count = tareas.Count(t => t.ProyectoId == p.Id);
@@ -83,7 +87,7 @@ public partial class ReportesViewModel : ObservableObject
                 {
                     Label = p.Nombre.Length > 8 ? p.Nombre.Substring(0, 8) + ".." : p.Nombre,
                     ValueLabel = count.ToString(),
-                    Color = moradoMedio
+                    Color = SKColor.Parse("#6B21A8")
                 };
             }).ToArray();
 
@@ -102,10 +106,10 @@ public partial class ReportesViewModel : ObservableObject
             ChartTareasEstado = new BarChart
             {
                 Entries = new[] {
-                    new ChartEntry(todo) { Label = "To Do", ValueLabel = todo.ToString(), Color = SKColor.Parse("#FF7675") },
-                    new ChartEntry(doing) { Label = "Doing", ValueLabel = doing.ToString(), Color = moradoMedio },
-                    new ChartEntry(done) { Label = "Done", ValueLabel = done.ToString(), Color = SKColor.Parse("#55E6C1") }
-                },
+                new ChartEntry(todo) { Label = "To Do", ValueLabel = todo.ToString(), Color = SKColor.Parse("#FF7675") },
+                new ChartEntry(doing) { Label = "Doing", ValueLabel = doing.ToString(), Color = SKColor.Parse("#6B21A8") },
+                new ChartEntry(done) { Label = "Done", ValueLabel = done.ToString(), Color = SKColor.Parse("#55E6C1") }
+            },
                 LabelTextSize = 24,
                 LabelColor = textColor,
                 BackgroundColor = SKColors.Transparent
@@ -113,7 +117,7 @@ public partial class ReportesViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($" Error : {ex.Message}");
+            Debug.WriteLine($" Error en Dashboard: {ex.Message}");
         }
     }
 }
