@@ -96,7 +96,6 @@
                     </VerticalStackLayout>
                 </VerticalStackLayout>
 
-                <!-- SECCIÓN MIEMBROS -->
                 <VerticalStackLayout Spacing="12">
                     <Grid ColumnDefinitions="*, Auto">
                         <Label Text="MIEMBROS" FontSize="12" FontAttributes="Bold" TextColor="#94A3B8" CharacterSpacing="1"/>
@@ -104,7 +103,6 @@
                                FontSize="11" TextColor="#7C3AED" FontAttributes="Bold"/>
                     </Grid>
 
-                    <!-- Lista de miembros -->
                     <VerticalStackLayout BindableLayout.ItemsSource="{Binding Miembros}" Spacing="8">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="model:ProyectoUsuario">
@@ -112,18 +110,15 @@
                                         StrokeShape="RoundRectangle 12" StrokeThickness="0" Padding="12">
                                     <Grid ColumnDefinitions="*, Auto, Auto" ColumnSpacing="10">
                                         <VerticalStackLayout VerticalOptions="Center" Spacing="3">
-                                            <!-- Nombre del usuario -->
                                             <Label Text="{Binding NombreMostrar}" 
                                                    FontAttributes="Bold" FontSize="14"
                                                    TextColor="{AppThemeBinding Light=#1E293B, Dark=White}"/>
 
-                                            <!-- Email del usuario (opcional) -->
                                             <Label Text="{Binding EmailMostrar}" 
                                                    FontSize="11" 
                                                    TextColor="{AppThemeBinding Light=#64748B, Dark=#94A3B8}"
                                                    IsVisible="{Binding TieneEmail}"/>
 
-                                            <!-- Rol del proyecto -->
                                             <Label Text="{Binding RolProyectoDisplay}" 
                                                    FontSize="12" 
                                                    TextColor="#7C3AED" 
@@ -147,7 +142,6 @@
                         </BindableLayout.ItemTemplate>
                     </VerticalStackLayout>
 
-                    <!-- Formulario añadir miembro -->
                     <Border BackgroundColor="{AppThemeBinding Light=#F5F3FF, Dark=#1E1B4B}" 
                             StrokeShape="RoundRectangle 15" StrokeThickness="0" Padding="15">
                         <VerticalStackLayout Spacing="10">

@@ -28,7 +28,6 @@ public class Tarea
     [JsonPropertyName("nombre_usuario_asignado")]
     public string? NombreUsuarioAsignado { get; set; }
 
-    // Propiedades auxiliares para UI
     [JsonIgnore]
     public string ProyectoDisplay => !string.IsNullOrWhiteSpace(NombreProyecto) 
         ? $"Proyecto: {NombreProyecto}" 

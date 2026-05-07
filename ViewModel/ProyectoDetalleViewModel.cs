@@ -122,9 +122,9 @@ public partial class ProyectoDetalleViewModel : ObservableObject
         if (Proyecto == null || miembro == null) return;
 
         string nuevoRolDisplay = await Shell.Current.DisplayActionSheet(
-            $"Cambiar rol de Usuario {miembro.IdUsuario}",
-            "Cancelar", null,
-            "Propietario", "Editor", "Lector");
+        $"Cambiar rol de {miembro.NombreMostrar}",
+        "Cancelar", null,
+        "Propietario", "Editor", "Lector");
 
         if (nuevoRolDisplay == "Cancelar" || string.IsNullOrEmpty(nuevoRolDisplay))
             return;
@@ -155,9 +155,9 @@ public partial class ProyectoDetalleViewModel : ObservableObject
         if (Proyecto == null || miembro == null) return;
 
         bool confirmar = await Shell.Current.DisplayAlert(
-            "Eliminar miembro",
-            $"¿Seguro que quieres eliminar al usuario {miembro.IdUsuario} del proyecto?",
-            "Sí, eliminar", "Cancelar");
+         "Eliminar miembro",
+         $"¿Seguro que quieres eliminar a {miembro.NombreMostrar} del proyecto?",
+         "Sí, eliminar", "Cancelar");
 
         if (!confirmar) return;
 

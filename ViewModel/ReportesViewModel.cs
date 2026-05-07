@@ -93,6 +93,7 @@ public partial class ReportesViewModel : ObservableObject
                 LabelTextSize = 24,
                 LabelColor = textColor,
                 BackgroundColor = SKColors.Transparent,
+
                 LabelOrientation = Orientation.Horizontal,
                 ValueLabelOrientation = Orientation.Horizontal
             };

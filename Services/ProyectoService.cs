@@ -44,7 +44,7 @@ public class ProyectoService : IRestService<Proyecto>
             await AddAuthHeaderAsync();
             var response = await _client.GetAsync(uri);
 
-            Debug.WriteLine($"📋 ProyectoService.GetAllAsync - Status: {response.StatusCode}");
+            Debug.WriteLine($" ProyectoService.GetAllAsync - Status: {response.StatusCode}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -54,12 +54,12 @@ public class ProyectoService : IRestService<Proyecto>
             else
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine($"❌ Error GetAllAsync: {response.StatusCode} - {errorContent}");
+                Debug.WriteLine($" Error GetAllAsync: {response.StatusCode} - {errorContent}");
             }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ ERROR GetAllAsync Proyectos: {ex.Message}");
+            Debug.WriteLine($" ERROR GetAllAsync Proyectos: {ex.Message}");
         }
 
         return items;
@@ -78,11 +78,11 @@ public class ProyectoService : IRestService<Proyecto>
                 return JsonSerializer.Deserialize<Proyecto>(content, _jsonOptions);
             }
 
-            Debug.WriteLine($"❌ GetByIdAsync: {response.StatusCode}");
+            Debug.WriteLine($" GetByIdAsync: {response.StatusCode}");
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ ERROR GetByIdAsync: {ex.Message}");
+            Debug.WriteLine($" ERROR GetByIdAsync: {ex.Message}");
         }
 
         return null;
@@ -107,7 +107,7 @@ public class ProyectoService : IRestService<Proyecto>
 
             var response = await _client.PostAsync(uri, content);
 
-            Debug.WriteLine($"📋 CreateAsync Proyecto - Status: {response.StatusCode}");
+            Debug.WriteLine($" CreateAsync Proyecto - Status: {response.StatusCode}");
             return response.IsSuccessStatusCode;
         }
         catch (Exception ex)
@@ -139,12 +139,12 @@ public class ProyectoService : IRestService<Proyecto>
             };
 
             var response = await _client.SendAsync(request);
-            Debug.WriteLine($"📋 UpdateAsync Proyecto - Status: {response.StatusCode}");
+            Debug.WriteLine($" UpdateAsync Proyecto - Status: {response.StatusCode}");
             return (response.IsSuccessStatusCode, (int)response.StatusCode);
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ ERROR UpdateAsync Proyecto: {ex.Message}");
+            Debug.WriteLine($" ERROR UpdateAsync Proyecto: {ex.Message}");
             return (false, 0);
         }
     }
@@ -155,12 +155,12 @@ public class ProyectoService : IRestService<Proyecto>
         {
             await AddAuthHeaderAsync();
             var response = await _client.DeleteAsync(new Uri($"{ApiConfig.BaseUrl}/proyectos/{id}"));
-            Debug.WriteLine($"📋 DeleteAsync Proyecto - Status: {response.StatusCode}");
+            Debug.WriteLine($" DeleteAsync Proyecto - Status: {response.StatusCode}");
             return (response.IsSuccessStatusCode, (int)response.StatusCode);
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ ERROR DeleteAsync Proyecto: {ex.Message}");
+            Debug.WriteLine($" ERROR DeleteAsync Proyecto: {ex.Message}");
             return (false, 0);
         }
     }
@@ -171,7 +171,6 @@ public class ProyectoService : IRestService<Proyecto>
         return success;
     }
 
-    // --- Métodos de miembros ---
 
     public async Task<List<ProyectoUsuario>> GetMiembrosAsync(int proyectoId)
     {
@@ -186,11 +185,11 @@ public class ProyectoService : IRestService<Proyecto>
                 return JsonSerializer.Deserialize<List<ProyectoUsuario>>(content, _jsonOptions) ?? new();
             }
 
-            Debug.WriteLine($"❌ GetMiembrosAsync: {response.StatusCode}");
+            Debug.WriteLine($" GetMiembrosAsync: {response.StatusCode}");
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ ERROR GetMiembrosAsync: {ex.Message}");
+            Debug.WriteLine($" ERROR GetMiembrosAsync: {ex.Message}");
         }
 
         return new();
@@ -214,12 +213,12 @@ public class ProyectoService : IRestService<Proyecto>
             var response = await _client.PostAsync(
                 new Uri($"{ApiConfig.BaseUrl}/proyectos/{proyectoId}/miembros"), content);
 
-            Debug.WriteLine($"📋 AddMiembroAsync - Status: {response.StatusCode}");
+            Debug.WriteLine($" AddMiembroAsync - Status: {response.StatusCode}");
             return (response.IsSuccessStatusCode, (int)response.StatusCode);
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ ERROR AddMiembroAsync: {ex.Message}");
+            Debug.WriteLine($" ERROR AddMiembroAsync: {ex.Message}");
             return (false, 0);
         }
     }
@@ -241,12 +240,12 @@ public class ProyectoService : IRestService<Proyecto>
             };
 
             var response = await _client.SendAsync(request);
-            Debug.WriteLine($"📋 UpdateMiembroRolAsync - Status: {response.StatusCode}");
+            Debug.WriteLine($" UpdateMiembroRolAsync - Status: {response.StatusCode}");
             return (response.IsSuccessStatusCode, (int)response.StatusCode);
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ ERROR UpdateMiembroRolAsync: {ex.Message}");
+            Debug.WriteLine($" ERROR UpdateMiembroRolAsync: {ex.Message}");
             return (false, 0);
         }
     }
@@ -259,12 +258,12 @@ public class ProyectoService : IRestService<Proyecto>
             var response = await _client.DeleteAsync(
                 new Uri($"{ApiConfig.BaseUrl}/proyectos/{proyectoId}/miembros/{usuarioId}"));
 
-            Debug.WriteLine($"📋 RemoveMiembroAsync - Status: {response.StatusCode}");
+            Debug.WriteLine($" RemoveMiembroAsync - Status: {response.StatusCode}");
             return (response.IsSuccessStatusCode, (int)response.StatusCode);
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ ERROR RemoveMiembroAsync: {ex.Message}");
+            Debug.WriteLine($" ERROR RemoveMiembroAsync: {ex.Message}");
             return (false, 0);
         }
     }
@@ -287,12 +286,12 @@ public class ProyectoService : IRestService<Proyecto>
             var response = await _client.PostAsync(
                 new Uri($"{ApiConfig.BaseUrl}/proyectos/{proyectoId}/miembros/email"), content);
 
-            Debug.WriteLine($"📋 AddMiembroPorEmailAsync - Status: {response.StatusCode}");
+            Debug.WriteLine($" AddMiembroPorEmailAsync - Status: {response.StatusCode}");
             return (response.IsSuccessStatusCode, (int)response.StatusCode);
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"❌ ERROR AddMiembroPorEmailAsync: {ex.Message}");
+            Debug.WriteLine($" ERROR AddMiembroPorEmailAsync: {ex.Message}");
             return (false, 0);
         }
     }
