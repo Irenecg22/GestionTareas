@@ -1,29 +1,22 @@
-Ôªøusing CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GestionTareas.Services;
 using GestionTareas.View;
 using Microsoft.Extensions.DependencyInjection;
-
 namespace GestionTareas.ViewModel;
-
 public partial class LoginViewModel : ObservableObject
 {
     private readonly UserService _userService;
-
     [ObservableProperty]
     private string email;
-
     [ObservableProperty]
     private string password;
-
     [ObservableProperty]
     private bool isLoading;
-
     public LoginViewModel(UserService userService)
     {
         _userService = userService;
     }
-
     [RelayCommand]
     private async Task Login()
     {
@@ -32,40 +25,34 @@ public partial class LoginViewModel : ObservableObject
         {
             await Application.Current.MainPage.DisplayAlert(
                 "Error",
-                "Introduce email y contrase√±a.",
+                "Introduce email y contraseÒa.",
                 "OK");
             return;
         }
-
         try
         {
             IsLoading = true;
-
-            System.Diagnostics.Debug.WriteLine($"üîë Intentando login desde UI con: {Email}");
-
+            System.Diagnostics.Debug.WriteLine($"?? Intentando login desde UI con: {Email}");
             bool loginCorrecto = await _userService.LoginAsync(Email, Password);
-
             if (!loginCorrecto)
             {
                 await Application.Current.MainPage.DisplayAlert(
-                    "Error de autenticaci√≥n",
+                    "Error de autenticaciÛn",
                     "Las credenciales no son correctas.\n\n" +
                     "Verifica:\n" +
-                    "‚Ä¢ Email correcto (ejemplo: juan@test.com)\n" +
-                    "‚Ä¢ Contrase√±a correcta\n" +
-                    "‚Ä¢ Que el backend est√© ejecut√°ndose\n\n" +
-                    "Revisa la ventana Output > Debug para m√°s detalles.",
+                    "ï Email correcto (ejemplo: juan@test.com)\n" +
+                    "ï ContraseÒa correcta\n" +
+                    "ï Que el backend estÈ ejecut·ndose\n\n" +
+                    "Revisa la ventana Output > Debug para m·s detalles.",
                     "OK");
                 return;
             }
-
-            System.Diagnostics.Debug.WriteLine($"‚úÖ Login exitoso, cambiando a AppShell");
-
+            System.Diagnostics.Debug.WriteLine($"? Login exitoso, cambiando a AppShell");
             Application.Current.Windows[0].Page = new AppShell();
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"‚ùå Excepci√≥n en Login UI: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"? ExcepciÛn en Login UI: {ex.Message}");
             await Application.Current.MainPage.DisplayAlert(
                 "Error",
                 $"Error inesperado: {ex.Message}",
@@ -76,7 +63,6 @@ public partial class LoginViewModel : ObservableObject
             IsLoading = false;
         }
     }
-
     [RelayCommand]
     private async Task GoToRegister()
     {

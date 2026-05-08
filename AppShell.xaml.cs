@@ -1,5 +1,4 @@
-﻿using GestionTareas.View;
-
+using GestionTareas.View;
 namespace GestionTareas
 {
     public partial class AppShell : Shell
@@ -9,7 +8,6 @@ namespace GestionTareas
             InitializeComponent();
             RegisterRoutes();
         }
-
         private void RegisterRoutes()
         {
             Routing.RegisterRoute("tareaDetalle", typeof(TareaDetalleView));

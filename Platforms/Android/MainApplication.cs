@@ -1,6 +1,5 @@
-﻿using Android.App;
+using Android.App;
 using Android.Runtime;
-
 namespace GestionTareas
 {
     [Application]
@@ -10,7 +9,6 @@ namespace GestionTareas
             : base(handle, ownership)
         {
         }
-
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
     }
 }

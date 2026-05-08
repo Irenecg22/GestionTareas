@@ -1,11 +1,8 @@
 using GestionTareas.ViewModel;
-
 namespace GestionTareas.View;
-
 public partial class TareaView : ContentPage
 {
     private readonly TareaViewModel _viewModel;
-
     public TareaView(TareaViewModel tareaViewModel)
     {
         InitializeComponent();
@@ -20,7 +17,6 @@ public partial class TareaView : ContentPage
             await vm.LoadDataCommand.ExecuteAsync(null);
         }
     }
-
     private async void OnNuevaTareaClicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(CrearTareaView));

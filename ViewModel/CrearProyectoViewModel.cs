@@ -1,15 +1,12 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using GestionTareas.Model;
 using GestionTareas.Services;
-
 namespace GestionTareas.ViewModel;
-
 public class CrearProyectoViewModel : INotifyPropertyChanged
 {
     private readonly ProyectoService _proyectoService;
-
     private string nombre;
     public string Nombre
     {
@@ -20,7 +17,6 @@ public class CrearProyectoViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-
     private string descripcion;
     public string Descripcion
     {
@@ -31,7 +27,6 @@ public class CrearProyectoViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-
     private DateTime fechaCreacion = DateTime.Today;
     public DateTime FechaCreacion
     {
@@ -42,15 +37,12 @@ public class CrearProyectoViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-
     public ICommand CrearProyectoCommand { get; }
-
     public CrearProyectoViewModel(ProyectoService proyectoService)
     {
         _proyectoService = proyectoService;
         CrearProyectoCommand = new Command(async () => await CrearProyectoAsync());
     }
-
     private async Task CrearProyectoAsync()
     {
         if (string.IsNullOrWhiteSpace(Nombre))
@@ -58,19 +50,16 @@ public class CrearProyectoViewModel : INotifyPropertyChanged
             await Application.Current.MainPage.DisplayAlert("Error", "El nombre es obligatorio.", "OK");
             return;
         }
-
         Proyecto nuevoProyecto = new Proyecto
         {
             Nombre = Nombre,
             Descripcion = Descripcion,
             FechaCreacion = FechaCreacion.ToString("yyyy-MM-dd")
         };
-
         bool creado = await _proyectoService.CreateAsync(nuevoProyecto);
-
         if (creado)
         {
-            await Application.Current.MainPage.DisplayAlert("Éxito", "Proyecto creado correctamente.", "OK");
+            await Application.Current.MainPage.DisplayAlert("�xito", "Proyecto creado correctamente.", "OK");
             await Shell.Current.GoToAsync("..");
         }
         else
@@ -78,9 +67,7 @@ public class CrearProyectoViewModel : INotifyPropertyChanged
             await Application.Current.MainPage.DisplayAlert("Error", "No se pudo crear el proyecto.", "OK");
         }
     }
-
     public event PropertyChangedEventHandler PropertyChanged;
-
     protected void OnPropertyChanged([CallerMemberName] string nombrePropiedad = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nombrePropiedad));

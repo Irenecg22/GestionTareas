@@ -4,49 +4,36 @@ using GestionTareas.Model;
 using GestionTareas.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.RegularExpressions;
-
 namespace GestionTareas.ViewModel;
-
 public partial class EditarPerfilViewModel : ObservableObject
 {
     private readonly UserService _userService;
-
     [ObservableProperty]
     private Usuario? usuarioActual;
-
     [ObservableProperty]
     private string nombre;
-
     [ObservableProperty]
     private string email;
-
     [ObservableProperty]
     private string? nuevaPassword;
-
     [ObservableProperty]
     private string? confirmarPassword;
-
     [ObservableProperty]
     private string? mensajeError;
-
     [ObservableProperty]
     private bool isLoading;
-
     public EditarPerfilViewModel(UserService userService)
     {
         _userService = userService;
         _ = LoadUserData();
     }
-
     private async Task LoadUserData()
     {
         try
         {
             IsLoading = true;
             System.Diagnostics.Debug.WriteLine("🔍 EditarPerfilViewModel: Cargando datos del usuario actual...");
-
             var usuario = await _userService.GetCurrentUserAsync();
-
             if (usuario != null)
             {
                 System.Diagnostics.Debug.WriteLine($"✅ Usuario cargado: {usuario.Nombre} ({usuario.Email})");
@@ -73,30 +60,25 @@ public partial class EditarPerfilViewModel : ObservableObject
             IsLoading = false;
         }
     }
-
     [RelayCommand]
     private async Task GuardarCambios()
     {
         MensajeError = null;
-
         if (string.IsNullOrWhiteSpace(Nombre))
         {
             await Application.Current.MainPage.DisplayAlert("Error", "El nombre es obligatorio.", "OK");
             return;
         }
-
         if (string.IsNullOrWhiteSpace(Email))
         {
             await Application.Current.MainPage.DisplayAlert("Error", "El email es obligatorio.", "OK");
             return;
         }
-
         if (!IsValidEmail(Email))
         {
             await Application.Current.MainPage.DisplayAlert("Error", "El formato del email no es válido.", "OK");
             return;
         }
-
         if (!string.IsNullOrWhiteSpace(NuevaPassword))
         {
             if (NuevaPassword.Length < 8)
@@ -105,7 +87,6 @@ public partial class EditarPerfilViewModel : ObservableObject
                     "La contraseña debe tener al menos 8 caracteres.", "OK");
                 return;
             }
-
             if (NuevaPassword != ConfirmarPassword)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", 
@@ -113,38 +94,29 @@ public partial class EditarPerfilViewModel : ObservableObject
                 return;
             }
         }
-
         if (UsuarioActual == null)
         {
             await Application.Current.MainPage.DisplayAlert("Error", 
                 "No se pudo identificar al usuario actual.", "OK");
             return;
         }
-
         try
         {
             IsLoading = true;
-
-            // Detectar si se está cambiando el email o la contraseña
             bool emailCambiado = Email != UsuarioActual.Email;
             bool passwordCambiado = !string.IsNullOrWhiteSpace(NuevaPassword);
-
             var request = new UsuarioUpdateRequest
             {
                 Nombre = Nombre,
                 Email = Email,
                 Password = passwordCambiado ? NuevaPassword : null
             };
-
             var (success, statusCode, errorMessage) = await _userService.UpdateUserAsync(UsuarioActual.Id, request);
-
             if (success)
             {
-                // Si cambió el email o la contraseña, hay que hacer logout y pedir re-login
                 if (emailCambiado || passwordCambiado)
                 {
                     string mensaje = "Perfil actualizado correctamente.\n\n";
-
                     if (emailCambiado && passwordCambiado)
                     {
                         mensaje += "Has cambiado tu email y contraseña. Por seguridad, debes iniciar sesión nuevamente con tus nuevas credenciales.";
@@ -157,12 +129,8 @@ public partial class EditarPerfilViewModel : ObservableObject
                     {
                         mensaje += "Has cambiado tu contraseña. Por seguridad, debes iniciar sesión nuevamente.";
                     }
-
                     await Application.Current.MainPage.DisplayAlert("Actualización exitosa", mensaje, "OK");
-
-                    // Hacer logout y volver al login
                     _userService.Logout();
-
                     if (Application.Current != null)
                     {
                         Application.Current.Windows[0].Page = new NavigationPage(
@@ -171,7 +139,6 @@ public partial class EditarPerfilViewModel : ObservableObject
                 }
                 else
                 {
-                    // Solo cambió el nombre, no requiere re-login
                     await Application.Current.MainPage.DisplayAlert("Éxito", 
                         "Perfil actualizado correctamente.", "OK");
                     await Shell.Current.GoToAsync("..");
@@ -209,13 +176,11 @@ public partial class EditarPerfilViewModel : ObservableObject
             IsLoading = false;
         }
     }
-
     [RelayCommand]
     private async Task Cancelar()
     {
         await Shell.Current.GoToAsync("..");
     }
-
     private bool IsValidEmail(string email)
     {
         try

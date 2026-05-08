@@ -1,19 +1,16 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GestionTareas.Model;
 using GestionTareas.Services;
 using GestionTareas.View;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-
 namespace GestionTareas.ViewModel;
-
 public partial class PanelPrincipalViewModel : ObservableObject
 {
     private readonly ProyectoService _proyectoService;
     private readonly UserService _userService;
     private readonly TareaService _tareaService;
-
     [ObservableProperty] private ObservableCollection<Proyecto> proyectos;
     [ObservableProperty] private ObservableCollection<Tarea> todasLasTareas;
     [ObservableProperty] private Usuario usuarioLogueado;
@@ -24,7 +21,6 @@ public partial class PanelPrincipalViewModel : ObservableObject
     [ObservableProperty] private int tareasFinalizadasCount;
     [ObservableProperty] private double porcentajeGlobal;
     [ObservableProperty] private string fechaActual;
-
     public PanelPrincipalViewModel(
         ProyectoService proyectoService,
         UserService userService,
@@ -33,13 +29,10 @@ public partial class PanelPrincipalViewModel : ObservableObject
         _proyectoService = proyectoService;
         _userService = userService;
         _tareaService = tareaService;
-
         Proyectos = new ObservableCollection<Proyecto>();
         TodasLasTareas = new ObservableCollection<Tarea>();
-
         _ = LoadData();
     }
-
     private async Task LoadData()
     {
         try
@@ -48,12 +41,10 @@ public partial class PanelPrincipalViewModel : ObservableObject
             var listaTareasTotal = await _tareaService.GetAllAsync() ?? new List<Tarea>();
             var user = await _userService.GetCurrentUserAsync();
             var fecha = DateTime.Now.ToString("dddd, dd 'de' MMMM");
-
             int totalT = listaTareasTotal.Count;
             int tFin = listaTareasTotal.Count(t => t.Estado == "Completada" || t.Estado == "Done");
             int tProg = listaTareasTotal.Count(t => t.Estado == "Progreso" || t.Estado == "Doing" || t.Estado == "En Progreso");
             int tPend = listaTareasTotal.Count(t => t.Estado == "Pendiente" || t.Estado == "To Do");
-
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 UsuarioLogueado = user;
@@ -64,7 +55,6 @@ public partial class PanelPrincipalViewModel : ObservableObject
                 TareasEnProgresoCount = tProg;
                 TareasFinalizadasCount = tFin;
                 PorcentajeGlobal = totalT > 0 ? (double)tFin / totalT : 0;
-
                 Proyectos = new ObservableCollection<Proyecto>(listaProyectos);
                 TodasLasTareas = new ObservableCollection<Tarea>(listaTareasTotal);
             });
@@ -74,7 +64,6 @@ public partial class PanelPrincipalViewModel : ObservableObject
             Debug.WriteLine($"Error en PanelPrincipalViewModel.LoadData: {ex.Message}");
         }
     }
-
     [RelayCommand]
     private async Task VerReporte()
     {

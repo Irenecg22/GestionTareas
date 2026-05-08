@@ -1,10 +1,9 @@
-﻿using GestionTareas.Model;
+using GestionTareas.Model;
 using GestionTareas.Services;
 using GestionTareas.View;
 using GestionTareas.ViewModel;
 using Microsoft.Extensions.Logging;
 using Microcharts.Maui;
-
 namespace GestionTareas
 {
     public static class MauiProgram
@@ -12,7 +11,6 @@ namespace GestionTareas
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
-
             builder
                 .UseMauiApp<App>()
                 .UseMicrocharts()
@@ -21,23 +19,17 @@ namespace GestionTareas
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-
             builder.Services.AddSingleton<UserService>();
             builder.Services.AddSingleton<IRestService<Usuario>>(s => s.GetRequiredService<UserService>());
-
             builder.Services.AddTransient<TareaService>();
             builder.Services.AddTransient<ProyectoService>();
-
             builder.Services.AddTransient<IRestService<Tarea>>(sp => sp.GetRequiredService<TareaService>());
             builder.Services.AddTransient<IRestService<Proyecto>>(sp => sp.GetRequiredService<ProyectoService>());
-
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<LoginView>();
-
             builder.Services.AddTransient<PanelPrincipalViewModel>();
             builder.Services.AddTransient<ProyectoViewModel>();
             builder.Services.AddTransient<SettingsViewModel>();
@@ -50,7 +42,6 @@ namespace GestionTareas
             builder.Services.AddTransient<SignUpViewModel>();
             builder.Services.AddTransient<EditarPerfilViewModel>();
             builder.Services.AddTransient<ReportesViewModel>();
-
             builder.Services.AddTransient<PanelPrincipal>();
             builder.Services.AddTransient<ProyectoView>();
             builder.Services.AddTransient<TareaView>();
@@ -63,7 +54,6 @@ namespace GestionTareas
             builder.Services.AddTransient<SignUpView>();
             builder.Services.AddTransient<EditarPerfilView>();
             builder.Services.AddTransient<ReportesView>();
-
             return builder.Build();
         }
     }

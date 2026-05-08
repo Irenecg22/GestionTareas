@@ -1,114 +1,88 @@
-Ôªøusing CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GestionTareas.Model;
 using GestionTareas.Services;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-
 namespace GestionTareas.ViewModel
 {
     public partial class SignUpViewModel : ObservableObject
     {
         private readonly UserService _userService;
-
         [ObservableProperty]
         private string nombre;
-
         [ObservableProperty]
         private string email;
-
         [ObservableProperty]
         private string password;
-
         [ObservableProperty]
         private string confirmPassword;
-
         [ObservableProperty]
         private bool isLoading;
-
         [ObservableProperty]
         private bool hasError;
-
         [ObservableProperty]
         private string errorMessage;
-
         public SignUpViewModel(UserService userService)
         {
             _userService = userService;
         }
-
         private void ShowError(string message)
         {
             ErrorMessage = message;
             HasError = true;
         }
-
         private void ClearError()
         {
             ErrorMessage = string.Empty;
             HasError = false;
         }
-
         private bool ValidateInputs()
         {
             ClearError();
-
-            // Validar campos vac√≠os
             if (string.IsNullOrWhiteSpace(Nombre))
             {
-                ShowError("‚ùå El nombre es obligatorio.");
+                ShowError("? El nombre es obligatorio.");
                 return false;
             }
-
             if (Nombre.Length < 3)
             {
-                ShowError("‚ùå El nombre debe tener al menos 3 caracteres.");
+                ShowError("? El nombre debe tener al menos 3 caracteres.");
                 return false;
             }
-
             if (string.IsNullOrWhiteSpace(Email))
             {
-                ShowError("‚ùå El email es obligatorio.");
+                ShowError("? El email es obligatorio.");
                 return false;
             }
-
-            // Validar formato de email
             var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
             if (!emailRegex.IsMatch(Email))
             {
-                ShowError("‚ùå El formato del email no es v√°lido.\nEjemplo: usuario@ejemplo.com");
+                ShowError("? El formato del email no es v·lido.\nEjemplo: usuario@ejemplo.com");
                 return false;
             }
-
             if (string.IsNullOrWhiteSpace(Password))
             {
-                ShowError("‚ùå La contrase√±a es obligatoria.");
+                ShowError("? La contraseÒa es obligatoria.");
                 return false;
             }
-
-            // Validar longitud de contrase√±a
             if (Password.Length < 6)
             {
-                ShowError("‚ùå La contrase√±a debe tener al menos 8 caracteres.");
+                ShowError("? La contraseÒa debe tener al menos 8 caracteres.");
                 return false;
             }
-
             if (string.IsNullOrWhiteSpace(ConfirmPassword))
             {
-                ShowError("‚ùå Debes confirmar tu contrase√±a.");
+                ShowError("? Debes confirmar tu contraseÒa.");
                 return false;
             }
-
-
             if (Password != ConfirmPassword)
             {
-                ShowError("‚ùå Las contrase√±as no coinciden.\nPor favor, verifica que ambas sean iguales.");
+                ShowError("? Las contraseÒas no coinciden.\nPor favor, verifica que ambas sean iguales.");
                 return false;
             }
-
             return true;
         }
-
         [RelayCommand]
         private async Task Register()
         {
@@ -117,21 +91,16 @@ namespace GestionTareas.ViewModel
             Debug.WriteLine($"   Email: {Email}");
             Debug.WriteLine($"   Password Length: {Password?.Length ?? 0}");
             Debug.WriteLine($"   ConfirmPassword Length: {ConfirmPassword?.Length ?? 0}");
-
-            // Validar inputs
             if (!ValidateInputs())
             {
-                Debug.WriteLine(" Validaci√≥n fall√≥");
+                Debug.WriteLine(" ValidaciÛn fallÛ");
                 return;
             }
-
-            Debug.WriteLine($"‚úÖ Validaci√≥n local completada");
-
+            Debug.WriteLine($"? ValidaciÛn local completada");
             try
             {
                 IsLoading = true;
                 ClearError();
-
                 var nuevoUsuario = new Usuario
                 {
                     Nombre = Nombre,
@@ -139,66 +108,57 @@ namespace GestionTareas.ViewModel
                     Password = Password,
                     RolId = RolesConstantes.USUARIO  
                 };
-
-                Debug.WriteLine($"üì§ Llamando a UserService.CreateAsync...");
+                Debug.WriteLine($"?? Llamando a UserService.CreateAsync...");
                 Debug.WriteLine($"   Usuario: {nuevoUsuario.Nombre}");
                 Debug.WriteLine($"   Email: {nuevoUsuario.Email}");
                 Debug.WriteLine($"   RolId: {nuevoUsuario.RolId} ({RolesConstantes.ObtenerNombreRol(nuevoUsuario.RolId)})");
-
                 bool exito = await _userService.CreateAsync(nuevoUsuario);
-
-                Debug.WriteLine($"üì• Respuesta de UserService: {(exito ? "√âXITO" : "FALLO")}");
-
+                Debug.WriteLine($"?? Respuesta de UserService: {(exito ? "…XITO" : "FALLO")}");
                 if (exito)
                 {
-                    Debug.WriteLine($"üéâ Cuenta creada exitosamente");
+                    Debug.WriteLine($"?? Cuenta creada exitosamente");
                     await Application.Current.MainPage.DisplayAlert(
-                        "‚úÖ Registro Exitoso",
-                        "Tu cuenta ha sido creada correctamente.\nAhora puedes iniciar sesi√≥n con tus credenciales.",
+                        "? Registro Exitoso",
+                        "Tu cuenta ha sido creada correctamente.\nAhora puedes iniciar sesiÛn con tus credenciales.",
                         "Entendido");
-
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
                 else
                 {
-                    Debug.WriteLine($"‚ö†Ô∏è No se pudo crear la cuenta (servicio retorn√≥ false)");
-                    ShowError("‚ùå No se pudo completar el registro.\n\n" +
+                    Debug.WriteLine($"?? No se pudo crear la cuenta (servicio retornÛ false)");
+                    ShowError("? No se pudo completar el registro.\n\n" +
                              "Posibles causas:\n" +
-                             "‚Ä¢ El email ya est√° registrado\n" +
-                             "‚Ä¢ Error de conexi√≥n con el servidor\n" +
-                             "‚Ä¢ Datos no v√°lidos\n\n" +
-                             "Por favor, intenta con otro email o verifica tu conexi√≥n.");
+                             "ï El email ya est· registrado\n" +
+                             "ï Error de conexiÛn con el servidor\n" +
+                             "ï Datos no v·lidos\n\n" +
+                             "Por favor, intenta con otro email o verifica tu conexiÛn.");
                 }
             }
             catch (HttpRequestException httpEx)
             {
-                Debug.WriteLine($"‚ùå ERROR HTTP en Register:");
+                Debug.WriteLine($"? ERROR HTTP en Register:");
                 Debug.WriteLine($"   Mensaje: {httpEx.Message}");
-
-                ShowError("‚ùå Error de conexi√≥n con el servidor.\n\n" +
+                ShowError("? Error de conexiÛn con el servidor.\n\n" +
                          "Verifica que:\n" +
-                         "‚Ä¢ Est√©s conectado a internet\n" +
-                         "‚Ä¢ El servidor est√© disponible\n\n" +
-                         $"Detalle t√©cnico: {httpEx.Message}");
+                         "ï EstÈs conectado a internet\n" +
+                         "ï El servidor estÈ disponible\n\n" +
+                         $"Detalle tÈcnico: {httpEx.Message}");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"‚ùå EXCEPCI√ìN en Register:");
+                Debug.WriteLine($"? EXCEPCI”N en Register:");
                 Debug.WriteLine($"   Mensaje: {ex.Message}");
                 Debug.WriteLine($"   Tipo: {ex.GetType().Name}");
                 Debug.WriteLine($"   StackTrace: {ex.StackTrace}");
-
-                ShowError($"‚ùå Error inesperado durante el registro.\n\n" +
+                ShowError($"? Error inesperado durante el registro.\n\n" +
                          $"Detalle: {ex.Message}\n\n" +
                          "Por favor, intenta nuevamente.");
             }
             finally
             {
                 IsLoading = false;
-
             }
         }
-
         [RelayCommand]
         private async Task GoToLogin()
         {
