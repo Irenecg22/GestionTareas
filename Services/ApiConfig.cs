@@ -1,9 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
-
 namespace GestionTareas.Services;
-
 public static class ApiConfig
 {
     public static string BaseUrl

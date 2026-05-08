@@ -1,7 +1,5 @@
 using GestionTareas.ViewModel;
-
 namespace GestionTareas.View;
-
 public partial class TareaDetalleView : ContentPage
 {
     public TareaDetalleView(TareaDetalleViewModel vm)
@@ -9,6 +7,4 @@ public partial class TareaDetalleView : ContentPage
         InitializeComponent();
         BindingContext = vm;
     }
-
-    
 }
