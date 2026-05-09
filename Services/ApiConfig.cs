@@ -8,11 +8,7 @@ public static class ApiConfig
     {
         get
         {
-#if ANDROID
-            return "http://10.0.2.2:8000";
-#else
-            return "http://127.0.0.1:8000";
-#endif
+            return "http://3.250.99.202:8000";  
         }
     }
 }
