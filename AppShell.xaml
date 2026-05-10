@@ -7,27 +7,32 @@
     Title="GestionTareas">
 
     <ShellContent 
-        Title="Dashboard" 
+        Title="Dashboard"
+        Icon="dashboard.png"
         ContentTemplate="{DataTemplate v:PanelPrincipal}" 
         Route="dashboardPage" />
 
     <ShellContent 
-        Title="Proyectos" 
+        Title="Proyectos"
+        Icon="folder.png"
         ContentTemplate="{DataTemplate v:ProyectoView}" 
         Route="proyectosPage" />
 
     <ShellContent
         Title="Tareas"
+        Icon="task.png"
         ContentTemplate="{DataTemplate v:TareaView}"
         Route="tareasPage" />
-    
+
     <ShellContent
         Title="Reportes"
+        Icon="bar_chart.png"
         ContentTemplate="{DataTemplate v:ReportesView}"
         Route="reportesPage" />
 
     <ShellContent
         Title="Ajustes"
+        Icon="settings.png"
         ContentTemplate="{DataTemplate v:SettingsView}"
         Route="settingsPage" />
 
