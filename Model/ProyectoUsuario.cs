@@ -25,6 +25,34 @@ public class ProyectoUsuario
     public bool TieneEmail => !string.IsNullOrWhiteSpace(EmailUsuario);
     [JsonIgnore]
     public string RolProyectoDisplay => RolHelper.ToSpanish(RolProyecto);
+
+    [JsonIgnore]
+    public string Iniciales
+    {
+        get
+        {
+            if (!string.IsNullOrWhiteSpace(NombreUsuario))
+            {
+                var palabras = NombreUsuario.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                if (palabras.Length >= 2)
+                    return $"{palabras[0][0]}{palabras[1][0]}".ToUpper();
+                if (palabras.Length == 1 && palabras[0].Length >= 2)
+                    return palabras[0].Substring(0, 2).ToUpper();
+                if (palabras.Length == 1 && palabras[0].Length == 1)
+                    return palabras[0].ToUpper();
+            }
+            if (!string.IsNullOrWhiteSpace(EmailUsuario))
+            {
+                var partes = EmailUsuario.Split('@');
+                if (partes.Length > 0 && partes[0].Length >= 2)
+                    return partes[0].Substring(0, 2).ToUpper();
+            }
+            return "??";
+        }
+    }
+
+    [JsonIgnore]
+    public bool EsPropietario => RolProyecto == "owner";
 }
 public class ProyectoUsuarioCreateRequest
 {
