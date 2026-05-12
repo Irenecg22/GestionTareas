@@ -28,6 +28,13 @@ public partial class ProyectoViewModel : ObservableObject
     private async Task LoadDataAsync()
     {
         var lista = await _proyectoService.GetAllAsync();
+
+        // Cargar miembros para cada proyecto
+        foreach (var proyecto in lista)
+        {
+            proyecto.Miembros = await _proyectoService.GetMiembrosAsync(proyecto.Id);
+        }
+
         Proyectos = new ObservableCollection<Proyecto>(lista);
     }
     private async Task EliminarProyectoAsync(Proyecto proyecto)
